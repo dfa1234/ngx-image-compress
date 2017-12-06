@@ -2,7 +2,7 @@
 
 Angular utility for compressing image to a satisfying size, that you choose
 
-Warning: working project, please read "Updates" sections above
+**Warning**: working project, please read "Updates" sections above
 
 ### Import
 ```sh
@@ -30,8 +30,7 @@ We will use Renderer2, and transform the image multiple time through HTML canvas
 
 ## Update 
 
-####2017/12/06
+#### 2017/12/06
 
 Upload to Github
- 
-Still a some fixes to be make as static, external library
+Need some fixes and tests to be use as a static library
