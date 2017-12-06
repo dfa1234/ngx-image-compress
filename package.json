@@ -1,0 +1,38 @@
+{
+  "name": "ngx-image-compress",
+  "version": "1.0.0",
+  "description": "angular2+ module for compressing any image format",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfa1234/ngx-image-compress.git"
+  },
+  "keywords": [
+    "angular2",
+    "angular5",
+    "image",
+    "processing",
+    "compression"
+  ],
+  "author": "dfa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dfa1234/ngx-image-compress"
+  },
+  "homepage": "https://github.com/dfa1234/ngx-image-compress#readme",
+  "devDependencies": {
+    "source-map-loader": "^0.2.3",
+    "ts-loader": "^2.3.4",
+    "typescript": "^2.4.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "@angular/core": "^5.0.5",
+    "rxjs": "^5.5.4"
+  }
+}
