@@ -1,16 +1,16 @@
-import { Renderer2} from "@angular/core";
+import {Renderer2} from "@angular/core";
 
-export enum DOC_ORIENTATION{
-    Up=1,
-    Down=3,
-    Right=6,
-    Left=8,
-    UpMirrored=2,
-    DownMirrored=4,
-    LeftMirrored=5,
-    RightMirrored=7,
-    NotJpeg=-1,
-    NotDefined=-2
+export enum DOC_ORIENTATION {
+    Up = 1,
+    Down = 3,
+    Right = 6,
+    Left = 8,
+    UpMirrored = 2,
+    DownMirrored = 4,
+    LeftMirrored = 5,
+    RightMirrored = 7,
+    NotJpeg = -1,
+    NotDefined = -2
 }
 
 
@@ -22,11 +22,11 @@ export class ImageCompress {
      * @param {File} file
      * @param {(result: DOC_ORIENTATION) => void} callback
      */
-    static getOrientation(file:File, callback:(result:DOC_ORIENTATION)=>void) {
+    static getOrientation(file: File, callback: (result: DOC_ORIENTATION) => void) {
         let reader = new FileReader();
-        try{
-            reader.onload = function($event) {
-                let view = new DataView(reader.result);
+        try {
+            reader.onload = function ($event) {
+                let view = new DataView(reader.result as ArrayBuffer);
                 if (view.getUint16(0, false) != 0xFFD8) return callback(-2);
                 let length = view.byteLength, offset = 2;
                 while (offset < length) {
@@ -48,26 +48,32 @@ export class ImageCompress {
                 return callback(-1);
             };
             reader.readAsArrayBuffer(file);
-        }catch(e){
+        } catch (e) {
             return callback(0);
         }
 
     }
 
     /**
+     * helper to evaluate the compression rate
+     * @param s the image in base64 string format
+     */
+    static byteCount = (s: string): number => encodeURI(s).split(/%..|./).length - 1;
+
+    /**
      * return a callback with the new image data and image orientation
      * @param render
      * @param callBack
      */
-    static uploadFile(render: Renderer2, callBack: (image: string,orientation:DOC_ORIENTATION) => void) {
+    static uploadFile(render: Renderer2, callBack: (image: string, orientation: DOC_ORIENTATION) => void) {
         let inputElement = render.createElement("input");
         render.setStyle(inputElement, "display", "none");
         render.setProperty(inputElement, "type", "file");
 
         render.listen(inputElement, "click", ($event) => {
             //javascript teachable moment
-            console.log('MouseEvent:',$event);
-            console.log('Input:',$event.target);
+            console.log('MouseEvent:', $event);
+            console.log('Input:', $event.target);
             $event.target.value = null;
         });
 
@@ -79,12 +85,12 @@ export class ImageCompress {
 
             myReader.onloadend = (e) => {
                 try {
-                    ImageCompress.getOrientation(file,orientation=>{
-                        callBack(myReader.result,orientation);
+                    ImageCompress.getOrientation(file, orientation => {
+                        callBack(myReader.result as string, orientation);
                     });
                 } catch (e) {
                     console.log(`ERROR ${e}`);
-                    callBack(null,null);
+                    callBack(null, null);
                 }
             };
 
@@ -92,7 +98,7 @@ export class ImageCompress {
                 myReader.readAsDataURL(file);
             } catch (e) {
                 console.log(`ERROR - probably no file have been selected: ${e}`);
-                callBack(null,null);
+                callBack(null, null);
             }
 
         });
@@ -100,10 +106,7 @@ export class ImageCompress {
     }
 
 
-
-
-
-    static compress(imageDataUrlSource: string, orientation:DOC_ORIENTATION, render: Renderer2, ratio: number = 50, quality: number = 50): Promise<string> {
+    static compress(imageDataUrlSource: string, orientation: DOC_ORIENTATION, render: Renderer2, ratio: number = 50, quality: number = 50): Promise<string> {
 
         return new Promise((resolve, reject) => {
 
@@ -120,7 +123,7 @@ export class ImageCompress {
                 w = sourceImage.naturalWidth;
                 h = sourceImage.naturalHeight;
 
-                if(orientation== DOC_ORIENTATION.Right || orientation == DOC_ORIENTATION.Left){
+                if (orientation == DOC_ORIENTATION.Right || orientation == DOC_ORIENTATION.Left) {
                     let t = w;
                     w = h;
                     h = t;
@@ -130,42 +133,41 @@ export class ImageCompress {
                 canvas.height = h * ratio;
 
 
-                const TO_RADIANS = Math.PI/180;
+                const TO_RADIANS = Math.PI / 180;
 
-                if(orientation == DOC_ORIENTATION.Up){
+                if (orientation == DOC_ORIENTATION.Up) {
 
                     ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
 
-                }else if(orientation == DOC_ORIENTATION.Right){
+                } else if (orientation == DOC_ORIENTATION.Right) {
 
                     ctx.save();
                     ctx.rotate(90 * TO_RADIANS);
-                    ctx.translate(0,-canvas.width);
-                    ctx.drawImage(sourceImage, 0, 0,canvas.height, canvas.width);
+                    ctx.translate(0, -canvas.width);
+                    ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
                     ctx.restore();
 
-                }else if(orientation == DOC_ORIENTATION.Left){
+                } else if (orientation == DOC_ORIENTATION.Left) {
 
                     ctx.save();
                     ctx.rotate(-90 * TO_RADIANS);
-                    ctx.translate(-canvas.width,0);
-                    ctx.drawImage(sourceImage, 0, 0,canvas.height, canvas.width);
+                    ctx.translate(-canvas.width, 0);
+                    ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
                     ctx.restore();
 
-                }else if(orientation == DOC_ORIENTATION.Down){
+                } else if (orientation == DOC_ORIENTATION.Down) {
 
                     ctx.save();
                     ctx.rotate(180 * TO_RADIANS);
-                    ctx.translate(-canvas.width,-canvas.height);
-                    ctx.drawImage(sourceImage, 0, 0,canvas.width, canvas.height);
+                    ctx.translate(-canvas.width, -canvas.height);
+                    ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
                     ctx.restore();
 
-                }else{
+                } else {
                     console.error('Wrong orientation value');
                     //same as default UP
                     ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
                 }
-
 
 
                 let mime = imageDataUrlSource.substr(5, imageDataUrlSource[0].length);

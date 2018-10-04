@@ -12,7 +12,10 @@
   },
   "keywords": [
     "angular2",
+    "angular4",
     "angular5",
+    "angular6",
+    "ionic",
     "image",
     "processing",
     "compression"
@@ -26,13 +29,14 @@
   "devDependencies": {
     "source-map-loader": "^0.2.3",
     "ts-loader": "^2.3.4",
-    "typescript": "^2.4.2",
+    "typescript": "^2.5",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
-    "@angular/core": "^5.0.5",
-    "rxjs": "^5.5.4"
+    "@angular/core": "^6.1.9",
+    "rxjs": "^6.0.0",
+    "zone.js": "^0.8.26"
   }
 }

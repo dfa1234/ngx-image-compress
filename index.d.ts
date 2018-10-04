@@ -9,7 +9,7 @@ export declare enum DOC_ORIENTATION {
     LeftMirrored = 5,
     RightMirrored = 7,
     NotJpeg = -1,
-    NotDefined = -2,
+    NotDefined = -2
 }
 export declare class ImageCompress {
     /**
@@ -18,6 +18,11 @@ export declare class ImageCompress {
      * @param {(result: DOC_ORIENTATION) => void} callback
      */
     static getOrientation(file: File, callback: (result: DOC_ORIENTATION) => void): void;
+    /**
+     * helper to evaluate the compression rate
+     * @param s the image in base64 string format
+     */
+    static byteCount: (s: string) => number;
     /**
      * return a callback with the new image data and image orientation
      * @param render
