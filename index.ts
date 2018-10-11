@@ -170,7 +170,7 @@ export class ImageCompress {
                 }
 
 
-                let mime = imageDataUrlSource.substr(5, imageDataUrlSource[0].length);
+                let mime = imageDataUrlSource.substr(5, imageDataUrlSource.split(';')[0].length - 5);
                 //TODO test on mime
                 let result = canvas.toDataURL(mime, quality);
 
