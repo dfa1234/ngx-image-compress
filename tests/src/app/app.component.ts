@@ -1,5 +1,5 @@
 import {Component, Renderer2} from '@angular/core';
-import {ImageCompress} from "../../../index";
+import {ImageCompress} from 'ngx-image-compress/index.min';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
     ImageCompress.uploadFile(this.render, (image, orientation) => {
       console.warn(image);
       console.warn(orientation);
-    })
+    });
   }
 
   compressFile() {
@@ -26,8 +26,8 @@ export class AppComponent {
         result => {
           console.warn('Size in bytes is now:', ImageCompress.byteCount(result));
         }
-      )
-    })
+      );
+    });
   }
 
 }

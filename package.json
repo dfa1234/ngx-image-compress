@@ -1,6 +1,6 @@
 {
   "name": "ngx-image-compress",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "angular2+ module for compressing any image format",
   "main": "index.js",
   "scripts": {
