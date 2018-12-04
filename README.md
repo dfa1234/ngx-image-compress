@@ -1,4 +1,4 @@
-## ngx-simple-crypt
+## ngx-image-compress
 
 Angular utility for compressing image to a satisfying size, that you choose
 
