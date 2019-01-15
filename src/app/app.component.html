@@ -1,0 +1,20 @@
+<div>
+  <h1>
+    ngx-image-compress-test
+  </h1>
+</div>
+
+<div>
+  <button (click)="compressFile()">Upload and compress Image</button>
+
+  <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="">
+  <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="">
+</div>
+
+<hr>
+
+<div>
+  <button (click)="uploadFile()">Upload Image only</button>
+  <img *ngIf="imgResultUpload" [src]="imgResultUpload" alt="">
+</div>
+

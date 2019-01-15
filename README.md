@@ -10,47 +10,77 @@ npm i ngx-image-compress
 
 ### Usage
 
-No module import needed, you can use anywhere:
-
+Import it in your app module
 
 ```typescript
-import {Component, Renderer2} from '@angular/core';
-import {ImageCompress} from "ngx-image-compress";
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-@Component({...})
+import {AppComponent} from './app.component';
+import {NgxImageCompressService} from 'ngx-image-compress';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule,
+  providers: [NgxImageCompressService],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
+
+
+Use it in your component
+
+```typescript
+import {Component} from '@angular/core';
+import {NgxImageCompressService} from 'ngx-image-compress';
+import {DOC_ORIENTATION} from 'ngx-image-compress/lib/image-compress';
+
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
 export class AppComponent {
 
-  constructor(private render: Renderer2) {}
+  constructor(private imageCompress: NgxImageCompressService) {}
+  
+  imgResultBeforeCompress;
+  imgResultAfterCompress;
 
   compressFile() {
-    ImageCompress.uploadFile(this.render, (image, orientation) => {
-      console.warn('Size in bytes was:', ImageCompress.byteCount(image));
-      ImageCompress.compress(image, orientation, this.render, 50, 50).then(
+    this.imageCompress.uploadFile().then(({image, orientation}) => {
+      this.imgResultBeforeCompress = image;
+      console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
+      this.imageCompress.compressFile(image, orientation, 50, 50).then(
         result => {
-          console.warn('Size in bytes is now:', ImageCompress.byteCount(result));
+          this.imgResultAfterCompress = result;
+          console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         }
-      )
-    })
+      );
+    });
   }
-
 }
 ```
-
-The above code is from the working example here : `ngx-image-compress/tests/src/app/app.component.ts`  
-You can also start yourself the working sample project like this
-```$xslt
-cd test
-npm i
-npm run start
-```
-
 
 ### How it's working underwood?
 
 We will use Renderer2, and transform the image multiple time through HTML canvas encrustation.
+In fact you can use the static version into the library and import renderer by yourself.
 
 
 ## Updates
+
+#### 2019/01/09
+
+Since Angular 6 include its own packaging system, I no longer need my webpack config to build it.
+Everything is working in angular 7 without complaint now (test app is on github)
+
+#### 2018/10/04
+
+Adding Live example.
+Everything is now working and tested but I will make some arrangement to the code in `index.ts` before submitting it again to `npm`, in order to make it more handy.
 
 #### 2017/12/06
 
@@ -58,7 +88,3 @@ Upload to Github
 Need some fixes and tests to be use as a static library
 
 
-#### 2018/10/04
-
-Adding Live example.
-Everything is now working and tested but I will make some arrangement to the code in `index.ts` before submitting it again to `npm`, in order to make it more handy.

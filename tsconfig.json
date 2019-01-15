@@ -1,19 +1,30 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "declaration": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "moduleResolution": "node",
-    "lib": [
-      "dom",
-      "es2015"
-    ],
+    "declaration": false,
     "module": "es2015",
-    "target": "es5"
-  },
-  "include": [
-    "*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "ngx-image-compress": [
+        "dist/ngx-image-compress"
+      ],
+      "ngx-image-compress/*": [
+        "dist/ngx-image-compress/*"
+      ]
+    }
+  }
 }
