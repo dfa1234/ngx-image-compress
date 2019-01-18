@@ -1,6 +1,6 @@
 ## ngx-image-compress
 
-Angular utility for compressing image to a satisfying size, that you choose
+Angular utility for compressing images to a satisfying size, that you can choose
 
 
 ### Import
