@@ -1,6 +1,9 @@
 {
   "name": "ngx-image-compress",
-  "version": "7.2.0",
+  "version": "7.2.2",
+  "author": "dfa",
+  "repository": "https://github.com/dfa1234/ngx-image-compress",
+  "keywords":  ["angular","image","upload","compression"],
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0"
