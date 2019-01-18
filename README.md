@@ -39,8 +39,13 @@ import {DOC_ORIENTATION} from 'ngx-image-compress/lib/image-compress';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <div>
+      <button (click)="compressFile()">Upload and compress Image</button>
+      <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="">
+      <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="">
+    </div>
+  `
 })
 export class AppComponent {
 
