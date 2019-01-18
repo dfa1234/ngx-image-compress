@@ -21,7 +21,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule,
+  imports: [BrowserModule],
   providers: [NgxImageCompressService],
   bootstrap: [AppComponent]
 })
