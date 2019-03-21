@@ -1,6 +1,6 @@
 ## ngx-image-compress
 
-Angular utility for compressing image to a satisfying size, that you choose
+Angular utility for compressing images to a satisfying size, that you can choose
 
 
 ### Import
@@ -39,27 +39,37 @@ import {DOC_ORIENTATION} from 'ngx-image-compress/lib/image-compress';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <div>
+      <button (click)="compressFile()">Upload and compress Image</button>
+      <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="">
+      <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="">
+    </div>
+  `
 })
 export class AppComponent {
 
   constructor(private imageCompress: NgxImageCompressService) {}
   
-  imgResultBeforeCompress;
-  imgResultAfterCompress;
+  imgResultBeforeCompress:string;
+  imgResultAfterCompress:string;
 
   compressFile() {
+  
     this.imageCompress.uploadFile().then(({image, orientation}) => {
+    
       this.imgResultBeforeCompress = image;
       console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
+      
       this.imageCompress.compressFile(image, orientation, 50, 50).then(
         result => {
           this.imgResultAfterCompress = result;
           console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         }
       );
+      
     });
+    
   }
 }
 ```
