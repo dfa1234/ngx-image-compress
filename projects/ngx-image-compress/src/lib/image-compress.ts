@@ -66,9 +66,8 @@ export class ImageCompress {
       render.setProperty(inputElement, 'type', 'file');
 
       render.listen(inputElement, 'click', ($event) => {
-        // javascript teachable moment
-        console.log('MouseEvent:', $event);
-        console.log('Input:', $event.target);
+        //console.log('MouseEvent:', $event);
+        //console.log('Input:', $event.target);
         $event.target.value = null;
       });
 
@@ -84,7 +83,7 @@ export class ImageCompress {
               resolve({image:myReader.result as string, orientation});
             });
           } catch (e) {
-            //console.log(`ERROR ${e}`);
+            //console.log(`ngx-image-compress error ${e}`);
             reject(e);
           }
         };
@@ -92,7 +91,7 @@ export class ImageCompress {
         try {
           myReader.readAsDataURL(file);
         } catch (e) {
-          console.log(`ERROR - probably no file have been selected: ${e}`);
+          console.warn(`ngx-image-compress - probably no file have been selected: ${e}`);
           reject("No file selected");
         }
 
@@ -167,7 +166,7 @@ export class ImageCompress {
           ctx.restore();
 
         } else {
-          console.error('Wrong orientation value');
+          console.warn('ngx-image-compress - no orientation value found');
           // same as default UP
           ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
         }
