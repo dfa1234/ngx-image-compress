@@ -1,9 +1,14 @@
 {
   "name": "ngx-image-compress-test",
-  "version": "7.2.2",
+  "version": "7.2.3",
   "author": "dfa",
   "repository": "https://github.com/dfa1234/ngx-image-compress",
-  "keywords":  "angular image upload compression",
+  "keywords": [
+    "angular",
+    "image",
+    "upload",
+    "compression"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +16,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate-lib": "ng generate library ngx-image-compress-2 --prefix=enl",
+    "initial-lib-generation": "ng generate library ngx-image-compress-new --prefix=enl",
     "build-lib": "ng build ngx-image-compress",
     "publish-lib": "cd dist && npm publish ngx-image-compress"
   },
