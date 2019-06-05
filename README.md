@@ -30,6 +30,7 @@ export class AppModule {}
 
 
 Use it in your component
+Exemple here: https://stackblitz.com/edit/ng2-example-rj6zg1
 
 ```typescript
 import {Component} from '@angular/core';
