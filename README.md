@@ -10,6 +10,8 @@ npm i ngx-image-compress
 
 ### Usage
 
+Example here: https://stackblitz.com/edit/ngx-compress-sample 
+
 Import it in your app module
 
 ```typescript
@@ -30,7 +32,7 @@ export class AppModule {}
 
 
 Use it in your component
-Exemple here: https://stackblitz.com/edit/ng2-example-rj6zg1
+
 
 ```typescript
 import {Component} from '@angular/core';
