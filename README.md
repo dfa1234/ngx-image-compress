@@ -37,7 +37,7 @@ Use it in your component
 ```typescript
 import {Component} from '@angular/core';
 import {NgxImageCompressService} from 'ngx-image-compress';
-import {DOC_ORIENTATION} from 'ngx-image-compress/lib/image-compress';
+import {DOC_ORIENTATION} from 'ngx-image-compress';
 
 
 @Component({
