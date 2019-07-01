@@ -1,5 +1,6 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {DOC_ORIENTATION, ImageCompress} from './image-compress';
+import {ImageCompress} from './image-compress';
+import {DOC_ORIENTATION} from './DOC_ORIENTATION';
 
 @Injectable()
 export class NgxImageCompressService {

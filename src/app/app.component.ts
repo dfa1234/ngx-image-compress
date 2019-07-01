@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
 import {NgxImageCompressService} from 'ngx-image-compress';
-import {DOC_ORIENTATION} from 'ngx-image-compress/lib/image-compress';
-
 
 @Component({
   selector: 'app-root',

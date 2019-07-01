@@ -37,7 +37,6 @@ Use it in your component
 ```typescript
 import {Component} from '@angular/core';
 import {NgxImageCompressService} from 'ngx-image-compress';
-import {DOC_ORIENTATION} from 'ngx-image-compress';
 
 
 @Component({
@@ -84,6 +83,11 @@ In fact you can use the static version into the library and import renderer by y
 
 
 ## Updates
+
+#### 2019/07/01
+
+Update to Angular 8 (angular 7 is enough)
+Fix DOC_ORIENTATION import (not a required import)
 
 #### 2019/01/09
 

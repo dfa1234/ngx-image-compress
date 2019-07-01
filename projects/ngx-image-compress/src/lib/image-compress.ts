@@ -153,7 +153,7 @@ export class ImageCompress {
           ctx.restore();
 
         } else {
-          console.warn('ngx-image-compress - no orientation value found');
+          //console.warn('ngx-image-compress - no orientation value found');
           // same as default UP
           ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
         }
