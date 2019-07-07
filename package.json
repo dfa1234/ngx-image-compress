@@ -2,6 +2,7 @@
   "name": "ngx-image-compress-test",
   "version": "8.0.3",
   "author": "dfa",
+  "license" : "MIT",
   "repository": "https://github.com/dfa1234/ngx-image-compress",
   "keywords": [
     "angular",
