@@ -86,7 +86,7 @@ In fact you can use the static version into the library and import renderer by y
 
 #### 2019/07/01
 
-Update to Angular 8 (angular 7 is enough)
+Update to Angular 8 (angular 7 is enough)  
 Fix DOC_ORIENTATION import (not a required import)
 
 #### 2019/01/09
