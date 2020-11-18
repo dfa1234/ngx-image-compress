@@ -17,6 +17,15 @@ export class NgxImageCompressService {
     return ImageCompress.byteCount(image);
   }
 
+  /** Get the correct Orientation value from the EXIF tags in the specified file. */
+  public getOrientation(file: File): Promise<DOC_ORIENTATION> {
+    return new Promise<DOC_ORIENTATION>((resolve) => {
+      ImageCompress.getOrientation(file, (result) => {
+        resolve(result);
+      });
+    });
+  }
+
   public uploadFile():Promise<{image: string, orientation: DOC_ORIENTATION}> {
     return ImageCompress.uploadFile(this.render);
   }
