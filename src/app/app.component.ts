@@ -13,6 +13,9 @@ export class AppComponent {
   imgResultBeforeCompress;
   imgResultAfterCompress;
 
+
+  imgResultUpload;
+
   compressFile() {
     this.imageCompress.uploadFile().then(({image, orientation}) => {
       this.imgResultBeforeCompress = image;
@@ -25,9 +28,6 @@ export class AppComponent {
       );
     });
   }
-
-
-  imgResultUpload;
 
   uploadFile() {
     this.imageCompress.uploadFile().then(({image, orientation}) => {

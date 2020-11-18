@@ -1,5 +1,6 @@
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async} from '@angular/core/testing';
+import {AppComponent} from './app.component';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -7,6 +8,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [NgxImageCompressService]
     }).compileComponents();
   }));
 
@@ -16,16 +18,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'ngx-image-compress-test'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('ngx-image-compress-test');
-  });
-
-  it('should render title in a h1 tag', () => {
+  it('should render Upload/Compress button', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to ngx-image-compress-test!');
+    expect(compiled.querySelector('button').textContent).toContain('Upload and compress Image');
   });
 });

@@ -1,5 +1,5 @@
 import {Renderer2} from '@angular/core';
-import { DOC_ORIENTATION } from './DOC_ORIENTATION'
+import { DOC_ORIENTATION } from './DOC_ORIENTATION';
 
 export class ImageCompress {
 
@@ -44,7 +44,7 @@ export class ImageCompress {
   /**
    * return a promise with the new image data and image orientation
    */
-  static uploadFile(render: Renderer2):Promise<{image: string, orientation: DOC_ORIENTATION}> {
+  static uploadFile(render: Renderer2): Promise<{image: string, orientation: DOC_ORIENTATION}> {
 
     const promise: Promise<{image: string, orientation: DOC_ORIENTATION}> = new Promise(function(resolve, reject) {
 
@@ -54,8 +54,8 @@ export class ImageCompress {
       render.setProperty(inputElement, 'accept', 'image/*');
 
       render.listen(inputElement, 'click', ($event) => {
-        //console.log('MouseEvent:', $event);
-        //console.log('Input:', $event.target);
+        // console.log('MouseEvent:', $event);
+        // console.log('Input:', $event.target);
         $event.target.value = null;
       });
 
@@ -68,10 +68,10 @@ export class ImageCompress {
         myReader.onloadend = (e) => {
           try {
             ImageCompress.getOrientation(file, orientation => {
-              resolve({image:myReader.result as string, orientation});
+              resolve({image: myReader.result as string, orientation});
             });
           } catch (e) {
-            //console.log(`ngx-image-compress error ${e}`);
+            // console.log(`ngx-image-compress error ${e}`);
             reject(e);
           }
         };
@@ -80,7 +80,7 @@ export class ImageCompress {
           myReader.readAsDataURL(file);
         } catch (e) {
           console.warn(`ngx-image-compress - probably no file have been selected: ${e}`);
-          reject("No file selected");
+          reject('No file selected');
         }
 
       });
@@ -154,7 +154,7 @@ export class ImageCompress {
           ctx.restore();
 
         } else {
-          //console.warn('ngx-image-compress - no orientation value found');
+          // console.warn('ngx-image-compress - no orientation value found');
           // same as default UP
           ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
         }

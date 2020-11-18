@@ -13,6 +13,7 @@
   ],
   "include": [
     "**/*.spec.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "../projects/**/*.spec.ts"
   ]
 }

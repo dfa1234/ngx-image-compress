@@ -26,11 +26,11 @@ export class NgxImageCompressService {
     });
   }
 
-  public uploadFile():Promise<{image: string, orientation: DOC_ORIENTATION}> {
+  public uploadFile(): Promise<{ image: string, orientation: DOC_ORIENTATION }> {
     return ImageCompress.uploadFile(this.render);
   }
 
-  public compressFile(image, orientation, ratio: number = 50, quality: number = 50): Promise<string> {
+  public compressFile(image: string, orientation: DOC_ORIENTATION, ratio: number = 50, quality: number = 50): Promise<string> {
     return ImageCompress.compress(image, orientation, this.render, ratio, quality);
   }
 
