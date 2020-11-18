@@ -86,9 +86,9 @@ In fact you can use the static version into the library and import renderer by y
 
 #### 2020/11/18
 
-Update to Angular 11
-Fix upload for iOS
-Expose getOrientation api publically 
+Update to Angular 11  
+Fix upload for iOS  
+Expose getOrientation api publically   
 
 #### 2019/07/01
 
