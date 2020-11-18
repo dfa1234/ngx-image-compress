@@ -1,5 +1,5 @@
 import {Renderer2} from '@angular/core';
-import { DOC_ORIENTATION } from './DOC_ORIENTATION';
+import {DOC_ORIENTATION} from './DOC_ORIENTATION';
 
 export class ImageCompress {
 
@@ -12,14 +12,18 @@ export class ImageCompress {
     try {
       reader.onload = function ($event) {
         const view = new DataView(reader.result as ArrayBuffer);
-        if (view.getUint16(0, false) !== 0xFFD8) { return callback(-2); }
+        if (view.getUint16(0, false) !== 0xFFD8) {
+          return callback(-2);
+        }
         const length = view.byteLength;
         let offset = 2;
         while (offset < length) {
           const marker = view.getUint16(offset, false);
           offset += 2;
           if (marker === 0xFFE1) {
-            if (view.getUint32(offset += 2, false) !== 0x45786966) { return callback(-1); }
+            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+              return callback(-1);
+            }
             const little = view.getUint16(offset += 6, false) === 0x4949;
             offset += view.getUint32(offset + 4, little);
             const tags = view.getUint16(offset, little);
@@ -29,7 +33,11 @@ export class ImageCompress {
                 return callback(view.getUint16(offset + (i * 12) + 8, little));
               }
             }
-          } else if ((marker & 0xFF00) !== 0xFF00) { break; } else { offset += view.getUint16(offset, false); }
+          } else if ((marker & 0xFF00) !== 0xFF00) {
+            break;
+          } else {
+            offset += view.getUint16(offset, false);
+          }
         }
         return callback(-1);
       };
@@ -44,11 +52,13 @@ export class ImageCompress {
   /**
    * return a promise with the new image data and image orientation
    */
-  static uploadFile(render: Renderer2): Promise<{image: string, orientation: DOC_ORIENTATION}> {
+  static uploadFile(render: Renderer2): Promise<{ image: string, orientation: DOC_ORIENTATION }> {
 
-    const promise: Promise<{image: string, orientation: DOC_ORIENTATION}> = new Promise(function(resolve, reject) {
+    const promise: Promise<{ image: string, orientation: DOC_ORIENTATION }> = new Promise(function (resolve, reject) {
 
       const inputElement = render.createElement('input');
+      // should be fix the problem for safari/ios
+      document.getElementsByTagName('body')?.[0]?.append(inputElement);
       render.setStyle(inputElement, 'display', 'none');
       render.setProperty(inputElement, 'type', 'file');
       render.setProperty(inputElement, 'accept', 'image/*');
@@ -98,7 +108,7 @@ export class ImageCompress {
                   ratio: number = 50,
                   quality: number = 50): Promise<string> {
 
-    const promise: Promise<string> = new Promise(function(resolve, reject) {
+    const promise: Promise<string> = new Promise(function (resolve, reject) {
 
       quality = quality / 100;
       ratio = ratio / 100;
