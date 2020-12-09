@@ -2,8 +2,6 @@
 
 Angular utility for compressing images to a satisfying size, that you can choose
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=EDRC2K3RJMGPG)
-
 ### Import
 ```sh
 npm i ngx-image-compress
