@@ -30,8 +30,8 @@ export class NgxImageCompressService {
     return ImageCompress.uploadFile(this.render);
   }
 
-  public compressFile(image: string, orientation: DOC_ORIENTATION, ratio: number = 50, quality: number = 50): Promise<string> {
-    return ImageCompress.compress(image, orientation, this.render, ratio, quality);
+  public compressFile(image: string, orientation: DOC_ORIENTATION, ratio: number = 50, quality: number = 50, maxwidth: number = 0, maxheight: number = 0): Promise<string> {
+    return ImageCompress.compress(image, orientation, this.render, ratio, quality, maxwidth, maxheight);
   }
 
 }

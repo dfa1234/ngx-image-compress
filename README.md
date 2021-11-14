@@ -51,37 +51,54 @@ import {NgxImageCompressService} from 'ngx-image-compress';
 export class AppComponent {
 
   constructor(private imageCompress: NgxImageCompressService) {}
-  
+
   imgResultBeforeCompress:string;
   imgResultAfterCompress:string;
 
   compressFile() {
-  
+
     this.imageCompress.uploadFile().then(({image, orientation}) => {
-    
+
       this.imgResultBeforeCompress = image;
       console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
-      
+
       this.imageCompress.compressFile(image, orientation, 50, 50).then(
         result => {
           this.imgResultAfterCompress = result;
           console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         }
       );
-      
+
     });
-    
+
   }
 }
 ```
 
-### How it's working underwood?
+The signature of compressFile() is:
+    compressFile(image, orientation, ratio, quality, maxwidth, maxheight)
 
-We will use Renderer2, and transform the image multiple time through HTML canvas encrustation.
-In fact you can use the static version into the library and import renderer by yourself.
+| Parameter   | Type   | Description                                           |
+| ----------- | ------ | ----------------------------------------------------- |
+| image       | string | DataUrl representing the image                        |
+| orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum |
+| ratio       | number | Maximum scale factor as a percentage (default: 50)    |
+| quality     | number | JPEG quality factor as a percentage (default: 50)     |
+| maxwidth    | number | Maximum width in pixels, or 0 to ignore (default: 0)  |
+| maxheight   | number | Maximum height in pixels, or 0 to ignore (default: 0) |
+
+
+### How it works under the hood?
+
+We will use Renderer2, and transform the image using HTML canvas encrustation.
+In fact you can use the static version in the library and import renderer by yourself.
 
 
 ## Updates
+
+#### 2021/11/14
+
+Added support for max size
 
 #### 2020/11/18
 
@@ -108,5 +125,3 @@ Everything is now working and tested but I will make some arrangement to the cod
 
 Upload to Github
 Need some fixes and tests to be use as a static library
-
-
