@@ -27,9 +27,26 @@ describe('NgxImageCompress Library', () => {
     const size1 = await ngxImageCompressService.byteCount(angularLogo);
     const resultCompress = await ngxImageCompressService.compressFile(angularLogo, DOC_ORIENTATION.Up, 50, 50);
     const size2 = await ngxImageCompressService.byteCount(resultCompress);
-    expect(size2 === 770).toBeTruthy();
+    expect(size2 >= 762 && size2 <= 787).toBeTruthy();
     expect(size1 > size2).toBeTruthy();
   });
 
+  it('should constrain by max width', async () => {
+    const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
+    const size1 = await ngxImageCompressService.byteCount(angularLogo);
+    const resultCompress = await ngxImageCompressService.compressFile(angularLogo, DOC_ORIENTATION.Up, 100, 80, 21);
+    const size2 = await ngxImageCompressService.byteCount(resultCompress);
+    expect(size2 >= 1360 && size2 <= 1378).toBeTruthy();
+    expect(size1 > size2).toBeTruthy();
+  });
+
+  it('should constrain by max height', async () => {
+    const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
+    const size1 = await ngxImageCompressService.byteCount(angularLogo);
+    const resultCompress = await ngxImageCompressService.compressFile(angularLogo, DOC_ORIENTATION.Up, 100, 80, 28, 21);
+    const size2 = await ngxImageCompressService.byteCount(resultCompress);
+    expect(size2 >= 1300 && size2 <= 1318).toBeTruthy();
+    expect(size1 > size2).toBeTruthy();
+  });
 
 });
