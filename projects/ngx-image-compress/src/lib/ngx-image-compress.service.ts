@@ -2,6 +2,8 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ImageCompress} from './image-compress';
 import {DOC_ORIENTATION} from './DOC_ORIENTATION';
 
+type DataUrl = string;
+
 @Injectable()
 export class NgxImageCompressService {
 
@@ -13,7 +15,7 @@ export class NgxImageCompressService {
     this.render = rendererFactory.createRenderer(null, null);
   }
 
-  public byteCount(image) {
+  public byteCount(image: DataUrl) {
     return ImageCompress.byteCount(image);
   }
 
@@ -26,7 +28,7 @@ export class NgxImageCompressService {
     });
   }
 
-  public uploadFile(): Promise<{ image: string, orientation: DOC_ORIENTATION }> {
+  public uploadFile(): Promise<{ image: DataUrl, orientation: DOC_ORIENTATION }> {
     return ImageCompress.uploadFile(this.render);
   }
 

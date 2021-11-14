@@ -7,6 +7,7 @@ export enum DOC_ORIENTATION {
   DownMirrored = 4,
   LeftMirrored = 5,
   RightMirrored = 7,
+  Default = 0,
   NotJpeg = -1,
   NotDefined = -2
 }

@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {NgxImageCompressService} from 'ngx-image-compress';
 
+type DataUrl = string;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,11 +12,11 @@ export class AppComponent {
 
   constructor(private imageCompress: NgxImageCompressService) {}
 
-  imgResultBeforeCompress;
-  imgResultAfterCompress;
+  imgResultBeforeCompress: DataUrl;
+  imgResultAfterCompress: DataUrl;
 
 
-  imgResultUpload;
+  imgResultUpload: DataUrl;
 
   compressFile() {
     this.imageCompress.uploadFile().then(({image, orientation}) => {

@@ -18,15 +18,15 @@ describe('NgxImageCompress Library', () => {
 
   it('should be count byte', async () => {
     const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
-    const result = await ngxImageCompressService.byteCount(angularLogo);
+    const result = ngxImageCompressService.byteCount(angularLogo);
     expect(result === 1446).toBeTruthy();
   });
 
   it('should compress and reduce size', async () => {
     const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
-    const size1 = await ngxImageCompressService.byteCount(angularLogo);
+    const size1 = ngxImageCompressService.byteCount(angularLogo);
     const resultCompress = await ngxImageCompressService.compressFile(angularLogo, DOC_ORIENTATION.Up, 50, 50);
-    const size2 = await ngxImageCompressService.byteCount(resultCompress);
+    const size2 = ngxImageCompressService.byteCount(resultCompress);
     expect(size2 === 770).toBeTruthy();
     expect(size1 > size2).toBeTruthy();
   });
