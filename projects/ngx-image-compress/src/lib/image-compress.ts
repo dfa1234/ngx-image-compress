@@ -125,7 +125,10 @@ export class ImageCompress {
                      orientation: DOC_ORIENTATION,
                      render: Renderer2,
                      ratio: number = 50,
-                     quality: number = 50): Promise<string> => new Promise(function (resolve, reject) {
+                     quality: number = 50,
+                     maxwidth: number = 0,
+                     maxheight: number = 0): Promise<string> => new Promise(function (resolve, reject) {
+
 
     quality = quality / 100;
     ratio = ratio / 100;
@@ -149,6 +152,9 @@ export class ImageCompress {
         h = t;
       }
 
+      let xratio = maxwidth ? maxwidth / w : 1;
+      let yratio = maxheight ? maxheight / h : 1;
+      ratio = Math.min(ratio, xratio, yratio);
       canvas.width = w * ratio;
       canvas.height = h * ratio;
 
