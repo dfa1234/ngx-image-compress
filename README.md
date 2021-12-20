@@ -92,7 +92,7 @@ We will use Renderer2, and transform the image multiple time through HTML canvas
 In fact you can use the static version into the library and import renderer by yourself.
 
 
-## Updates
+## Change log
 
 #### 2021/12/21
 

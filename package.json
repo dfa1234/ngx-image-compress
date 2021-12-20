@@ -16,11 +16,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
     "lib:generate": "ng generate library ngx-image-compress-new",
     "lib:watch": "ng build ngx-image-compress --watch",
     "lib:build": "cp README.md projects/ngx-image-compress/README.md && ng build ngx-image-compress",
-    "lib:publish": "cd dist && npm publish ngx-image-compress"
+    "lib:publish": "cd dist/ngx-image-compress && npm publish"
   },
   "private": false,
   "dependencies": {
