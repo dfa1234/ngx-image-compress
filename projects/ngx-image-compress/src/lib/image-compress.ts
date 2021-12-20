@@ -69,7 +69,6 @@ export class ImageCompress {
           .then(readerResult => {
             if (multiple) {
               const result = readerResult.map((image, index) => ({image, orientation: orientationsResult[index]}));
-              debugger;
               resolve(result);
             } else {
               resolve({image: readerResult[0], orientation: orientationsResult[0]});
