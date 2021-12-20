@@ -2,7 +2,6 @@
 
 Angular utility for compressing images to a satisfying size, that you can choose
 
-
 ### Import
 ```sh
 npm i ngx-image-compress
@@ -76,19 +75,36 @@ export class AppComponent {
 }
 ```
 
+### Multiple files support
+
+For uploading multiple files, instead of using
+```ts
+this.imageCompress.uploadFile().then(({image, orientation}:{image:string, orientation:number}) => {
+```
+You can now use
+```ts
+this.imageCompress.uploadMultipleFiles().then((arrayOfFiles:{image:string, orientation:number}[]) => {
+```
+
 ### How it's working underwood?
 
 We will use Renderer2, and transform the image multiple time through HTML canvas encrustation.
 In fact you can use the static version into the library and import renderer by yourself.
 
 
-## Updates
+## Change log
+
+#### 2021/12/21
+
+Update to Angular 13  
+Upload multiple file at once
+General refactoring
 
 #### 2020/11/18
 
-Update to Angular 11
-Fix upload for iOS
-Expose getOrientation api publically 
+Update to Angular 11  
+Fix upload for iOS  
+Expose getOrientation api publically   
 
 #### 2019/07/01
 

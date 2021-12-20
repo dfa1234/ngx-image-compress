@@ -75,6 +75,20 @@ export class AppComponent {
 }
 ```
 
+
+### Multiple files support
+
+For uploading multiple files, instead of using
+```ts
+this.imageCompress.uploadFile().then(({image, orientation}:{image:string, orientation:number}) => {
+```
+You can now use
+```ts
+this.imageCompress.uploadMultipleFiles().then((arrayOfFiles:{image:string, orientation:number}[]) => {
+```
+
+### compressFile() signature
+
 The signature of compressFile() is:
     compressFile(image, orientation, ratio, quality, maxwidth, maxheight)
 
@@ -88,13 +102,20 @@ The signature of compressFile() is:
 | maxheight   | number | Maximum height in pixels, or 0 to ignore (default: 0) |
 
 
+
 ### How it works under the hood?
 
 We will use Renderer2, and transform the image using HTML canvas encrustation.
 In fact you can use the static version in the library and import renderer by yourself.
 
 
-## Updates
+## Change log
+
+#### 2021/12/21
+
+Update to Angular 13  
+Upload multiple file at once
+General refactoring
 
 #### 2021/11/14
 

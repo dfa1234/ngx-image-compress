@@ -1,11 +1,12 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ImageCompress} from './image-compress';
-import {DOC_ORIENTATION} from './DOC_ORIENTATION';
+import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
+import {UploadResponse} from './models/upload-response';
 
 @Injectable()
 export class NgxImageCompressService {
 
-  private render: Renderer2;
+  private readonly render: Renderer2;
 
   public DOC_ORIENTATION = DOC_ORIENTATION;
 
@@ -13,21 +14,20 @@ export class NgxImageCompressService {
     this.render = rendererFactory.createRenderer(null, null);
   }
 
-  public byteCount(image) {
+  public byteCount(image: string) {
     return ImageCompress.byteCount(image);
   }
 
-  /** Get the correct Orientation value from the EXIF tags in the specified file. */
   public getOrientation(file: File): Promise<DOC_ORIENTATION> {
-    return new Promise<DOC_ORIENTATION>((resolve) => {
-      ImageCompress.getOrientation(file, (result) => {
-        resolve(result);
-      });
-    });
+    return ImageCompress.getOrientation(file);
   }
 
-  public uploadFile(): Promise<{ image: string, orientation: DOC_ORIENTATION }> {
-    return ImageCompress.uploadFile(this.render);
+  public uploadFile(): Promise<UploadResponse> {
+    return ImageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
+  }
+
+  public uploadMultipleFiles(): Promise<UploadResponse[]> {
+    return ImageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
   }
 
   public compressFile(image: string, orientation: DOC_ORIENTATION, ratio: number = 50, quality: number = 50, maxwidth: number = 0, maxheight: number = 0): Promise<string> {

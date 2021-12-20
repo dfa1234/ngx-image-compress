@@ -1,19 +1,20 @@
 import {Renderer2} from '@angular/core';
-import {DOC_ORIENTATION} from './DOC_ORIENTATION';
+import {UploadResponse} from './models/upload-response';
+import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
+import {DataUrl} from './models/data-url';
 
 export class ImageCompress {
-
 
   /**
    * Get the correct Orientation value from tags, in order to write correctly in our canvas
    */
-  static getOrientation(file: File, callback: (result: DOC_ORIENTATION) => void) {
-    const reader = new FileReader();
+  static getOrientation = (file: File): Promise<DOC_ORIENTATION> => new Promise<DOC_ORIENTATION>((resolve, reject) => {
     try {
-      reader.onload = function ($event) {
+      const reader = new FileReader();
+      reader.onload = () => {
         const view = new DataView(reader.result as ArrayBuffer);
         if (view.getUint16(0, false) !== 0xFFD8) {
-          return callback(-2);
+          return resolve(DOC_ORIENTATION.NotDefined);
         }
         const length = view.byteLength;
         let offset = 2;
@@ -22,7 +23,7 @@ export class ImageCompress {
           offset += 2;
           if (marker === 0xFFE1) {
             if (view.getUint32(offset += 2, false) !== 0x45786966) {
-              return callback(-1);
+              return resolve(DOC_ORIENTATION.NotJpeg);
             }
             const little = view.getUint16(offset += 6, false) === 0x4949;
             offset += view.getUint32(offset + 4, little);
@@ -30,7 +31,7 @@ export class ImageCompress {
             offset += 2;
             for (let i = 0; i < tags; i++) {
               if (view.getUint16(offset + (i * 12), little) === 0x0112) {
-                return callback(view.getUint16(offset + (i * 12) + 8, little));
+                return resolve(view.getUint16(offset + (i * 12) + 8, little));
               }
             }
           } else if ((marker & 0xFF00) !== 0xFF00) {
@@ -39,164 +40,183 @@ export class ImageCompress {
             offset += view.getUint16(offset, false);
           }
         }
-        return callback(-1);
+        return resolve(DOC_ORIENTATION.NotJpeg);
       };
       reader.readAsArrayBuffer(file);
     } catch (e) {
-      return callback(0);
+      return reject(DOC_ORIENTATION.Default);
     }
 
-  }
+  });
 
 
   /**
    * return a promise with the new image data and image orientation
    */
-  static uploadFile(render: Renderer2): Promise<{ image: string, orientation: DOC_ORIENTATION }> {
+  static uploadFile = (render: Renderer2, multiple: boolean = true): Promise<UploadResponse | UploadResponse[]> =>
+    new Promise(function (resolve, reject) {
+      ImageCompress.generateUploadInput(render, multiple).then(filesList => {
+        const files = Array.from(filesList);
+        const orientationPromises = files.map(file => ImageCompress.getOrientation(file));
+        const readerPromises = files.map(file => ImageCompress.fileToDataURL(file));
 
-    const promise: Promise<{ image: string, orientation: DOC_ORIENTATION }> = new Promise(function (resolve, reject) {
+        let orientationsResult: DOC_ORIENTATION[] = [];
 
-      const inputElement = render.createElement('input');
-      // should be fix the problem for safari/ios
-      document.getElementsByTagName('body')?.[0]?.append(inputElement);
-      render.setStyle(inputElement, 'display', 'none');
-      render.setProperty(inputElement, 'type', 'file');
-      render.setProperty(inputElement, 'accept', 'image/*');
-
-      render.listen(inputElement, 'click', ($event) => {
-        // console.log('MouseEvent:', $event);
-        // console.log('Input:', $event.target);
-        $event.target.value = null;
+        Promise.all(orientationPromises)
+          .then((orientations: DOC_ORIENTATION[]) => {
+            orientationsResult = orientations;
+            return Promise.all(readerPromises);
+          })
+          .then(readerResult => {
+            if (multiple) {
+              const result = readerResult.map((image, index) => ({image, orientation: orientationsResult[index]}));
+              resolve(result);
+            } else {
+              resolve({image: readerResult[0], orientation: orientationsResult[0]});
+            }
+          });
       });
 
-
-      render.listen(inputElement, 'change', ($event) => {
-        const file: File = $event.target.files[0];
-
-        const myReader: FileReader = new FileReader();
-
-        myReader.onloadend = (e) => {
-          try {
-            ImageCompress.getOrientation(file, orientation => {
-              resolve({image: myReader.result as string, orientation});
-            });
-          } catch (e) {
-            // console.log(`ngx-image-compress error ${e}`);
-            reject(e);
-          }
-        };
-
-        try {
-          myReader.readAsDataURL(file);
-        } catch (e) {
-          console.warn(`ngx-image-compress - probably no file have been selected: ${e}`);
-          reject('No file selected');
-        }
-
-      });
-      inputElement.click();
 
     });
 
-    return promise;
-  }
 
-
-  static compress(imageDataUrlSource: string,
-                  orientation: DOC_ORIENTATION,
-                  render: Renderer2,
-                  ratio: number = 50,
-                  quality: number = 50,
-                  maxwidth: number = 0,
-                  maxheight: number = 0): Promise<DataUrl> {
-
-    const promise: Promise<string> = new Promise(function (resolve, reject) {
-
-      quality = quality / 100;
-      ratio = ratio / 100;
-      const sourceImage = new Image();
-
-      // important for safari: we need to wait for onload event
-      sourceImage.onload = function () {
-        const canvas: HTMLCanvasElement = render.createElement('canvas');
-        const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-
-        let w, h;
-        w = sourceImage.naturalWidth;
-        h = sourceImage.naturalHeight;
-
-        if (orientation === DOC_ORIENTATION.Right || orientation === DOC_ORIENTATION.Left) {
-          const t = w;
-          w = h;
-          h = t;
-        }
-
-        let xratio = maxwidth ? maxwidth / w : 1;
-        let yratio = maxheight ? maxheight / h : 1;
-        ratio = Math.min(ratio, xratio, yratio);
-        canvas.width = w * ratio;
-        canvas.height = h * ratio;
-
-
-        const TO_RADIANS = Math.PI / 180;
-
-        if (orientation === DOC_ORIENTATION.Up) {
-
-          ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
-
-        } else if (orientation === DOC_ORIENTATION.Right) {
-
-          ctx.save();
-          ctx.rotate(90 * TO_RADIANS);
-          ctx.translate(0, -canvas.width);
-          ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
-          ctx.restore();
-
-        } else if (orientation === DOC_ORIENTATION.Left) {
-
-          ctx.save();
-          ctx.rotate(-90 * TO_RADIANS);
-          ctx.translate(-canvas.width, 0);
-          ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
-          ctx.restore();
-
-        } else if (orientation === DOC_ORIENTATION.Down) {
-
-          ctx.save();
-          ctx.rotate(180 * TO_RADIANS);
-          ctx.translate(-canvas.width, -canvas.height);
-          ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
-          ctx.restore();
-
-        } else {
-          // console.warn('ngx-image-compress - no orientation value found');
-          // same as default UP
-          ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
-        }
-
-
-        const mime = imageDataUrlSource.substr(5, imageDataUrlSource.split(';')[0].length - 5);
-        // TODO test on mime
-        const result = canvas.toDataURL(mime, quality);
-
-        resolve(result);
-
+  static fileToDataURL = (file: File): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => { //myReader.onloadend = (progressEvent: ProgressEvent<FileReader>)
+        resolve(e.target.result);
       };
+      try {
+        reader.readAsDataURL(file);
+      } catch (e) {
+        reject(`ngx-image-compress - probably no file have been selected: ${e}`);
+      }
+    });
+  };
 
-      sourceImage.src = imageDataUrlSource;
+  static generateUploadInput = (render: Renderer2, multiple: boolean = true) => new Promise<FileList>((resolve, reject) => {
 
+    const inputElement = render.createElement('input');
+    // should be fix the problem for safari/ios
+    document.getElementsByTagName('body')?.[0]?.append(inputElement);
+    render.setStyle(inputElement, 'display', 'none');
+    render.setProperty(inputElement, 'type', 'file');
+    render.setProperty(inputElement, 'accept', 'image/*');
+
+    if (multiple) {
+      render.setProperty(inputElement, 'multiple', 'true');
+    }
+
+    render.listen(inputElement, 'click', ($event: MouseEvent) => {
+      ($event.target as any as HTMLInputElement).value = '';
     });
 
-    return promise;
-  }
+    render.listen(inputElement, 'change', ($event) => {
+      const files: FileList = $event.target.files;
+      resolve(files);
+    });
+    inputElement.click();
+
+  });
+
+
+  static compress = (imageDataUrlSource: DataUrl,
+                     orientation: DOC_ORIENTATION,
+                     render: Renderer2,
+                     ratio: number = 50,
+                     quality: number = 50,
+                     maxwidth: number = 0,
+                     maxheight: number = 0): Promise<string> => new Promise(function (resolve, reject) {
+
+
+    quality = quality / 100;
+    ratio = ratio / 100;
+    const sourceImage = new Image();
+
+    // important for safari: we need to wait for onload event
+    sourceImage.onload = () => {
+      const canvas: HTMLCanvasElement = render.createElement('canvas');
+      const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+
+      if (!ctx) {
+        return reject(`No canvas context available`);
+      }
+
+      let w = sourceImage.naturalWidth;
+      let h = sourceImage.naturalHeight;
+
+      if (orientation === DOC_ORIENTATION.Right || orientation === DOC_ORIENTATION.Left) {
+        const t = w;
+        w = h;
+        h = t;
+      }
+
+      let xratio = maxwidth ? maxwidth / w : 1;
+      let yratio = maxheight ? maxheight / h : 1;
+      ratio = Math.min(ratio, xratio, yratio);
+      canvas.width = w * ratio;
+      canvas.height = h * ratio;
+
+
+      const TO_RADIANS = Math.PI / 180;
+
+      if (orientation === DOC_ORIENTATION.Up) {
+
+        ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+
+      } else if (orientation === DOC_ORIENTATION.Right) {
+
+        ctx.save();
+        ctx.rotate(90 * TO_RADIANS);
+        ctx.translate(0, -canvas.width);
+        ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
+        ctx.restore();
+
+      } else if (orientation === DOC_ORIENTATION.Left) {
+
+        ctx.save();
+        ctx.rotate(-90 * TO_RADIANS);
+        ctx.translate(-canvas.width, 0);
+        ctx.drawImage(sourceImage, 0, 0, canvas.height, canvas.width);
+        ctx.restore();
+
+      } else if (orientation === DOC_ORIENTATION.Down) {
+
+        ctx.save();
+        ctx.rotate(180 * TO_RADIANS);
+        ctx.translate(-canvas.width, -canvas.height);
+        ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+
+      } else {
+        // console.warn('ngx-image-compress - no orientation value found');
+        // same as default UP
+        ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+      }
+
+
+      const mime = imageDataUrlSource.substr(5, imageDataUrlSource.split(';')[0].length - 5);
+      // TODO test on mime
+      const result = canvas.toDataURL(mime, quality);
+
+      resolve(result);
+
+    };
+
+    sourceImage.onerror = (e) => {
+      reject(e);
+    };
+
+    sourceImage.src = imageDataUrlSource;
+
+  });
 
 
   /**
    * helper to evaluate the compression rate
-   * @param s the image in base64 string format
+   * @param imgString the image in base64 string format
    */
-  static byteCount(s: string): number {
-    return encodeURI(s).split(/%..|./).length - 1;
-  }
+  static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
 }
