@@ -4,4 +4,5 @@
 
 export * from './lib/ngx-image-compress.service';
 export * from './lib/models/DOC_ORIENTATION';
-export * from './lib/models/NgxImageCompressFormat';
+export * from './lib/models/upload-response';
+export * from './lib/models/data-url';

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgxImageCompressFormat, NgxImageCompressService} from 'ngx-image-compress';
+import {UploadResponse, DataUrl, NgxImageCompressService} from 'ngx-image-compress';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +11,14 @@ export class AppComponent {
   constructor(private imageCompress: NgxImageCompressService) {
   }
 
-  imgResultBeforeCompress: string = '';
-  imgResultAfterCompress: string = '';
+  imgResultBeforeCompress: DataUrl = '';
+  imgResultAfterCompress: DataUrl = '';
 
-  imgResultUpload: string = '';
-  imgResultMultiple: NgxImageCompressFormat[] = [];
+  imgResultUpload: DataUrl = '';
+  imgResultMultiple: UploadResponse[] = [];
 
   compressFile() {
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
+    this.imageCompress.uploadFile().then(({image, orientation}:UploadResponse) => {
       this.imgResultBeforeCompress = image;
       console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
       this.imageCompress.compressFile(image, orientation, 50, 50).then(

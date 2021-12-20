@@ -1,6 +1,7 @@
 import {Renderer2} from '@angular/core';
-import {NgxImageCompressFormat} from './models/NgxImageCompressFormat';
+import {UploadResponse} from './models/upload-response';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
+import {DataUrl} from './models/data-url';
 
 export class ImageCompress {
 
@@ -10,10 +11,10 @@ export class ImageCompress {
   static getOrientation = (file: File): Promise<DOC_ORIENTATION> => new Promise<DOC_ORIENTATION>((resolve, reject) => {
     try {
       const reader = new FileReader();
-      reader.onload = function ($event) {
+      reader.onload = () => {
         const view = new DataView(reader.result as ArrayBuffer);
         if (view.getUint16(0, false) !== 0xFFD8) {
-          return resolve(-2);
+          return resolve(DOC_ORIENTATION.NotDefined);
         }
         const length = view.byteLength;
         let offset = 2;
@@ -22,7 +23,7 @@ export class ImageCompress {
           offset += 2;
           if (marker === 0xFFE1) {
             if (view.getUint32(offset += 2, false) !== 0x45786966) {
-              return resolve(-1);
+              return resolve(DOC_ORIENTATION.NotJpeg);
             }
             const little = view.getUint16(offset += 6, false) === 0x4949;
             offset += view.getUint32(offset + 4, little);
@@ -39,11 +40,11 @@ export class ImageCompress {
             offset += view.getUint16(offset, false);
           }
         }
-        return resolve(-1);
+        return resolve(DOC_ORIENTATION.NotJpeg);
       };
       reader.readAsArrayBuffer(file);
     } catch (e) {
-      return reject(0);
+      return reject(DOC_ORIENTATION.Default);
     }
 
   });
@@ -52,7 +53,7 @@ export class ImageCompress {
   /**
    * return a promise with the new image data and image orientation
    */
-  static uploadFile = (render: Renderer2, multiple: boolean = true): Promise<NgxImageCompressFormat | NgxImageCompressFormat[]> =>
+  static uploadFile = (render: Renderer2, multiple: boolean = true): Promise<UploadResponse | UploadResponse[]> =>
     new Promise(function (resolve, reject) {
       ImageCompress.generateUploadInput(render, multiple).then(filesList => {
         const files = Array.from(filesList);
@@ -120,7 +121,7 @@ export class ImageCompress {
   });
 
 
-  static compress = (imageDataUrlSource: string,
+  static compress = (imageDataUrlSource: DataUrl,
                      orientation: DOC_ORIENTATION,
                      render: Renderer2,
                      ratio: number = 50,
@@ -139,9 +140,8 @@ export class ImageCompress {
         return reject(`No canvas context available`);
       }
 
-      let w, h;
-      w = sourceImage.naturalWidth;
-      h = sourceImage.naturalHeight;
+      let w = sourceImage.naturalWidth;
+      let h = sourceImage.naturalHeight;
 
       if (orientation === DOC_ORIENTATION.Right || orientation === DOC_ORIENTATION.Left) {
         const t = w;
@@ -198,6 +198,10 @@ export class ImageCompress {
 
     };
 
+    sourceImage.onerror = (e) => {
+      reject(e);
+    };
+
     sourceImage.src = imageDataUrlSource;
 
   });
@@ -207,6 +211,6 @@ export class ImageCompress {
    * helper to evaluate the compression rate
    * @param imgString the image in base64 string format
    */
-  static byteCount = (imgString: string): number => encodeURI(imgString).split(/%..|./).length - 1;
+  static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
 }
