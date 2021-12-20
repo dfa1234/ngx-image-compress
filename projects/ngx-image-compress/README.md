@@ -75,6 +75,17 @@ export class AppComponent {
 }
 ```
 
+### Multiple files support
+
+For uploading multiple files, instead of using
+```ts
+this.imageCompress.uploadFile().then(({image, orientation}:{image:string, orientation:number}) => {
+```
+You can now use
+```ts
+this.imageCompress.uploadMultipleFiles().then((arrayOfFiles:{image:string, orientation:number}[]) => {
+```
+
 ### How it's working underwood?
 
 We will use Renderer2, and transform the image multiple time through HTML canvas encrustation.
