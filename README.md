@@ -83,6 +83,12 @@ In fact you can use the static version into the library and import renderer by y
 
 ## Updates
 
+#### 2021/12/21
+
+Update to Angular 13  
+Upload multiple file at once
+General refactoring
+
 #### 2020/11/18
 
 Update to Angular 11  

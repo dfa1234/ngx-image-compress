@@ -3,4 +3,5 @@
  */
 
 export * from './lib/ngx-image-compress.service';
-export * from './lib/DOC_ORIENTATION';
+export * from './lib/models/DOC_ORIENTATION';
+export * from './lib/models/NgxImageCompressFormat';

@@ -2,7 +2,6 @@
 
 Angular utility for compressing images to a satisfying size, that you can choose
 
-
 ### Import
 ```sh
 npm i ngx-image-compress
@@ -84,11 +83,17 @@ In fact you can use the static version into the library and import renderer by y
 
 ## Updates
 
+#### 2021/12/21
+
+Update to Angular 13  
+Upload multiple file at once
+General refactoring
+
 #### 2020/11/18
 
-Update to Angular 11
-Fix upload for iOS
-Expose getOrientation api publically 
+Update to Angular 11  
+Fix upload for iOS  
+Expose getOrientation api publically   
 
 #### 2019/07/01
 

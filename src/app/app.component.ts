@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgxImageCompressService} from 'ngx-image-compress';
+import {NgxImageCompressFormat, NgxImageCompressService} from 'ngx-image-compress';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +8,14 @@ import {NgxImageCompressService} from 'ngx-image-compress';
 })
 export class AppComponent {
 
-  constructor(private imageCompress: NgxImageCompressService) {}
+  constructor(private imageCompress: NgxImageCompressService) {
+  }
 
-  imgResultBeforeCompress;
-  imgResultAfterCompress;
+  imgResultBeforeCompress: string = '';
+  imgResultAfterCompress: string = '';
 
-
-  imgResultUpload;
+  imgResultUpload: string = '';
+  imgResultMultiple: NgxImageCompressFormat[] = [];
 
   compressFile() {
     this.imageCompress.uploadFile().then(({image, orientation}) => {
@@ -37,5 +38,10 @@ export class AppComponent {
     });
   }
 
+  uploadMultipleFiles() {
+    this.imageCompress.uploadMultipleFiles().then((multipleOrientedFiles) => {
+      this.imgResultMultiple = multipleOrientedFiles;
+    });
+  }
 
 }
