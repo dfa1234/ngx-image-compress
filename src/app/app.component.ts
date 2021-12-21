@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {UploadResponse, DataUrl, NgxImageCompressService} from 'ngx-image-compress';
+import {DOC_ORIENTATION} from '../../projects/ngx-image-compress/src/lib/models/DOC_ORIENTATION';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +34,8 @@ export class AppComponent {
   uploadFile() {
     this.imageCompress.uploadFile().then(({image, orientation}) => {
       this.imgResultUpload = image;
+      console.warn('DOC_ORIENTATION:',DOC_ORIENTATION[orientation]);
       console.warn(image);
-      console.warn(orientation);
     });
   }
 

@@ -90,16 +90,17 @@ this.imageCompress.uploadMultipleFiles().then((arrayOfFiles:{image:string, orien
 ### compressFile() signature
 
 The signature of compressFile() is:
-    compressFile(image, orientation, ratio, quality, maxwidth, maxheight)
 
-| Parameter   | Type   | Description                                           |
-| ----------- | ------ | ----------------------------------------------------- |
-| image       | string | DataUrl representing the image                        |
-| orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum |
-| ratio       | number | Maximum scale factor as a percentage (default: 50)    |
-| quality     | number | JPEG quality factor as a percentage (default: 50)     |
-| maxwidth    | number | Maximum width in pixels, or 0 to ignore (default: 0)  |
-| maxheight   | number | Maximum height in pixels, or 0 to ignore (default: 0) |
+`compressFile(image, orientation, ratio, quality, maxwidth, maxheight)`
+
+| Parameter   | Type   | Description                                                     |
+| ----------- | ------ | ----------------------------------------------------------------|
+| image       | string | DataUrl (string) representing the image                         |
+| orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum value     |
+| ratio       | number | Maximum scale factor as a percentage (optional, default: 50)    |
+| quality     | number | JPEG quality factor as a percentage (optional, default: 50)     |
+| maxwidth    | number | Maximum width in pixels, or 0 to ignore (optional, default: 0)  |
+| maxheight   | number | Maximum height in pixels, or 0 to ignore (optional, default: 0) |
 
 
 
@@ -115,6 +116,9 @@ In fact you can use the static version in the library and import renderer by you
 
 Update to Angular 13  
 Upload multiple file at once
+Add support for maximum image size
+Cleanup types
+Invalid image rejection
 General refactoring
 
 #### 2021/11/14
