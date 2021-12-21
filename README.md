@@ -99,8 +99,8 @@ The signature of compressFile() is:
 | orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum value     |
 | ratio       | number | Maximum scale factor as a percentage (optional, default: 50)    |
 | quality     | number | JPEG quality factor as a percentage (optional, default: 50)     |
-| maxwidth    | number | Maximum width in pixels, or 0 to ignore (optional, default: 0)  |
-| maxheight   | number | Maximum height in pixels, or 0 to ignore (optional, default: 0) |
+| maxwidth    | number | Maximum width in pixels if you need to resize (optional, default: 0 - no resize)  |
+| maxheight   | number | Maximum height in pixels if you need to resize (optional, default: 0 - no resize) |
 
 
 
@@ -114,12 +114,12 @@ In fact you can use the static version in the library and import renderer by you
 
 #### 2021/12/21
 
-Update to Angular 13  
-Upload multiple file at once
-Add support for maximum image size
-Cleanup types
-Invalid image rejection
-General refactoring
+* Update to Angular 13  
+* Upload multiple file at once 
+* Add support for resizing image size (compressFile() is now accepting maxWidth and maxHeight paramaters)
+* Cleanup types
+* Invalid image rejection
+* General refactoring
 
 #### 2021/11/14
 
