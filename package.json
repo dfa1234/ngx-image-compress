@@ -16,6 +16,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "ci:build": "ng build ngx-image-compress",
     "ci:test": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
     "lib:generate": "ng generate library ngx-image-compress-new",
     "lib:watch": "ng build ngx-image-compress --watch",
