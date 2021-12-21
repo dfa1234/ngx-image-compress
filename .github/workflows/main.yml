@@ -31,6 +31,6 @@ jobs:
        
       - name: Run tests
         run: |
-          npm install
-          npm test
+          npm i
+          npm ci:test
 
