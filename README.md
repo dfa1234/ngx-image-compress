@@ -11,7 +11,7 @@ npm i ngx-image-compress
 
 Example here: https://stackblitz.com/edit/ngx-compress-sample 
 
-Import it in your app module (only need for angular before version 13)
+Import it in your app module (only needed for angular version < 13)
 
 ```typescript
 import {BrowserModule} from '@angular/platform-browser';
