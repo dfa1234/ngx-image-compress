@@ -90,9 +90,8 @@ describe('AppComponent', () => {
     (mockNgxImageCompressService.compressFile as jasmine.Spy).and.returnValue(Promise.resolve(ANGULAR_LOGO.substring(0, 50)));
     await component.uploadAnResize();
     expect(mockNgxImageCompressService.uploadFile).toHaveBeenCalled();
-    expect(component.imgResultBeforeCompress).toEqual(ANGULAR_LOGO.substring(0, 100));
     expect(mockNgxImageCompressService.compressFile).toHaveBeenCalledWith(ANGULAR_LOGO.substring(0, 150), DOC_ORIENTATION.Down, 50, 50, 200, 100);
-    expect(component.imgResultAfterCompress).toEqual(ANGULAR_LOGO.substring(0, 50));
+    expect(component.imgResultAfterResize).toEqual(ANGULAR_LOGO.substring(0, 50));
   });
 
 });
