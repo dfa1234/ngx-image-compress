@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   compressFile() {
-    this.imageCompress
+    return this.imageCompress
       .uploadFile()
       .then(({image, orientation}: UploadResponse) => {
 
@@ -33,12 +33,11 @@ export class AppComponent {
             console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
 
           });
-
       });
   }
 
   uploadFile() {
-    this.imageCompress.uploadFile().then(({image, orientation}: UploadResponse) => {
+    return this.imageCompress.uploadFile().then(({image, orientation}: UploadResponse) => {
       this.imgResultUpload = image;
       console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
       console.warn(`${image.substring(0, 50)}... (${image.length} characters)`);
@@ -46,14 +45,14 @@ export class AppComponent {
   }
 
   uploadMultipleFiles() {
-    this.imageCompress.uploadMultipleFiles().then((multipleOrientedFiles: UploadResponse[]) => {
+    return this.imageCompress.uploadMultipleFiles().then((multipleOrientedFiles: UploadResponse[]) => {
       this.imgResultMultiple = multipleOrientedFiles;
       console.warn(`${multipleOrientedFiles.length} files selected`);
     });
   }
 
   uploadAnResize() {
-    this.imageCompress
+    return this.imageCompress
       .uploadFile()
       .then(({image, orientation}: UploadResponse) => {
 
@@ -68,7 +67,6 @@ export class AppComponent {
             console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
 
           });
-
       });
   }
 }
