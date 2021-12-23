@@ -11,7 +11,7 @@ npm i ngx-image-compress
 
 Example here: https://stackblitz.com/edit/ngx-compress-sample 
 
-Import it in your app module
+Import it in your app module (angular < 13)
 
 ```typescript
 import {BrowserModule} from '@angular/platform-browser';
@@ -30,13 +30,12 @@ export class AppModule {}
 ```
 
 
-Use it in your component
+Use it in your component:
 
 
 ```typescript
-import {Component} from '@angular/core';
-import {NgxImageCompressService} from 'ngx-image-compress';
-
+import { Component } from '@angular/core';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-root',
@@ -50,14 +49,14 @@ import {NgxImageCompressService} from 'ngx-image-compress';
 })
 export class AppComponent {
 
-  constructor(private imageCompress: NgxImageCompressService) {}
+  constructor(private imageCompress: NgxImageCompressService) { }
 
-  imgResultBeforeCompress:string;
-  imgResultAfterCompress:string;
+  imgResultBeforeCompress: string = '';
+  imgResultAfterCompress: string = '';
 
   compressFile() {
 
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
+    this.imageCompress.uploadFile().then(({ image, orientation }) => {
 
       this.imgResultBeforeCompress = image;
       console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
@@ -68,9 +67,7 @@ export class AppComponent {
           console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         }
       );
-
     });
-
   }
 }
 ```

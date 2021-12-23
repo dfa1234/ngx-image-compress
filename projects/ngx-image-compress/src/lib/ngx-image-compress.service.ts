@@ -3,7 +3,9 @@ import {ImageCompress} from './image-compress';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {UploadResponse} from './models/upload-response';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NgxImageCompressService {
 
   private readonly render: Renderer2;
