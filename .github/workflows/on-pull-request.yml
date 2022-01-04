@@ -1,4 +1,4 @@
-name: "Pull request tests"
+name: "Test and build"
 
 on:
   pull_request:
@@ -28,7 +28,7 @@ jobs:
         run: npm run ci:build:app
 
       - name: "Test the library"
-        run: npm run ci:build:library
+        run: npm run ci:test:library
 
       - name: "Test the demo app"
-        run: npm run ci:build:app
+        run: npm run ci:test:app

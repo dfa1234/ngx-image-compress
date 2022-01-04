@@ -2,6 +2,8 @@
 
 Angular utility for compressing images to a satisfying size, that you can choose
 
+![Build](https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml/badge.svg) ![Downloads](https://img.shields.io/npm/dw/ngx-image-compress)
+
 ## Import
 
 ```sh

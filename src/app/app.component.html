@@ -1,32 +1,46 @@
 <header>
-  <h1>
-    ngx-image-compress-test
-  </h1>
+  <h1>ngx-image-compress demo</h1>
 </header>
+
+<hr />
 
 <section>
   <button (click)="compressFile()">Upload and compress Image</button>
-  <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="">
-  <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="">
+  <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="" />
+  <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="" />
 </section>
 
-<hr>
+<hr />
 
 <section>
   <button (click)="uploadFile()">Upload Image only</button>
-  <img *ngIf="imgResultUpload" [src]="imgResultUpload" alt="">
+  <img *ngIf="imgResultUpload" [src]="imgResultUpload" alt="" />
 </section>
 
-<hr>
+<hr />
 
 <section>
   <button (click)="uploadMultipleFiles()">Upload Multiple Images</button>
-  <img *ngFor="let result of imgResultMultiple" [src]="result.image" alt="">
+  <img *ngFor="let result of imgResultMultiple" [src]="result.image" alt="" />
 </section>
 
-<hr>
+<hr />
 
 <section>
-  <button (click)="uploadAnResize()">Uploading, Compressing, and resizing to max width 200px and max height 100px</button>
-  <img *ngIf="imgResultAfterResize" [src]="imgResultAfterResize" alt="">
+  <button (click)="uploadAnResize()">
+    Uploading, Compressing, and resizing to max width 200px and max height 100px
+  </button>
+  <img *ngIf="imgResultAfterResize" [src]="imgResultAfterResize" alt="" />
 </section>
+
+<hr />
+
+<footer>
+  <a href="https://github.com/dfa1234/ngx-image-compress" target="_blank">
+    Project page on Github
+  </a>
+  <br />
+  <a href="https://www.npmjs.com/package/ngx-image-compress" target="_blank">
+    Project page on NPM
+  </a>
+</footer>
