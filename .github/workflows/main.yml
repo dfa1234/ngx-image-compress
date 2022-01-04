@@ -52,9 +52,6 @@ jobs:
       - name: "Test the demo app"
         run: npm run ci:build:app
 
-      - name: "Display package.json version"
-        run: cat ./dist/ngx-image-compress/package.json
-
       - name: "Ship the README.md with the library build"
         run: cp ./README.md ./dist/ngx-image-compress/README.md
 
