@@ -1,0 +1,34 @@
+name: "Pull request tests"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  test-pr:
+    name: "Build and test for every PR"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+
+      - uses: actions/checkout@v2
+
+      - name: "Install dependency"
+        run: yarn install --frozen-lockfile
+
+      - name: "Build the library"
+        run: npm run ci:build:library
+
+      - name: "Build the demo app"
+        run: npm run ci:build:app
+
+      - name: "Test the library"
+        run: npm run ci:build:library
+
+      - name: "Test the demo app"
+        run: npm run ci:build:app
