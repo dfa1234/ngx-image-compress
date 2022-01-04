@@ -35,7 +35,7 @@ jobs:
           PACKAGEJSON_DIR: "./projects/ngx-image-compress"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Automated Version Bump for demo app"
+      - name: "Automated version bump for demo app"
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: "demo"
@@ -65,7 +65,7 @@ jobs:
         working-directory: ./dist/ngx-image-compress
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: ls -l #1 test before - npm publish should ship all this content
+        run: npm publish
 
       - name: "Publish the demo on firebase"
         run: |
