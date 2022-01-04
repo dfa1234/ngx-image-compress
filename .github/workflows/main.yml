@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: "Install dependency"
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: "Automated version bump for library"
         uses: "phips28/gh-action-bump-version@master"
