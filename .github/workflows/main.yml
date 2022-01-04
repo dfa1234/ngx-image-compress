@@ -24,6 +24,12 @@ jobs:
       - name: "Install dependency"
         run: yarn install --frozen-lockfile
 
+        # Workflow using with https://github.com/maks-stupak/gh-action-bump-version
+        # Based on the commit messages, increment the version from the latest release.
+        #  - If the string "major" is found anywhere in any of the commit messages or descriptions the major version will be incremented.
+        #  - If includes "minor" then the minor version will be increased.
+        #  - If includes "patch" then the patch version will be increased.
+
       - name: "Automated version bump for library"
         uses: "phips28/gh-action-bump-version@master"
         with:
