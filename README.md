@@ -94,12 +94,13 @@ The signature of compressFile() is:
 | ----------- | ------ | ----------------------------------------------------------------|
 | image       | string | DataUrl (string) representing the image                         |
 | orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum value     |
-| ratio       | number | Maximum scale factor as a percentage (optional, default: 50)    |
-| quality     | number | JPEG quality factor as a percentage (optional, default: 50)     |
+| ratio       | number | Maximum scale factor as a percentage (optional, default: 50) *  |
+| quality     | number | JPEG quality factor as a percentage (optional, default: 50) **  |
 | maxwidth    | number | Maximum width in pixels if you need to resize (optional, default: 0 - no resize)  |
 | maxheight   | number | Maximum height in pixels if you need to resize (optional, default: 0 - no resize) |
 
-
+* ratio of 50 will decrease the resolution by 2. i.e. image of 2000 X 1500 pixels will become 1000 X 750 pixels
+** For more info read this http://fotoforensics.com/tutorial-estq.php
 
 ### How it works under the hood?
 
