@@ -46,7 +46,6 @@ export class ImageCompress {
     } catch (e) {
       return reject(DOC_ORIENTATION.Default);
     }
-
   });
 
 
@@ -76,8 +75,6 @@ export class ImageCompress {
             }
           });
       });
-
-
     });
 
 

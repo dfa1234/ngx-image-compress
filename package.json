@@ -1,5 +1,5 @@
 {
-  "name": "ngx-image-compress-test",
+  "name": "ngx-image-compress-demo",
   "version": "13.1.4",
   "author": "David Faure",
   "license": "MIT",
@@ -16,12 +16,15 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "ci:build": "ng build ngx-image-compress",
-    "ci:test": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
+    "ci:build:app": "ng build ngx-image-compress-demo",
+    "ci:build:library": "ng build ngx-image-compress",
+    "ci:test:app": "ng test ngx-image-compress-demo --browsers=ChromeHeadless --watch=false --code-coverage",
+    "ci:test:library": "ng test ngx-image-compress --browsers=ChromeHeadless --watch=false --code-coverage",
     "lib:generate": "ng generate library ngx-image-compress-new",
     "lib:watch": "ng build ngx-image-compress --watch",
-    "lib:build": "cp README.md projects/ngx-image-compress/README.md && ng build ngx-image-compress",
-    "lib:publish": "cd dist/ngx-image-compress && npm publish"
+    "lib:post-build": "cp ./README.md ./dist/ngx-image-compress/README.md && cp ./LICENSE ./dist/ngx-image-compress/LICENSE",
+    "lib:build": "ng build ngx-image-compress && npm run lib:post-build",
+    "lib:publish": "cd ./dist/ngx-image-compress && npm publish"
   },
   "private": false,
   "dependencies": {

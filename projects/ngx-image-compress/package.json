@@ -1,6 +1,15 @@
 {
   "name": "ngx-image-compress",
   "version": "13.1.4",
+  "author": "David Faure",
+  "license": "MIT",
+  "repository": "https://github.com/dfa1234/ngx-image-compress",
+  "keywords": [
+    "angular",
+    "image",
+    "upload",
+    "compression"
+  ],
   "peerDependencies": {
     "@angular/common": "^13.1.0",
     "@angular/core": "^13.1.0"

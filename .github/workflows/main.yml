@@ -1,38 +1,68 @@
-# This is a basic workflow to help you get started with Actions
+name: CI-CD
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches:
+      - "master"
   pull_request:
-    branches: [ master ]
+    branches:
+      - "master"
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job
-  build-test:
-    name: Build and test
+  build-test-deploy:
+    name: Build, test and deploy the library on npm
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
 
       - uses: actions/checkout@v2
 
-      - name: Run tests
-        run: |
-          npm i
-          npm run ci:build
-          npm run ci:test
+      - name: "Install dependency"
+        run: npm ci
 
+      - name: "Automated version bump for library"
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "library"
+        env:
+          PACKAGEJSON_DIR: "./projects/ngx-image-compress"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Automated Version Bump for demo app"
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "demo"
+        env:
+          PACKAGEJSON_DIR: "./"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Build the library"
+        run: npm run ci:build:library
+
+      - name: "Build the demo app"
+        run: npm run ci:build:app
+
+      - name: "Test the library"
+        run: npm run ci:build:library
+
+      - name: "Test the demo app"
+        run: npm run ci:build:app
+
+      - name: "Display package.json version"
+        run: cat ./dist/ngx-image-compress/package.json
+
+      - name: "Ship the README.md with the library build"
+        run: cp ./README.md ./dist/ngx-image-compress/README.md
+
+      - name: "Ship the LICENSE"
+        run: cp ./LICENSE ./dist/ngx-image-compress/LICENSE
+
+      - name: "Publish the library on npm"
+        working-directory: ./dist/ngx-image-compress
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: ls -l #1 test before - npm publish should ship all this content
