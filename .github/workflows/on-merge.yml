@@ -30,7 +30,7 @@ jobs:
       - name: "Automated version bump for library"
         uses: "phips28/gh-action-bump-version@master"
         with:
-          tag-prefix: "library"
+          tag-prefix: "lib-"
         env:
           PACKAGEJSON_DIR: "./projects/ngx-image-compress"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
       - name: "Automated version bump for demo app"
         uses: "phips28/gh-action-bump-version@master"
         with:
-          tag-prefix: "demo"
+          tag-prefix: "demo-"
         env:
           PACKAGEJSON_DIR: "./"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
