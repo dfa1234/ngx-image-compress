@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-test-deploy:
-    name: Build, test and deploy the library on npm
+    name: Build, test, bump version for library and demo, deploy the library on npm, and the demo on firebase
     runs-on: ubuntu-latest
 
     steps:
@@ -66,3 +66,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: ls -l #1 test before - npm publish should ship all this content
+
+      - name: "Publish the demo on firebase"
+        run: |
+          npm -g install firebase-tools
+          firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress

@@ -1,0 +1,12 @@
+{
+  "hosting": {
+    "public": "dist/ngx-image-compress-demo",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
