@@ -101,16 +101,16 @@ The signature of compressFile() is:
 | ----------- | ------ | --------------------------------------------------------------------------------- |
 | image       | string | DataUrl (string) representing the image                                           |
 | orientation | number | EXIF Orientation value using the DOC_ORIENTATION enum value                       |
-| ratio       | number | Maximum scale factor as a percentage (optional, default: 50) [^1]                 |
-| quality     | number | JPEG quality factor as a percentage (optional, default: 50) [^2]                  |
+| ratio       | number | Maximum scale factor as a percentage (optional, default: 50) <sup>[1](#fn1)</sup> |
+| quality     | number | JPEG quality factor as a percentage (optional, default: 50) <sup>[2](#fn2)</sup>  |
 | maxwidth    | number | Maximum width in pixels if you need to resize (optional, default: 0 - no resize)  |
 | maxheight   | number | Maximum height in pixels if you need to resize (optional, default: 0 - no resize) |
 
 
-[^1] ratio of 50 will decrease the resolution of each dimension by 2, i.e.:
-image of 2000 X 1500 pixels will become 1000 X 750 pixels, while the whole resolution will be reduced by 4   
+<a name="fn1">[1]</a> Ratio: "50" will decrease the resolution of each dimension by 2, i.e.:
+image of 2000 X 1500 pixels will become 1000 X 750 pixels, while the whole resolution will be reduced by 4.  
 
-[^2] For more info about this parameter, read [this guide](http://fotoforensics.com/tutorial-estq.php)
+<a name="fn2">[2]</a> Quality: For more info about this parameter, read [this guide](http://fotoforensics.com/tutorial-estq.php)
 
 ## How it works under the hood?
 
