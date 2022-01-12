@@ -15,9 +15,9 @@ npm i ngx-image-compress
 ## Usage
 
 Code example is here:  
-https://stackblitz.com/edit/ngx-compress-sample
+https://stackblitz.com/edit/ngx-image-compress
 
-For performance tests, in particular on mobile, please **do not use stackbliz**, put rather this optimised demo:  
+For performance tests, in particular tests on mobile, please **do not use stackbliz**, put rather this optimised demo, production ready:  
 https://ngx-image-compress.web.app/
 
 Angular 13+ do not need any module import. Inject the service in the constructor of your component directly.  
