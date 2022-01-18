@@ -27,10 +27,19 @@
 <hr />
 
 <section>
-  <button (click)="uploadAnResize()">
+  <button (click)="uploadAndResize()">
     Uploading, Compressing, and resizing to max width 200px and max height 100px
   </button>
   <img *ngIf="imgResultAfterResize" [src]="imgResultAfterResize" alt="" />
+</section>
+
+<hr />
+
+<section>
+  <button (click)="uploadAndReturnWithMaxSize()">
+    Uploading, Compressing, and returning with max size of 1 MegaByte
+  </button>
+  <img *ngIf="imgResultAfterResizeMax" [src]="imgResultAfterResizeMax" alt="" />
 </section>
 
 <footer>

@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  DataUrl,
-  DOC_ORIENTATION,
-  NgxImageCompressService,
-  UploadResponse,
-} from 'ngx-image-compress';
+import {Component} from '@angular/core';
+import {DataUrl, DOC_ORIENTATION, NgxImageCompressService, UploadResponse,} from 'ngx-image-compress';
 
 @Component({
   selector: 'app-root',
@@ -16,14 +11,16 @@ export class AppComponent {
   imgResultAfterCompress: DataUrl = '';
   imgResultAfterResize: DataUrl = '';
   imgResultUpload: DataUrl = '';
+  imgResultAfterResizeMax: DataUrl = '';
   imgResultMultiple: UploadResponse[] = [];
 
-  constructor(private imageCompress: NgxImageCompressService) {}
+  constructor(private imageCompress: NgxImageCompressService) {
+  }
 
   compressFile() {
     return this.imageCompress
       .uploadFile()
-      .then(({ image, orientation }: UploadResponse) => {
+      .then(({image, orientation}: UploadResponse) => {
         this.imgResultBeforeCompress = image;
         console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
 
@@ -42,7 +39,7 @@ export class AppComponent {
   uploadFile() {
     return this.imageCompress
       .uploadFile()
-      .then(({ image, orientation }: UploadResponse) => {
+      .then(({image, orientation}: UploadResponse) => {
         this.imgResultUpload = image;
         console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
         console.warn(
@@ -60,10 +57,10 @@ export class AppComponent {
       });
   }
 
-  uploadAnResize() {
+  uploadAndResize() {
     return this.imageCompress
       .uploadFile()
-      .then(({ image, orientation }: UploadResponse) => {
+      .then(({image, orientation}: UploadResponse) => {
         console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
         console.warn('Compressing and resizing to width 200px height 100px...');
 
@@ -76,6 +73,14 @@ export class AppComponent {
               this.imageCompress.byteCount(result)
             );
           });
+      });
+  }
+
+  uploadAndReturnWithMaxSize() {
+    return this.imageCompress
+      .uploadAndGetImageWithMaxSize(1)
+      .then((result: DataUrl) => {
+        this.imgResultAfterResizeMax = result;
       });
   }
 }
