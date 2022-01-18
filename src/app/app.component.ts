@@ -26,35 +26,41 @@ export class AppComponent {
 
         this.imageCompress
           .compressFile(image, orientation, 50, 50)
-          .then((result: DataUrl) => {
-            this.imgResultAfterCompress = result;
-            console.warn(
-              'Size in bytes is now:',
-              this.imageCompress.byteCount(result)
-            );
-          });
+          .then(
+            (result: DataUrl) => {
+              this.imgResultAfterCompress = result;
+              console.warn(
+                'Size in bytes is now:',
+                this.imageCompress.byteCount(result)
+              );
+            }
+          );
       });
   }
 
   uploadFile() {
     return this.imageCompress
       .uploadFile()
-      .then(({image, orientation}: UploadResponse) => {
-        this.imgResultUpload = image;
-        console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
-        console.warn(
-          `${image.substring(0, 50)}... (${image.length} characters)`
-        );
-      });
+      .then(
+        ({image, orientation}: UploadResponse) => {
+          this.imgResultUpload = image;
+          console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
+          console.warn(
+            `${image.substring(0, 50)}... (${image.length} characters)`
+          );
+        }
+      );
   }
 
   uploadMultipleFiles() {
     return this.imageCompress
       .uploadMultipleFiles()
-      .then((multipleOrientedFiles: UploadResponse[]) => {
-        this.imgResultMultiple = multipleOrientedFiles;
-        console.warn(`${multipleOrientedFiles.length} files selected`);
-      });
+      .then(
+        (multipleOrientedFiles: UploadResponse[]) => {
+          this.imgResultMultiple = multipleOrientedFiles;
+          console.warn(`${multipleOrientedFiles.length} files selected`);
+        }
+      );
   }
 
   uploadAndResize() {
@@ -66,21 +72,28 @@ export class AppComponent {
 
         this.imageCompress
           .compressFile(image, orientation, 50, 50, 200, 100)
-          .then((result: DataUrl) => {
-            this.imgResultAfterResize = result;
-            console.warn(
-              'Size in bytes is now:',
-              this.imageCompress.byteCount(result)
-            );
-          });
+          .then(
+            (result: DataUrl) => {
+              this.imgResultAfterResize = result;
+              console.warn(
+                'Size in bytes is now:',
+                this.imageCompress.byteCount(result)
+              );
+            }
+          );
       });
   }
 
   uploadAndReturnWithMaxSize() {
     return this.imageCompress
-      .uploadAndGetImageWithMaxSize(1)
-      .then((result: DataUrl) => {
-        this.imgResultAfterResizeMax = result;
-      });
+      .uploadAndGetImageWithMaxSize(1, true)
+      .then(
+        (result: DataUrl) => {
+          this.imgResultAfterResizeMax = result;
+        },
+        (result: string) => {
+          console.error('The compression algorithm didn\'t succed! The best size we can do is', this.imageCompress.byteCount(result), 'bytes');
+          this.imgResultAfterResizeMax = result;
+        });
   }
 }

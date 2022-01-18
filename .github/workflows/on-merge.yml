@@ -27,21 +27,21 @@ jobs:
         #  - If includes "minor" then the minor version will be increased.
         #  - If includes "patch" then the patch version will be increased.
 
-      # - name: "Automated version bump for library"
-      #   uses: "phips28/gh-action-bump-version@master"
-      #   with:
-      #     tag-prefix: "lib-"
-      #   env:
-      #     PACKAGEJSON_DIR: "./projects/ngx-image-compress"
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       - name: "Automated version bump for library"
+         uses: "phips28/gh-action-bump-version@master"
+         with:
+           tag-prefix: "lib-"
+         env:
+           PACKAGEJSON_DIR: "./projects/ngx-image-compress"
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: "Automated version bump for demo app"
-      #   uses: "phips28/gh-action-bump-version@master"
-      #   with:
-      #     tag-prefix: "demo-"
-      #   env:
-      #     PACKAGEJSON_DIR: "./"
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       - name: "Automated version bump for demo app"
+         uses: "phips28/gh-action-bump-version@master"
+         with:
+           tag-prefix: "demo-"
+         env:
+           PACKAGEJSON_DIR: "./"
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build the library"
         run: npm run ci:build:library
@@ -61,11 +61,11 @@ jobs:
       - name: "Ship the LICENSE"
         run: cp ./LICENSE ./dist/ngx-image-compress/LICENSE
 
-      # - name: "Publish the library on npm"
-      #   working-directory: ./dist/ngx-image-compress
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: npm publish
+      - name: "Publish the library on npm"
+        working-directory: ./dist/ngx-image-compress
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
 
       - name: "Publish the demo on firebase"
         run: |

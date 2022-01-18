@@ -206,40 +206,65 @@ export class ImageCompress {
 
   static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-  static getImageMaxSize = async (maxSizeMb: number, render: Renderer2): Promise<DataUrl> => {
+  static getImageMaxSize = async (maxSizeMb: number, debugMode: boolean, render: Renderer2): Promise<DataUrl> => {
 
     const MAX_TRIES = 10;
 
     const bytesToMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
 
+    if (debugMode) {
+      console.debug('NgxImageCompress - Opening upload window');
+    }
+
     let myFile: UploadResponse = await ImageCompress.uploadFile(render, false) as UploadResponse;
+
     let compressedFile;
+
     for (let i = 0; i < MAX_TRIES; i++) {
       const previousSize = ImageCompress.byteCount(myFile.image);
       compressedFile = await ImageCompress.compress(myFile.image, myFile.orientation, render, 50, 100);
       const newSize = ImageCompress.byteCount(compressedFile);
+      console.debug('NgxImageCompress -',
+        'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
       if (newSize >= previousSize) {
         if (i === 0) {
-          //console.debug('NgxImageCompress -', 'File can\'t be reduced at all - returning the original', bytesToMB(previousSize), 'MB large');
+          if (debugMode) {
+            console.debug('NgxImageCompress -',
+              'File can\'t be reduced at all - returning the original', bytesToMB(previousSize), 'MB large');
+          }
           throw myFile.image;
         } else {
-          //console.debug('NgxImageCompress -', 'File can\'t be reduced more - returning the best we can, which is ', bytesToMB(previousSize), 'MB large');
+          if (debugMode) {
+            console.debug('NgxImageCompress -',
+              'File can\'t be reduced more - returning the best we can, which is ', bytesToMB(previousSize), 'MB large');
+          }
           throw myFile.image;
         }
       } else {
         if (newSize < maxSizeMb * 1024 * 1024) {
-          //console.debug('NgxImageCompress -', 'Here your file', bytesToMB(newSize), 'MB large');
+          if (debugMode) {
+            console.debug('NgxImageCompress -',
+              'Here your file', bytesToMB(newSize), 'MB large');
+          }
           return compressedFile;
         } else if (i === 9) {
-          //console.debug('NgxImageCompress -', 'File can\'t reach the desired size after', MAX_TRIES, 'tries. Returning file ', bytesToMB(previousSize), 'MB large');
+          if (debugMode) {
+            console.debug('NgxImageCompress -',
+              'File can\'t reach the desired size after', MAX_TRIES, 'tries. Returning file ', bytesToMB(previousSize), 'MB large');
+          }
           throw myFile.image;
         }
       }
-      //console.debug('NgxImageCompress -', 'Reached', bytesToMB(newSize), 'MB large. Trying another time after ', i + 1, 'times');
+      if (debugMode) {
+        console.debug('NgxImageCompress -',
+          'Reached', bytesToMB(newSize), 'MB large. Trying another time after', i + 1, 'times');
+      }
       myFile.image = compressedFile;
     }
-    //console.debug('NgxImageCompress -', 'Algorithm error');
-    throw 'NgxImageCompress failed';
+    if (debugMode) {
+      console.debug('NgxImageCompress - Unexpected error');
+    }
+    throw '';
   };
 
 }
