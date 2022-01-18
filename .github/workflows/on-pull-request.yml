@@ -1,4 +1,4 @@
-name: "Test and build"
+name: "CI on pull request"
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-pr:
-    name: "Build and test for every PR"
+    name: "Build and test for every new PR submitted"
     runs-on: ubuntu-latest
 
     steps:
