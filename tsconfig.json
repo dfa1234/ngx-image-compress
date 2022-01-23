@@ -13,6 +13,7 @@
     "sourceMap": true,
     "paths": {
       "ngx-image-compress": [
+        "projects/ngx-image-compress/src",
         "dist/ngx-image-compress/ngx-image-compress",
         "dist/ngx-image-compress"
       ]

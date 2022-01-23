@@ -7,3 +7,13 @@ img {
 div {
   text-align: center;
 }
+
+footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > * {
+    margin-inline-end: 10px;
+  }
+}
