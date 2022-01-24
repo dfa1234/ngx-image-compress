@@ -10,6 +10,9 @@ export class ImageCompress {
       const reader = new FileReader();
       reader.onload = () => {
         const view = new DataView(reader.result as ArrayBuffer);
+        if (!view.byteLength) {
+          return resolve(DOC_ORIENTATION.NotDefined);
+        }
         if (view.getUint16(0, false) !== 0xFFD8) {
           return resolve(DOC_ORIENTATION.NotDefined);
         }
@@ -195,10 +198,7 @@ export class ImageCompress {
 
     };
 
-    sourceImage.onerror = (e) => {
-      reject(e);
-    };
-
+    sourceImage.onerror = (e) => reject(e);
     sourceImage.src = imageDataUrlSource;
 
   });
