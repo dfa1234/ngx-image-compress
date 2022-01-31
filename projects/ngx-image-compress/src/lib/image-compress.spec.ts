@@ -3,62 +3,52 @@ import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {Renderer2} from '@angular/core';
 import {fakeAsync, tick} from '@angular/core/testing';
 import {sampleImagesDataUrls} from '../tests/sample-images-data-urls.spec';
+import {getSampleTestFiles, SampleFiles} from '../tests/sample-images-files.spec';
+import {UploadResponse} from 'ngx-image-compress';
 
-type SampleImages = typeof sampleImagesDataUrls;
-type SampleFiles = {
-  [k in keyof SampleImages]: File;
-};
-
-const toBlob = async (file: string) => await (await fetch(file)).blob();
-
-const toFile = async (key: string, content: string) => await new File([await toBlob(content)], `${key}.jpg`, {type: 'image/jpg'});
-
-const getSampleTestFiles = async (sampleImageObject: SampleImages): Promise<SampleFiles> => {
-  const testFiles: Partial<SampleFiles> = {};
-  for (let key of Object.keys(sampleImagesDataUrls) as (keyof SampleImages)[]) {
-    const file = await toFile(key, sampleImageObject[key]);
-    testFiles[key] = file;
-  }
-  return testFiles as SampleFiles;
-};
 
 describe('ImageCompress Static Utility', () => {
 
   let testFiles: SampleFiles;
-  let SampleRender: Partial<Renderer2>;
-  let SampleInput: Partial<HTMLInputElement>;
-  let SampleCanvas: Partial<HTMLCanvasElement>;
-  let SampleContext: Partial<CanvasRenderingContext2D>;
+  let mockRender: Partial<Renderer2>;
+  let mockInput: Partial<HTMLInputElement>;
+  let mockCanvas: Partial<HTMLCanvasElement>;
+  let mockContext: Partial<CanvasRenderingContext2D>;
+  let mockResponse: any;
 
   beforeEach(async () => {
 
     testFiles = await getSampleTestFiles(sampleImagesDataUrls);
 
-    SampleInput = jasmine.createSpyObj<HTMLInputElement>(['click']);
-    SampleCanvas = jasmine.createSpyObj<HTMLCanvasElement>(['getContext', 'toDataURL'], ['width', 'height']);
-    SampleContext = jasmine.createSpyObj<CanvasRenderingContext2D>(['save', 'rotate', 'translate', 'drawImage', 'restore']);
+    mockInput = jasmine.createSpyObj<HTMLInputElement>(['click']);
+    mockCanvas = jasmine.createSpyObj<HTMLCanvasElement>(['getContext', 'toDataURL'], ['width', 'height']);
+    mockContext = jasmine.createSpyObj<CanvasRenderingContext2D>(['save', 'rotate', 'translate', 'drawImage', 'restore']);
+    mockResponse = {target: {value: 'test', files: [testFiles.up]}};
+    (mockCanvas.getContext as jasmine.Spy).and.returnValue(mockContext);
 
-    (SampleCanvas.getContext as jasmine.Spy).and.returnValue(SampleContext);
-
-    SampleRender = {
-      createElement: (type) => {
-        if (type === 'input') {
-          return SampleInput;
-        } else if (type === 'canvas') {
-          return SampleCanvas;
+    mockRender = {
+      createElement: (elementName) => {
+        if (elementName === 'input') {
+          return mockInput;
+        } else if (elementName === 'canvas') {
+          return mockCanvas;
         }
         return null;
       },
       setStyle: jasmine.createSpy(),
       setProperty: jasmine.createSpy(),
-      listen: (target, eventName, callback) => () => {
-        callback({target: {value: 'test', files: []}});
+      listen: (target, eventName, callback) => {
+        setTimeout(() => {
+          if (eventName === 'click') {
+            callback(mockResponse);
+          } else if (eventName === 'change') {
+            callback(mockResponse);
+          }
+        }, eventName === 'click' ? 10 : 20);
+        return () => {
+        };
       },
     };
-
-    SampleRender.listen?.(SampleInput, 'change', jasmine.createSpy())();
-    SampleRender.listen?.(SampleInput, 'click', jasmine.createSpy())();
-
   });
 
   it('should count byte', async () => {
@@ -70,6 +60,27 @@ describe('ImageCompress Static Utility', () => {
     expect(await ImageCompress.getOrientation(testFiles.defaultValue)).toEqual(DOC_ORIENTATION.NotDefined);
     expect(await ImageCompress.getOrientation(testFiles.up)).toEqual(DOC_ORIENTATION.Up);
     expect(await ImageCompress.getOrientation(testFiles.down)).toEqual(DOC_ORIENTATION.Down);
+    expect(await ImageCompress.getOrientation(testFiles.emptyFile)).toEqual(DOC_ORIENTATION.NotDefined);
+  });
+
+  it('should generate upload input for single file', async () => {
+    const result = await ImageCompress.generateUploadInput(mockRender as Renderer2, false);
+    expect(result[0].name).toEqual(testFiles.up.name);
+  });
+
+  it('should generate upload input for multiple files', async () => {
+    const result = await ImageCompress.generateUploadInput(mockRender as Renderer2, true);
+    expect(result[0].name).toEqual(testFiles.up.name);
+  });
+
+  it('should upload a single file', async () => {
+    const result = await ImageCompress.uploadFile(mockRender as Renderer2, false);
+    expect((result as  UploadResponse).image).toEqual(sampleImagesDataUrls.up);
+  });
+
+  it('should upload multiple files', async () => {
+    const result = await ImageCompress.uploadFile(mockRender as Renderer2, true);
+    expect((result as  UploadResponse[])[0].image).toEqual(sampleImagesDataUrls.up);
   });
 
   it('should get data url from file', async () => {
@@ -78,20 +89,19 @@ describe('ImageCompress Static Utility', () => {
   });
 
   it('should generate input upload for a single file and click on it', fakeAsync(() => {
-    ImageCompress.generateUploadInput(SampleRender as Renderer2, false).then(result =>
-      expect(Object.keys(result)).toEqual(['image'])
+    ImageCompress.generateUploadInput(mockRender as Renderer2, false).then(result =>
+      expect(result[0].name).toEqual(testFiles.up.name)
     );
     tick(1000);
-    expect(SampleInput.click).toHaveBeenCalled();
+    expect(mockInput.click).toHaveBeenCalled();
   }));
 
 
-  it('should constrain by max width', async () => {
-
-    (SampleCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
+  it('should constrain max width and max height', async () => {
+    (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
     const result = await ImageCompress.compress(sampleImagesDataUrls.up,
       DOC_ORIENTATION.LeftMirrored,
-      SampleRender as Renderer2,
+      mockRender as Renderer2,
       100,
       80,
       20,
@@ -100,6 +110,12 @@ describe('ImageCompress Static Utility', () => {
     const sizeSource = ImageCompress.byteCount(sampleImagesDataUrls.up);
     const sizeResult = ImageCompress.byteCount(result);
     expect(sizeSource > sizeResult * 10).toBeTruthy();
+  });
+
+  it('should run the algorithm to upload and get a file with max size', async () => {
+    (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
+    const result = await ImageCompress.getImageMaxSize(0.01, true, mockRender as Renderer2);
+    expect(result).toEqual('data-url-test');
   });
 
 });
