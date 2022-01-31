@@ -6,6 +6,10 @@ Angular utility for compressing images to a satisfying size, that you can choose
 
 [![Build Status](https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml/badge.svg)](https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml)
 
+  <a href="https://www.netlify.com">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" />
+  </a>
+
 ## Import
 
 ```sh
