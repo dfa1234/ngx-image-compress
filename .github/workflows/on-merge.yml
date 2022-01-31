@@ -16,24 +16,27 @@ jobs:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Install Yarn
+        run: npm install -g yarn
+
       - uses: actions/checkout@v2
 
       - name: "Install dependency"
         run: yarn install --frozen-lockfile
 
       - name: "Build the library"
-        run: npm run ci:build:library
+        run: yarn ci:build:library
 
       - name: "Build the demo app"
-        run: npm run ci:build:app
+        run: yarn ci:build:app
 
       - name: "Test the library"
-        run: npm run ci:test:library
+        run: yarn ci:test:library
 
       - name: "Test the demo app"
-        run: npm run ci:test:app
+        run: yarn ci:test:app
 
       - name: "Publish the demo on firebase"
         run: |
-          npm -g install firebase-tools
+          yarn global install firebase-tools
           firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress

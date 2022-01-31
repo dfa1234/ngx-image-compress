@@ -14,12 +14,14 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "pretest": "node scripts/convert-assets-to-data-urls.js",
     "test": "ng test",
+    "test:library": "yarn pretest && ng test ngx-image-compress",
     "lint": "ng lint",
     "ci:build:app": "ng build ngx-image-compress-demo",
     "ci:build:library": "ng build ngx-image-compress",
     "ci:test:app": "ng test ngx-image-compress-demo --browsers=ChromeHeadless --watch=false --code-coverage",
-    "ci:test:library": "ng test ngx-image-compress --browsers=ChromeHeadless --watch=false --code-coverage"
+    "ci:test:library": "yarn pretest && ng test ngx-image-compress --browsers=ChromeHeadless --watch=false --code-coverage"
   },
   "private": false,
   "dependencies": {

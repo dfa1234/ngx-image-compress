@@ -44,16 +44,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build the library"
-        run: npm run ci:build:library
+        run: yarn ci:build:library
 
       - name: "Build the demo app"
-        run: npm run ci:build:app
+        run: yarn ci:build:app
 
       - name: "Test the library"
-        run: npm run ci:test:library
+        run: yarn ci:test:library
 
       - name: "Test the demo app"
-        run: npm run ci:test:app
+        run: yarn ci:test:app
 
       - name: "Ship the README.md with the library build"
         run: cp ./README.md ./dist/ngx-image-compress/README.md
@@ -69,5 +69,5 @@ jobs:
 
       - name: "Publish the demo on firebase"
         run: |
-          npm -g install firebase-tools
+          yarn global install firebase-tools
           firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress

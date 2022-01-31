@@ -195,7 +195,6 @@ export class ImageCompress {
       const result = canvas.toDataURL(mime, quality);
 
       resolve(result);
-
     };
 
     sourceImage.onerror = (e) => reject(e);

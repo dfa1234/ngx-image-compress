@@ -1,78 +1,105 @@
-import { ImageCompress } from './image-compress';
-import { DOC_ORIENTATION } from './models/DOC_ORIENTATION';
+import {ImageCompress} from './image-compress';
+import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
+import {Renderer2} from '@angular/core';
+import {fakeAsync, tick} from '@angular/core/testing';
+import {sampleImagesDataUrls} from '../tests/sample-images-data-urls.spec';
 
-const ANGULAR_LOGO =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAdCAYAAAC5UQwxAAAABHNCSVQICAgIfAhkiAAAABl0RVh0U29mdHdhcmUAZ25vbWUtc2NyZWVuc2hvdO8Dvz4AAAO+SURBVEiJlVZNSxtdFH7unbGJxaRX6rvRJELAHyBIaWjBnYsKkkJ3rhrRRRcJ7cZV6d5FV0WK1kWh0IUL7aZLwW0NFfoDSkwKUkFvEj/yNTPPu5gYE5LMTA8cuDP3nOc598y5Zw7oIc75Oavv3/MmlWJdStaBwSolb1IpWh8/0jk/94Ik+t7UarR3d9lMp9kIhQYTGIarA/YaoRCb6TSt3V06tdoQQtumfXDA1soKG0oNP0lbrxcXeb246GvXUIqtlRXaBwekbZMkhZ3P03r+HCyVEFSa378DAO49exbYR8TjGNnfhynIfyJzZmdhp1KdtTw+DuTHUglwHEjE44HJAMB69WrgOpDE4xB0HDbu3wfqdX+HWAy1n8fAiNlmtDA6Owv8+ePvGw4jdHMDWa5UwMnJQAGa2SzUfxNQSrk6MQEzmw3ky8lJlCsVSABwpqb8PcbGYKyuAgCcw0M4h4cAALm6ChGJ+LrfckgAQCzm62BkMoBSAAB7cxP25iYAQCgF+fKlf8BtjmAnNAyYuZy7Pj2Fs7cHZ28PPD11t3M5wDA8IXpOSB9CubQEJJMAAGtrC2i1gFYL9tYWAEAkkzDSae+gYzEIiDahT0qNN2/chWXB2d6+i3p7G7As1+b1a08MZ2oKBGHePgwT+egR5NOnrlM+DyQSEInEHVA+D/n4McSTJ+DcHEQ+P5QQAKC1pi4WWRdiYD+0v3717P7dUtnZGdxXhaAuFqm1plulkQgYjfZFxVgM8sULz1T1nGJpCRzQuRiNAu2rY3bexmJApdJjaK2tAaZrYn/4AP74MZBIzM3ByGYB04S1toaRt297DbprRGvNsi7zemGhNw2RCHWh4Obq8pKNaHT4r2hsjE6lQq01LwqFPtvrhQVqrd2UKqXwQD3AvXbZ34qRyUBNT6NcLuNyZwesVofn8uoKV58+QSmF8elpyEymZ3skmey0Q9lJS1flwTDcy9wW8/Pn4WQDbIxcrvMpAEB2Yd+97frYIpGA8+2bG93fv4H+efLXL9jv3gHj4x0M/v7dh92ZaZxqla31dTZGR31Hh6DaGB1la32dTrXqMUSdnLC1vOw9pfmplGwtL5MnJwGmttsTHx2xOT//z2TN+Xk6R0dDm8NQwk73+PKFtZkZX6LazAzt/X0/OH9CrTUvzs54ubHB2sOH/WQTE7zc2ODF2ZkvWWDCjhYKvMrlWA+HWQ+HeZXLURcKnf0gIkjSq9zL5fLddYEASYhS0a3w7rsLQLUnAi8RWmt2g0H0GgQBGRTcMMz/AdfWZTuEfWhGAAAAAElFTkSuQmCC';
+type SampleImages = typeof sampleImagesDataUrls;
+type SampleFiles = {
+  [k in keyof SampleImages]: File;
+};
+
+const toBlob = async (file: string) => await (await fetch(file)).blob();
+
+const toFile = async (key: string, content: string) => await new File([await toBlob(content)], `${key}.jpg`, {type: 'image/jpg'});
+
+const getSampleTestFiles = async (sampleImageObject: SampleImages): Promise<SampleFiles> => {
+  const testFiles: Partial<SampleFiles> = {};
+  for (let key of Object.keys(sampleImagesDataUrls) as (keyof SampleImages)[]) {
+    const file = await toFile(key, sampleImageObject[key]);
+    testFiles[key] = file;
+  }
+  return testFiles as SampleFiles;
+};
 
 describe('ImageCompress Static Utility', () => {
-  let testFile: File;
+
+  let testFiles: SampleFiles;
+  let SampleRender: Partial<Renderer2>;
+  let SampleInput: Partial<HTMLInputElement>;
+  let SampleCanvas: Partial<HTMLCanvasElement>;
+  let SampleContext: Partial<CanvasRenderingContext2D>;
 
   beforeEach(async () => {
-    const blob = await (await fetch(ANGULAR_LOGO)).blob();
-    testFile = new File([blob], 'angular_logo.png', { type: 'image/png' });
+
+    testFiles = await getSampleTestFiles(sampleImagesDataUrls);
+
+    SampleInput = jasmine.createSpyObj<HTMLInputElement>(['click']);
+    SampleCanvas = jasmine.createSpyObj<HTMLCanvasElement>(['getContext', 'toDataURL'], ['width', 'height']);
+    SampleContext = jasmine.createSpyObj<CanvasRenderingContext2D>(['save', 'rotate', 'translate', 'drawImage', 'restore']);
+
+    (SampleCanvas.getContext as jasmine.Spy).and.returnValue(SampleContext);
+
+    SampleRender = {
+      createElement: (type) => {
+        if (type === 'input') {
+          return SampleInput;
+        } else if (type === 'canvas') {
+          return SampleCanvas;
+        }
+        return null;
+      },
+      setStyle: jasmine.createSpy(),
+      setProperty: jasmine.createSpy(),
+      listen: (target, eventName, callback) => () => {
+        callback({target: {value: 'test', files: []}});
+      },
+    };
+
+    SampleRender.listen?.(SampleInput, 'change', jasmine.createSpy())();
+    SampleRender.listen?.(SampleInput, 'click', jasmine.createSpy())();
+
   });
 
-  it('should be count byte', async () => {
-    const result = ImageCompress.byteCount(ANGULAR_LOGO);
-    expect(result === 1446).toBeTruthy();
+  it('should count byte', async () => {
+    const result = ImageCompress.byteCount(sampleImagesDataUrls.up);
+    expect(result > 1024).toBeTruthy();
   });
 
-  it('should get orientation', async () => {
-    const result = await ImageCompress.getOrientation(testFile);
-    expect(result).toEqual(DOC_ORIENTATION.NotDefined);
+  it('should get orientations', async () => {
+    expect(await ImageCompress.getOrientation(testFiles.defaultValue)).toEqual(DOC_ORIENTATION.NotDefined);
+    expect(await ImageCompress.getOrientation(testFiles.up)).toEqual(DOC_ORIENTATION.Up);
+    expect(await ImageCompress.getOrientation(testFiles.down)).toEqual(DOC_ORIENTATION.Down);
   });
 
   it('should get data url from file', async () => {
-    const result = await ImageCompress.fileToDataURL(testFile);
-    expect(result).toEqual(ANGULAR_LOGO);
+    const result = await ImageCompress.fileToDataURL(testFiles.up);
+    expect(result).toEqual(sampleImagesDataUrls.up);
   });
 
-  // it('should generate input upload for a single file and click on it', async () => {
-  //   const mockRender: Partial<Renderer2> = {
-  //     createElement: jasmine.createSpy(),
-  //     setStyle: jasmine.createSpy(),
-  //     setProperty: jasmine.createSpy(),
-  //     listen: (target, eventName, callback) => () => {
-  //       callback({ target: { value: 'test', files: [] } });
-  //     },
-  //   };
+  it('should generate input upload for a single file and click on it', fakeAsync(() => {
+    ImageCompress.generateUploadInput(SampleRender as Renderer2, false).then(result =>
+      expect(Object.keys(result)).toEqual(['image'])
+    );
+    tick(1000);
+    expect(SampleInput.click).toHaveBeenCalled();
+  }));
 
-  //   const mockInput = jasmine.createSpyObj<HTMLInputElement>(['click']);
-  //   (mockRender.createElement as jasmine.Spy).and.returnValue(mockInput);
 
-  //   if (mockRender.listen) {
-  //     mockRender.listen(mockInput, 'change', () => {
-  //       console.log('TEST');
-  //     })();
-  //     mockRender.listen(mockInput, 'click', () => {
-  //       console.log('TEST');
-  //     })();
-  //   }
+  it('should constrain by max width', async () => {
 
-  //   const result = await ImageCompress.generateUploadInput(
-  //     mockRender as Renderer2,
-  //     false
-  //   );
-  //   expect(mockInput.click).toHaveBeenCalled();
+    (SampleCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
+    const result = await ImageCompress.compress(sampleImagesDataUrls.up,
+      DOC_ORIENTATION.LeftMirrored,
+      SampleRender as Renderer2,
+      100,
+      80,
+      20,
+      20);
+    expect(result).toEqual('data-url-test');
+    const sizeSource = ImageCompress.byteCount(sampleImagesDataUrls.up);
+    const sizeResult = ImageCompress.byteCount(result);
+    expect(sizeSource > sizeResult * 10).toBeTruthy();
+  });
 
-  //   expect(Object.keys(result)).toEqual(['image']);
-  // });
-
-  //
-  // it('should constrain by max width', async () => {
-  //   const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
-  //   const sizeSource = ngxImageCompressService.byteCount(ANGULAR_LOGO);
-  //   const resultCompress = await ngxImageCompressService.compressFile(ANGULAR_LOGO, DOC_ORIENTATION.Up, 100, 80, 21);
-  //   const sizeResult = ngxImageCompressService.byteCount(resultCompress);
-  //   expect(sizeSource > sizeResult).toBeTruthy();
-  // });
-  //
-  // it('should constrain by max height', async () => {
-  //   const ngxImageCompressService: NgxImageCompressService = TestBed.inject(NgxImageCompressService);
-  //   const sizeSource = ngxImageCompressService.byteCount(ANGULAR_LOGO);
-  //   const resultCompress = await ngxImageCompressService.compressFile(ANGULAR_LOGO, DOC_ORIENTATION.Up, 100, 80, 28, 21);
-  //   const sizeResult = ngxImageCompressService.byteCount(resultCompress);
-  //   console.log(sizeSource, sizeResult)
-  //   expect(sizeSource > sizeResult).toBeTruthy();
-  // });
 });

@@ -22,13 +22,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: "Build the library"
-        run: npm run ci:build:library
+        run: yarn ci:build:library
 
       - name: "Build the demo app"
-        run: npm run ci:build:app
+        run: yarn ci:build:app
 
       - name: "Test the library"
-        run: npm run ci:test:library
+        run: yarn ci:test:library
 
       - name: "Test the demo app"
-        run: npm run ci:test:app
+        run: yarn ci:test:app

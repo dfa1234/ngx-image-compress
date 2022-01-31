@@ -26,7 +26,6 @@ describe('NgxImageCompress Library', () => {
     const sizeSource = ngxImageCompressService.byteCount(ANGULAR_LOGO);
     const resultCompress = await ngxImageCompressService.compressFile(ANGULAR_LOGO, DOC_ORIENTATION.Up, 50, 50);
     const sizeResult = ngxImageCompressService.byteCount(resultCompress);
-    console.log(sizeSource, sizeResult)
     expect(sizeSource > sizeResult).toBeTruthy();
   });
 
@@ -43,7 +42,6 @@ describe('NgxImageCompress Library', () => {
     const sizeSource = ngxImageCompressService.byteCount(ANGULAR_LOGO);
     const resultCompress = await ngxImageCompressService.compressFile(ANGULAR_LOGO, DOC_ORIENTATION.Up, 100, 80, 28, 21);
     const sizeResult = ngxImageCompressService.byteCount(resultCompress);
-    console.log(sizeSource, sizeResult)
     expect(sizeSource > sizeResult).toBeTruthy();
   });
 
