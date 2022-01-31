@@ -38,5 +38,5 @@ jobs:
 
       - name: "Publish the demo on firebase"
         run: |
-          yarn global install firebase-tools
+          yarn global add firebase-tools
           firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress
