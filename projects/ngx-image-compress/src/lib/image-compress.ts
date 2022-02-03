@@ -140,10 +140,13 @@ export class ImageCompress {
       let w = sourceImage.naturalWidth;
       let h = sourceImage.naturalHeight;
 
-      if (orientation === DOC_ORIENTATION.Right || orientation === DOC_ORIENTATION.Left) {
-        const t = w;
-        w = h;
-        h = t;
+      if (!CSS.supports('image-orientation', 'from-image')) {
+        if (orientation === DOC_ORIENTATION.Right
+          || orientation === DOC_ORIENTATION.Left) {
+          const t = w;
+          w = h;
+          h = t;
+        }
       }
 
       let xratio = maxwidth ? maxwidth / w : 1;
@@ -155,7 +158,7 @@ export class ImageCompress {
 
       const TO_RADIANS = Math.PI / 180;
 
-      if (orientation === DOC_ORIENTATION.Up) {
+      if (CSS.supports('image-orientation', 'from-image') || orientation === DOC_ORIENTATION.Up) {
 
         ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
 
