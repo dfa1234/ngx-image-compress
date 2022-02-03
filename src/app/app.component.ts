@@ -98,5 +98,5 @@ export class AppComponent {
   }
 
   //for current migration to netlify
-  netlifyBadge = window.document.location.host.includes('netlify')
+  netlifyBadge = window?.document?.location?.host?.includes('netlify')
 }
