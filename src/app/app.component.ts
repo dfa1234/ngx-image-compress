@@ -96,4 +96,7 @@ export class AppComponent {
           this.imgResultAfterResizeMax = result;
         });
   }
+
+  //for current migration to netlify
+  netlifyBadge = window.document.location.host.includes('netlify')
 }

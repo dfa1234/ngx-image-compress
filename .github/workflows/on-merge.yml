@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-test-deploy:
-    name: Build, test, and deploy the demo on firebase
+    name: Build, test, and deploy the demo only
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: "Test the demo app"
         run: yarn ci:test:app
 
-      - name: "Publish the demo on firebase"
+      - name: "Deploy to firebase"
         run: |
           yarn global add firebase-tools
           firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress
