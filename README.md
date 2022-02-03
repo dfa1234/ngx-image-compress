@@ -17,7 +17,7 @@ https://stackblitz.com/edit/ngx-image-compress
 
 For **performance tests**, in particular tests on mobile, please **do not use stackbliz**, put rather this optimised
 demo, equivalent to what you get in a production-ready application:  
-https://ngx-image-compress.web.app/
+https://image-library.app
 
 Angular 13+ do not need any module import. Inject the service in the constructor of your component directly.  
 For any angular version **before** 13, you should first import the service in your module, like this:
