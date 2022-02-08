@@ -36,6 +36,9 @@ jobs:
       - name: "Test the demo app"
         run: yarn ci:test:app
 
+      - name: "Ship the coverage within the demo website"
+        run: cp -r ./coverage ./dist/ngx-image-compress-demo/coverage
+
       - name: "Deploy to firebase"
         run: |
           yarn global add firebase-tools

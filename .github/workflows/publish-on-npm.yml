@@ -66,23 +66,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
-
-      - name: "Deploy to Firebase"
-        run: |
-          yarn global add firebase-tools
-          firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress
-
-      - name: "Deploy to Netlify"
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-          publish-dir: './dist/ngx-image-compress-demo'
-          production-branch: master
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1

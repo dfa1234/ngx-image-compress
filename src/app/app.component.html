@@ -49,17 +49,18 @@
   <ul>
     <li>
       <a href="/assets/picture-5-MB.jpg" target="_blank" download>
-        JPG 5 MB - can me compressed without reducing width/height.
+        Testing the algorithm: JPG 5 MB - can me compressed without reducing width/height.
       </a>
     </li>
     <li>
       <a href="/assets/picture-no-compression-available.jpg" target="_blank" download>
-        JPG 3 MB - no compression available without reducing size.
+        Testing a normal case: JPG 3 MB - no compression available without reducing size.
       </a>
     </li>
     <li>
       <a href="/assets/up_exif.jpg" target="_blank" download>
-        Testing Orientation: This arrow is actually pointing left, but it should be pointing up once compressed, to be displayed correctly (Exif Orientation = rotation 90° clockwise)
+        Testing Orientation: This arrow is actually pointing left, but it should be pointing up once compressed, in
+        order to be displayed correctly (Exif Orientation = rotation 90° clockwise)
       </a>
     </li>
   </ul>
@@ -78,8 +79,17 @@
     <img src="https://img.shields.io/npm/l/ngx-image-compress?color=5470c6" alt="npm">
   </a>
 
-  <a href="https://www.netlify.com" *ngIf="netlifyBadge">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" />
+  <a href="https://app.netlify.com/sites/ngx-image-compress/deploys" *ngIf="netlifyBadge">
+    <img src="https://api.netlify.com/api/v1/badges/a4693bd8-e6c8-47e1-ab40-cbae0f0d579d/deploy-status"
+         alt="Netlify status"/>
+  </a>
+
+  <a href="/coverage/ngx-image-compress">
+    Library coverage
+  </a>
+
+  <a href="/coverage/ngx-image-compress-demo">
+    Website coverage
   </a>
 
 </footer>
