@@ -39,11 +39,6 @@ jobs:
       - name: "Ship the coverage within the demo website"
         run: cp -r ./coverage ./dist/ngx-image-compress-demo/coverage
 
-      - name: "Deploy to firebase"
-        run: |
-          yarn global add firebase-tools
-          firebase --token ${{ secrets.FIREBASE_TOKEN }} deploy --only hosting --project ngx-image-compress
-
       - name: "Deploy to Netlify"
         uses: nwtgck/actions-netlify@v1.2
         with:
