@@ -19,16 +19,16 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: "Install dependency"
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: "Build the library"
-        run: yarn ci:build:library
+        run: npm run ci:build:library
 
       - name: "Build the demo app"
-        run: yarn ci:build:app
+        run: npm run ci:build:app
 
       - name: "Test the library"
-        run: yarn ci:test:library
+        run: npm run ci:test:library
 
       - name: "Test the demo app"
-        run: yarn ci:test:app
+        run: npm run ci:test:app

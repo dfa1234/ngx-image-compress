@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: "Install dependency"
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
         # Workflow using with https://github.com/maks-stupak/gh-action-bump-version
         # Based on the commit messages, increment the version from the latest release.
@@ -44,16 +44,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build the library"
-        run: yarn ci:build:library
+        run: npm run ci:build:library
 
       - name: "Build the demo app"
-        run: yarn ci:build:app
+        run: npm run ci:build:app
 
       - name: "Test the library"
-        run: yarn ci:test:library
+        run: npm run ci:test:library
 
       - name: "Test the demo app"
-        run: yarn ci:test:app
+        run: npm run ci:test:app
 
       - name: "Ship the README.md with the library build"
         run: cp ./README.md ./dist/ngx-image-compress/README.md
