@@ -3,6 +3,7 @@
   "version": "13.1.9",
   "author": "David Faure",
   "license": "MIT",
+  "homepage": "https://image-library.app"
   "repository": "https://github.com/dfa1234/ngx-image-compress",
   "keywords": [
     "angular",
