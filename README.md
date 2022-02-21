@@ -181,6 +181,11 @@ or `window.document` directly.
 
 ## Change log
 
+### 2022/02/22
+
+- Fix Exif rotation for new version of Chrome 79+
+- Native upload for Safari browser
+
 ### 2022/01/19
 
 - Implementing a built-in algorithm, looping several times, to reach a desired max size in Megabytes
