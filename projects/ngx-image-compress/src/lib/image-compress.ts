@@ -57,41 +57,48 @@ export class ImageCompress {
         navigator.userAgent
       );
 
-      const uploadPromise = isSafari
-        ? ImageCompress.generateUploadInputNative(multiple)
-        : ImageCompress.generateUploadInputRenderer(render, multiple);
+      Promise.resolve(isSafari)
+        .then((onlyNative) => {
+          if (onlyNative) {
+            return ImageCompress.generateUploadInputNative(
+              window.document,
+              multiple
+            );
+          } else {
+            return ImageCompress.generateUploadInputRenderer(render, multiple);
+          }
+        })
+        .then((filesList: FileList | null) => {
+          const files = filesList ? Array.from(filesList) : [];
+          const orientationPromises = files.map((file) =>
+            ImageCompress.getOrientation(file)
+          );
+          const readerPromises = files.map((file) =>
+            ImageCompress.fileToDataURL(file)
+          );
 
-      uploadPromise.then((filesList: FileList | null) => {
-        const files = filesList ? Array.from(filesList) : [];
-        const orientationPromises = files.map((file) =>
-          ImageCompress.getOrientation(file)
-        );
-        const readerPromises = files.map((file) =>
-          ImageCompress.fileToDataURL(file)
-        );
+          let orientationsResult: DOC_ORIENTATION[] = [];
 
-        let orientationsResult: DOC_ORIENTATION[] = [];
-
-        Promise.all(orientationPromises)
-          .then((orientations: DOC_ORIENTATION[]) => {
-            orientationsResult = orientations;
-            return Promise.all(readerPromises);
-          })
-          .then((readerResult) => {
-            if (multiple) {
-              const result = readerResult.map((image, index) => ({
-                image,
-                orientation: orientationsResult[index],
-              }));
-              resolve(result);
-            } else {
-              resolve({
-                image: readerResult[0],
-                orientation: orientationsResult[0],
-              });
-            }
-          });
-      });
+          Promise.all(orientationPromises)
+            .then((orientations: DOC_ORIENTATION[]) => {
+              orientationsResult = orientations;
+              return Promise.all(readerPromises);
+            })
+            .then((readerResult) => {
+              if (multiple) {
+                const result = readerResult.map((image, index) => ({
+                  image,
+                  orientation: orientationsResult[index],
+                }));
+                resolve(result);
+              } else {
+                resolve({
+                  image: readerResult[0],
+                  orientation: orientationsResult[0],
+                });
+              }
+            });
+        });
     });
 
   static fileToDataURL = (file: File): Promise<string> => {
@@ -136,11 +143,13 @@ export class ImageCompress {
       inputElement.click();
     });
 
-  static generateUploadInputNative = (multiple: boolean = true) => {
+  static generateUploadInputNative = (
+    documentNativeApi: any,
+    multiple: boolean = true
+  ) => {
     let lock = false;
     return new Promise<FileList | null>((resolve, reject) => {
-      console.log('Upload using native');
-      const inputElement = document.createElement('input');
+      const inputElement = documentNativeApi.createElement('input');
       inputElement.id = 'upload-input' + new Date();
       inputElement.style.display = 'none';
       inputElement.setAttribute('type', 'file');
@@ -149,7 +158,7 @@ export class ImageCompress {
         inputElement.setAttribute('multiple', 'true');
       }
 
-      document.body.appendChild(inputElement);
+      documentNativeApi.body.appendChild(inputElement);
 
       inputElement.addEventListener(
         'change',
@@ -157,8 +166,8 @@ export class ImageCompress {
           lock = true;
           resolve(inputElement.files);
           // remove from dom
-          document.body.removeChild(
-            document.getElementById(inputElement.id) as Node
+          documentNativeApi.body.removeChild(
+            documentNativeApi.getElementById(inputElement.id) as Node
           );
         },
         { once: true }
@@ -169,11 +178,11 @@ export class ImageCompress {
         'focus',
         () => {
           setTimeout(() => {
-            if (!lock && document.getElementById(inputElement.id)) {
+            if (!lock && documentNativeApi.getElementById(inputElement.id)) {
               reject(new Error('onblur'));
               // remove from dom
-              document.body.removeChild(
-                document.getElementById(inputElement.id) as Node
+              documentNativeApi.body.removeChild(
+                documentNativeApi.getElementById(inputElement.id) as Node
               );
             }
           }, 300);
@@ -255,8 +264,7 @@ export class ImageCompress {
           ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
           ctx.restore();
         } else {
-          // console.warn('ngx-image-compress - no orientation value found');
-          // same as default UP
+          // no orientation value found - same as default UP
           ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
         }
 

@@ -73,8 +73,6 @@ describe('ImageCompress Static Utility', () => {
         return () => {};
       },
     };
-
-    document.createElement = mockRender.createElement as any;
   });
 
   it('should count byte', async () => {
@@ -156,13 +154,22 @@ describe('ImageCompress Static Utility', () => {
     expect(mockInput.click).toHaveBeenCalled();
   }));
 
-  // it('should generate input using native js api and upload a multiple file', fakeAsync(() => {
-  //   ImageCompress.generateUploadInputNative(false).then((result) =>
-  //     expect(result?.[0].name).toEqual(testFiles.up.name)
-  //   );
-  //   tick(1000);
-  //   expect(mockInput.click).toHaveBeenCalled();
-  // }));
+  it('should generate input using native js api and upload a multiple file', fakeAsync(() => {
+    const mockBody = {
+      appendChild: jasmine.createSpy(),
+      removeChild: jasmine.createSpy(),
+    };
+    ImageCompress.generateUploadInputNative(
+      {
+        ...mockRender,
+        body: mockBody,
+      },
+      true
+    ).then((result) => expect(result?.[0].name).toEqual(testFiles.up.name));
+    tick(1000);
+    expect(mockInput.click).toHaveBeenCalled();
+    expect(mockBody.appendChild).toHaveBeenCalled();
+  }));
 
   it('should constrain max width and max height', async () => {
     (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
