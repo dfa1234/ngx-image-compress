@@ -169,15 +169,14 @@ We will use Renderer2, and transform the image using HTML canvas encrustation. I
 the library and import renderer by yourself, or remplace it with another DOM abstraction,
 using  [RendererFactory2](https://angular.io/api/core/RendererFactory2).
 
-There are mainly two advantage for using Renderer2 abstraction over direct DOM manipulation, using `ElementRef`
-or `window.document` directly.
+There are mainly two advantage for using Renderer2 abstraction over direct DOM manipulation (by using `ElementRef`
+or `window.document` directly).
 
-* Angular keeps the component & the view in sync using Templates, data binding & change detection. All of them are
+* Angular keeps the component and the view in sync using templates, data binding, and change detection. All of them are
   bypassed when we update the DOM Directly.
-* DOM Manipulation works only in a browser. You will not able to use the App in other platforms like in a web worker, in
-  server (by using Server-side rendering), in a mobile or desktop app, etc... where there is no browser.
-* The DOM APIs do not sanitize the data. Hence, it is possible to inject a script, thereby, opening our app an easy
-  target for the XSS injection attack.
+* DOM Manipulation works only in a browser. You will not able to use your app in other platforms like in a web worker, in
+  server (for Server-Side Rendering), in a mobile or a desktop app, etc... where there is no browser.
+* The DOM APIs do not sanitize the data. Hence, it is possible to inject a script, thereby, opening our app to XSS injection attacks.
 
 ## Change log
 
