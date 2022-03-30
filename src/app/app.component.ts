@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {DataUrl, DOC_ORIENTATION, NgxImageCompressService, UploadResponse,} from 'ngx-image-compress';
+import { Component } from '@angular/core';
+import { DataUrl, DOC_ORIENTATION, NgxImageCompressService, UploadResponse } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   imgResultBeforeCompress: DataUrl = '';
@@ -20,7 +20,7 @@ export class AppComponent {
   compressFile() {
     return this.imageCompress
       .uploadFile()
-      .then(({image, orientation}: UploadResponse) => {
+      .then(({ image, orientation }: UploadResponse) => {
         this.imgResultBeforeCompress = image;
         console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
 
@@ -38,18 +38,21 @@ export class AppComponent {
       });
   }
 
-  uploadFile() {
-    return this.imageCompress
-      .uploadFile()
-      .then(
-        ({image, orientation}: UploadResponse) => {
-          this.imgResultUpload = image;
-          console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
-          console.warn(
-            `${image.substring(0, 50)}... (${image.length} characters)`
-          );
+  async uploadFile() {
+    const res = await this.imageCompress.uploadFile()
+      .catch(error => {
+        if (error === 'CANCEL') {
+          console.log('UploadFile CANCELED');
+          return undefined as any;
         }
-      );
+        throw error;
+      });
+    if (res) {
+      const { image, orientation } = res;
+      this.imgResultUpload = image;
+      console.warn('DOC_ORIENTATION:', DOC_ORIENTATION[orientation]);
+      console.warn(`${image?.substring(0, 50)}... (${image?.length} characters)`);
+    }
   }
 
   uploadMultipleFiles() {
@@ -66,7 +69,7 @@ export class AppComponent {
   uploadAndResize() {
     return this.imageCompress
       .uploadFile()
-      .then(({image, orientation}: UploadResponse) => {
+      .then(({ image, orientation }: UploadResponse) => {
         console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
         console.warn('Compressing and resizing to width 200px height 100px...');
 

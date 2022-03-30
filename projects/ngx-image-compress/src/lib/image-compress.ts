@@ -98,7 +98,8 @@ export class ImageCompress {
                 });
               }
             });
-        });
+        })
+        .catch(err => reject(err))
     });
 
   static fileToDataURL = (file: File): Promise<string> => {
@@ -136,10 +137,21 @@ export class ImageCompress {
         ($event.target as any as HTMLInputElement).value = '';
       });
 
+      let hasFile = false;
       render.listen(inputElement, 'change', ($event) => {
+        hasFile = true;
         const files: FileList = $event.target.files;
         resolve(files);
       });
+
+      window.addEventListener('focus', () => {
+        setTimeout(() => {
+          if (!hasFile) {
+            reject('CANCEL');
+          }
+        }, 500)
+      }, { once: true });
+
       inputElement.click();
     });
 
