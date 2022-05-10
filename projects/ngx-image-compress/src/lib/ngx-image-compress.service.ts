@@ -5,48 +5,65 @@ import {UploadResponse} from './models/upload-response';
 import {DataUrl} from './models/data-url';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class NgxImageCompressService {
+    private readonly render: Renderer2;
 
-  private readonly render: Renderer2;
+    public DOC_ORIENTATION = DOC_ORIENTATION;
 
-  public DOC_ORIENTATION = DOC_ORIENTATION;
+    constructor(rendererFactory: RendererFactory2) {
+        this.render = rendererFactory.createRenderer(null, null);
+    }
 
-  constructor(rendererFactory: RendererFactory2) {
-    this.render = rendererFactory.createRenderer(null, null);
-  }
+    /**
+     * helper to evaluate the compression rate
+     * @param imgString the image in base64 string format
+     */
+    public byteCount(image: DataUrl) {
+        return ImageCompress.byteCount(image);
+    }
 
-  /**
-   * helper to evaluate the compression rate
-   * @param imgString the image in base64 string format
-   */
-  public byteCount(image: DataUrl) {
-    return ImageCompress.byteCount(image);
-  }
+    /**
+     * Get the correct Orientation value from image tags
+     */
+    public getOrientation(file: File): Promise<DOC_ORIENTATION> {
+        return ImageCompress.getOrientation(file);
+    }
 
-  /**
-   * Get the correct Orientation value from image tags
-   */
-  public getOrientation(file: File): Promise<DOC_ORIENTATION> {
-    return ImageCompress.getOrientation(file);
-  }
+    /**
+     * return a promise with the new image data and image orientation
+     * Nothing happen if no file have been selected
+     */
+    public uploadFile(): Promise<UploadResponse> {
+        return ImageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
+    }
 
-  /**
-   * return a promise with the new image data and image orientation
-   */
-  public uploadFile(): Promise<UploadResponse> {
-    return ImageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
-  }
+    /**
+     * return a promise with an array of image data and image orientation
+     * Nothing happen if no files have been selected
+     */
+    public uploadMultipleFiles(): Promise<UploadResponse[]> {
+        return ImageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
+    }
 
-  /**
-   * return a promise with an array of image data and image orientation
-   */
-  public uploadMultipleFiles(): Promise<UploadResponse[]> {
-    return ImageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
-  }
+    /**
+     * return a promise with the new image data and image orientation
+     * the promise will reject if no file have been selected
+     */
+    public uploadFileOrReject(): Promise<UploadResponse> {
+        return ImageCompress.uploadFile(this.render, false, true) as Promise<UploadResponse>;
+    }
 
-  /**
+    /**
+     * return a promise with an array of image data and image orientation
+     * the promise will reject if no files have been selected
+     */
+    public uploadMultipleFilesOrReject(): Promise<UploadResponse[]> {
+        return ImageCompress.uploadFile(this.render, true, true) as Promise<UploadResponse[]>;
+    }
+
+    /**
    * perform a compression from the given DataUrl (string), provided by the uploadFile, or uploadMultipleFiles method
    *
    *
@@ -59,24 +76,24 @@ export class NgxImageCompressService {
    | maxwidth    | number | Maximum width in pixels if you need to resize (optional, default: 0 - no resize)  |
    | maxheight   | number | Maximum height in pixels if you need to resize (optional, default: 0 - no resize) |
    */
-  public compressFile(
-    image: DataUrl,
-    orientation: DOC_ORIENTATION,
-    ratio: number = 50,
-    quality: number = 50,
-    maxWidth: number = 0,
-    maxHeight: number = 0
-  ): Promise<DataUrl> {
-    return ImageCompress.compress(image, orientation, this.render, ratio, quality, maxWidth, maxHeight);
-  }
+    public compressFile(
+        image: DataUrl,
+        orientation: DOC_ORIENTATION,
+        ratio: number = 50,
+        quality: number = 50,
+        maxWidth: number = 0,
+        maxHeight: number = 0
+    ): Promise<DataUrl> {
+        return ImageCompress.compress(image, orientation, this.render, ratio, quality, maxWidth, maxHeight);
+    }
 
-  /**
-   * Most simple function to use here.
-   * Perform an upload and return an image dataUrl (string format) with a maximum size, given in *MegaBytes*
-   * If the size can't be reached, the best that can be reached will be returned in promise *rejection*
-   * Put debugMode to true if you have some trouble to print some help using console.debug
-   */
-  public uploadAndGetImageWithMaxSize(maxSizeMb: number = 1, debugMode = false): Promise<DataUrl> {
-    return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render);
-  }
+    /**
+     * Most simple function to use here.
+     * Perform an upload and return an image dataUrl (string format) with a maximum size, given in *MegaBytes*
+     * If the size can't be reached, the best that can be reached will be returned in promise *rejection*
+     * Put debugMode to true if you have some trouble to print some help using console.debug
+     */
+    public uploadAndGetImageWithMaxSize(maxSizeMb: number = 1, debugMode = false): Promise<DataUrl> {
+        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render);
+    }
 }

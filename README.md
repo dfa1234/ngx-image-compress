@@ -132,15 +132,25 @@ For uploading multiple files, instead of using
 
 ```ts
 this.imageCompress.uploadFile()
-  .then((singleFile: { image: string, orientation: number }) => //...
+  .then((singleFile: { image: string, fileName:string, orientation: number }) => //...
 ```
 
 You can use
 
 ```ts
 this.imageCompress.uploadMultipleFiles()
-  .then((arrayOfFiles: { image: string, orientation: number }[]) => //...
+  .then((arrayOfFiles: { image: string, fileName:string, orientation: number }[]) => //...
 ```
+
+
+### Behavior if no files have been selected
+
+
+With `uploadFile()` and `uploadMultipleFiles()`, nothing will happen when the user is selecting nothing, close the file selection, and cancel the upload.
+
+If you want the upload promise to reject in such case, please use:
+`uploadFileOrReject()`  or `uploadMultipleFilesOrReject()` instead.
+
 
 ## compressFile() signature
 
@@ -169,16 +179,22 @@ We will use Renderer2, and transform the image using HTML canvas encrustation. I
 the library and import renderer by yourself, or remplace it with another DOM abstraction,
 using  [RendererFactory2](https://angular.io/api/core/RendererFactory2).
 
-There are mainly two advantage for using Renderer2 abstraction over direct DOM manipulation (by using `ElementRef`
-or `window.document` directly).
+There are mainly two advantage for using Renderer2 abstraction over direct DOM manipulation (by using `ElementRef` or `window.document` directly).
 
 * Angular keeps the component and the view in sync using templates, data binding, and change detection. All of them are
   bypassed when we update the DOM Directly.
-* DOM Manipulation works only in a browser. You will not able to use your app in other platforms like in a web worker, in
-  server (for Server-Side Rendering), in a mobile or a desktop app, etc... where there is no browser.
+* DOM Manipulation works only in a browser. In the future we will not be able to use other platforms like web worker, in-server (for Server-Side Rendering), in a mobile or a desktop application, etc... where there is no browser.
 * The DOM APIs do not sanitize the data. Hence, it is possible to inject a script, thereby, opening our app to XSS injection attacks.
 
+That's being said, please not that because of iOS limitations/bugs when using Renderer2, for the upload part only (not the canvas itself), we still are using `window.document` API
+
 ## Change log
+
+### 2022/05/10
+
+- Adding new API to reject promise if the user close the upload windows and no files are selected (`uploadFileOrReject` and `uploadMultipleFileOrReject`)  
+New functions avoid any breaking change in existing code, no changes are necessary, you can still use `uploadFile` or `uploadMultiple`. With these, the promise stays silent when the user cancel the upload selection.
+- Adding the file name in the upload result
 
 ### 2022/02/22
 
