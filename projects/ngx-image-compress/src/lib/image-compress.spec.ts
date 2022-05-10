@@ -131,7 +131,7 @@ describe('ImageCompress Static Utility', () => {
 
   it('should get data url from file', async () => {
     const result = await ImageCompress.fileToDataURL(testFiles.up);
-    expect(result).toEqual(sampleImagesDataUrls.up);
+    expect(result.dataUrl).toEqual(sampleImagesDataUrls.up);
   });
 
   it('should not get data url from file', async () => {
