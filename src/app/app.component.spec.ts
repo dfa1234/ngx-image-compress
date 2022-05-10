@@ -16,6 +16,8 @@ describe('AppComponent', () => {
     mockNgxImageCompressService = jasmine.createSpyObj([
       'uploadFile',
       'uploadMultipleFiles',
+      'uploadFileOrReject',
+      'uploadMultipleFilesOrReject',
       'compressFile',
       'byteCount',
       'uploadAndGetImageWithMaxSize',
@@ -70,14 +72,14 @@ describe('AppComponent', () => {
   });
 
   it('should upload file', async () => {
-    (mockNgxImageCompressService.uploadFile as jasmine.Spy).and.returnValue(
+    (mockNgxImageCompressService.uploadFileOrReject as jasmine.Spy).and.returnValue(
       Promise.resolve({
         image: testDataUrl.substring(0, 200),
         orientation: DOC_ORIENTATION.Left,
       })
     );
     await component.uploadFile();
-    expect(mockNgxImageCompressService.uploadFile).toHaveBeenCalled();
+    expect(mockNgxImageCompressService.uploadFileOrReject).toHaveBeenCalled();
     expect(component.imgResultUpload).toEqual(testDataUrl.substring(0, 200));
   });
 
