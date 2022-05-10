@@ -28,17 +28,18 @@ export class AppComponent {
         });
     }
 
-    async uploadFile() {
-        const res = await this.imageCompress.uploadFileOrReject().catch(error => {
-            console.log('UploadRejection: ', error);
-        });
-        if (res) {
-            const {image, orientation, fileName} = res;
-            this.imgResultUpload = image;
-            console.warn('File Name:', fileName);
-            console.warn('Image Orientation', DOC_ORIENTATION[orientation]);
-            console.warn(`Image encoded in ${image?.substring(0, 50)}... (${image?.length} characters)`);
-        }
+    uploadFile() {
+        this.imageCompress
+            .uploadFileOrReject()
+            .then(({image, orientation, fileName}) => {
+                this.imgResultUpload = image;
+                console.warn('File Name:', fileName);
+                console.warn('Image Orientation', DOC_ORIENTATION[orientation]);
+                console.warn(`Image encoded in ${image?.substring(0, 50)}... (${image?.length} characters)`);
+            })
+            .catch(error => {
+                console.log('UploadRejection: ', error);
+            });
     }
 
     uploadMultipleFiles() {
