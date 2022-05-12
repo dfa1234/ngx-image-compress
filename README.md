@@ -186,7 +186,7 @@ There are mainly two advantage for using Renderer2 abstraction over direct DOM m
 * DOM Manipulation works only in a browser. In the future we will not be able to use other platforms like web worker, in-server (for Server-Side Rendering), in a mobile or a desktop application, etc... where there is no browser.
 * The DOM APIs do not sanitize the data. Hence, it is possible to inject a script, thereby, opening our app to XSS injection attacks.
 
-That's being said, please not that because of iOS limitations/bugs when using Renderer2, for the upload part only (not the canvas itself), we still are using `window.document` API
+That's being said, please note that because of some iOS limitations/bugs when using Renderer2, we still are using `window.document` API, for the upload part only (not the canvas itself).
 
 ## Change log
 
