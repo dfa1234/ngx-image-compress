@@ -11,8 +11,8 @@
     "compression"
   ],
   "peerDependencies": {
-    "@angular/common": "^13.2.1",
-    "@angular/core": "^13.2.1"
+    "@angular/common": "> 5.x",
+    "@angular/core": "> 5.x"
   },
   "dependencies": {
     "tslib": "^2.3.1"
