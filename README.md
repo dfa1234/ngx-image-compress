@@ -12,15 +12,13 @@ Angular utility for compressing images to a satisfying size, that you can choose
 npm i ngx-image-compress
 ```
 
-For **visualizing** code examples:  
-https://stackblitz.com/edit/ngx-image-compress
+* For **visualizing** code examples: https://stackblitz.com/edit/ngx-image-compress
+* For **performance tests**, in particular on your mobile, please **do not use stackbliz**, put this production-ready application: https://image-library.app
+* Library is compiled with Ivy in partial mode, as it's now mandatory to process in Angular 13. Any Angular version > 9 supporting Ivy should be compatible.
+* For Angular **before 9** maybe try this once-for-all compiled library using View Engine: https://www.npmjs.com/package/ngx-image-compress-legacy 
 
-For **performance tests**, in particular tests on mobile, please **do not use stackbliz**, put rather this optimised
-demo, equivalent to what you get in a production-ready application:  
-https://image-library.app
-
-Angular 13+ do not need any module import. Inject the service in the constructor of your component directly.  
-For any angular version **before** 13, you should first import the service in your module, like this:
+Angular 13+ differ as there is no need to import the service in your module. You can inject the service in the constructor of your component directly.    
+For any angular version **before 13**, you should first import the service in your module, like this:
 
 ```typescript
 import {NgxImageCompressService} from "ngx-image-compress";
@@ -34,6 +32,7 @@ import {NgxImageCompressService} from "ngx-image-compress";
 export class AppModule {
 }
 ```
+ 
 
 ## Usage
 
@@ -189,6 +188,13 @@ There are mainly two advantage for using Renderer2 abstraction over direct DOM m
 That's being said, please note that because of some iOS limitations/bugs when using Renderer2, we still are using `window.document` API, for the upload part only (not the canvas itself).
 
 ## Change log
+
+### 2022/05/24
+
+* Every angular version from 9+ are now supported. 
+* No need to update the library after each angular release, by using now semantic versionning.
+* Every version before 9 are dropped because angular 13 only compile library ivy-compatible.
+* Anyway, if you really need to use this library in you old angular app we created here a npm compiled version in compatibily mode with View Engine: https://www.npmjs.com/package/ngx-image-compress-legacy
 
 ### 2022/05/10
 
