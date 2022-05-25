@@ -194,7 +194,7 @@ That's being said, please note that because of some iOS limitations/bugs when us
 * Every angular version from 9+ are now supported. 
 * No need to update the library after each angular release, by using now semantic versionning.
 * Every version before 9 are dropped because angular 13 only compile library ivy-compatible.
-* Anyway, if you really need to use this library in you old angular app we created here a npm compiled version in compatibily mode with View Engine: https://www.npmjs.com/package/ngx-image-compress-legacy
+* Anyway, if you really need to use this library in you old angular app we created here a npm transpiled version in compatibily mode with View Engine: https://www.npmjs.com/package/ngx-image-compress-legacy
 
 ### 2022/05/10
 
