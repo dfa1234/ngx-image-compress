@@ -87,9 +87,9 @@ export class AppComponent {
 
 ### Performing a single upload, and compressing automatically to a given max size
 
-Quicker method.
+Quicker and effortless method.
 
-Getting directly an image at a maximum of "X" MegaBytes, using an optimised algorithm:
+Getting directly an image at a maximum of "X" MegaBytes, using a built-in algorithm:
 
 ```typescript
 import {Component} from "@angular/core";
