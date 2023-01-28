@@ -151,6 +151,7 @@ export class ImageCompress {
             inputElement.id = 'upload-input' + new Date();
             inputElement.style.display = 'none';
             inputElement.setAttribute('type', 'file');
+            inputElement.setAttribute('accept', 'image/*');
 
             if (multiple) {
                 inputElement.setAttribute('multiple', 'true');
