@@ -175,7 +175,7 @@ read [this guide](http://fotoforensics.com/tutorial-estq.php)
 ## How it works under the hood?
 
 We will use Renderer2, and transform the image using HTML canvas encrustation. In fact you can use the static version in
-the library and import renderer by yourself, or remplace it with another DOM abstraction,
+the library and import renderer by yourself, or replace it with another DOM abstraction,
 using  [RendererFactory2](https://angular.io/api/core/RendererFactory2).
 
 There are mainly two advantage for using Renderer2 abstraction over direct DOM manipulation (by using `ElementRef` or `window.document` directly).
