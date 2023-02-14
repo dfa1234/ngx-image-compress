@@ -51,8 +51,9 @@ export class ImageCompress {
     static uploadFile = (render: Renderer2, multiple: boolean = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
         new Promise(function (resolve, reject) {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
-            Promise.resolve(isSafari)
+            Promise.resolve(isSafari || isIOS)
                 .then(onlyNative => {
                     if (onlyNative) {
                         return ImageCompress.generateUploadInputNative(window.document, multiple, rejectOnCancel);
