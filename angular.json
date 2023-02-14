@@ -122,8 +122,7 @@
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
                         "polyfills": ["zone.js", "zone.js/testing"],
-                        "tsConfig": "projects/ngx-image-compress/tsconfig.spec.json",
-                        "karmaConfig": "projects/ngx-image-compress/karma.conf.js"
+                        "tsConfig": "projects/ngx-image-compress/tsconfig.spec.json"
                     }
                 },
                 "lint": {
