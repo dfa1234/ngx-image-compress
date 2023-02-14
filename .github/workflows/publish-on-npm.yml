@@ -30,7 +30,7 @@ jobs:
       - name: "Automated version bump for library"
         uses: "phips28/gh-action-bump-version@master"
         with:
-          tag-prefix: "lib-"
+          tag-prefix: ""
         env:
           PACKAGEJSON_DIR: "./projects/ngx-image-compress"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
