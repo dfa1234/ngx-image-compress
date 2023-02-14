@@ -8,21 +8,21 @@
         "strict": true,
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
-        "useDefineForClassFields": false,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "sourceMap": true,
-        "paths": {
-            "ngx-image-compress": ["projects/ngx-image-compress/src", "dist/ngx-image-compress"]
-        },
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
         "moduleResolution": "node",
         "importHelpers": true,
-        "target": "es2022",
-        "module": "es2020",
-        "lib": ["es2020", "dom"]
+        "target": "ES2022",
+        "module": "ES2022",
+        "useDefineForClassFields": false,
+        "lib": ["ES2022", "dom"],
+        "paths": {
+            "ngx-image-compress": ["projects/ngx-image-compress/src", "dist/ngx-image-compress"]
+        }
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
