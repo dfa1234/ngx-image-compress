@@ -1,21 +1,22 @@
 {
-  "name": "ngx-image-compress",
-  "version": "13.1.14",
-  "author": "David Faure",
-  "license": "MIT",
-  "repository": "https://github.com/dfa1234/ngx-image-compress",
-  "keywords": [
-    "angular",
-    "image",
-    "upload",
-    "compression"
-  ],
-  "peerDependencies": {
-    "@angular/common": ">= 9",
-    "@angular/core": ">= 9"
-  },
-  "dependencies": {
-    "tslib": "^2.3.1"
-  },
-  "private": false
+    "name": "ngx-image-compress",
+    "version": "13.1.14",
+    "author": "David Faure <dfaure123@gmail.com>",
+    "license": "MIT",
+    "homepage": "https://image-library.app",
+    "repository": "https://github.com/dfa1234/ngx-image-compress",
+    "keywords": [
+        "angular",
+        "image",
+        "upload",
+        "compression"
+    ],
+    "peerDependencies": {
+        "@angular/common": ">= 9",
+        "@angular/core": ">= 9"
+    },
+    "dependencies": {
+        "tslib": "^2.5.0"
+    },
+    "private": false
 }

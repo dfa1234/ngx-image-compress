@@ -93,6 +93,15 @@
             "styles": ["src/styles.scss"],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -123,6 +132,15 @@
             "main": "projects/ngx-image-compress/src/test.ts",
             "tsConfig": "projects/ngx-image-compress/tsconfig.spec.json",
             "karmaConfig": "projects/ngx-image-compress/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ngx-image-compress/src/**/*.ts",
+              "projects/ngx-image-compress/src/**/*.html"
+            ]
           }
         }
       }
