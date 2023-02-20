@@ -12,7 +12,9 @@ export class AppComponent {
     imgResultAfterResize: DataUrl = '';
     imgResultUpload: DataUrl = '';
     imgResultAfterResizeMax: DataUrl = '';
+    imgResultAfterResizeMaxWithLoading: DataUrl = '';
     imgResultMultiple: UploadResponse[] = [];
+    loadingCompression = false;
 
     constructor(private imageCompress: NgxImageCompressService) {}
 
@@ -68,12 +70,40 @@ export class AppComponent {
             },
             (result: string) => {
                 console.error(
-                    "The compression algorithm didn't succed! The best size we can do is",
+                    "The compression algorithm didn't succeed! The best size we can do is",
                     this.imageCompress.byteCount(result),
                     'bytes'
                 );
                 this.imgResultAfterResizeMax = result;
             }
         );
+    }
+
+    uploadAndReturnWithMaxSizeWithLoading() {
+        this.loadingCompression = true;
+        return this.imageCompress.uploadAndGetImageWithMaxSize(1, true, true).then(
+            (result: DataUrl) => {
+                this.imgResultAfterResizeMaxWithLoading = result;
+            },
+            (result: any) => {
+                if(result instanceof Error) {
+                    if((result as Error).message.includes("no file selected")) {
+                        console.log("No file selected");
+                    } else {
+                        console.error("Unknown error:", result);
+                    }
+                } else {
+                    let strResult = result as string;
+                    console.error(
+                        "The compression algorithm didn't succeed! The best size we can do is",
+                        this.imageCompress.byteCount(strResult),
+                        'bytes'
+                    );
+                    this.imgResultAfterResizeMaxWithLoading = strResult;
+                }
+            }
+        ).finally(() => {
+            this.loadingCompression = false;
+        });
     }
 }
