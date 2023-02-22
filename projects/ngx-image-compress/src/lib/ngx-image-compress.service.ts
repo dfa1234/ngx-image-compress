@@ -93,7 +93,7 @@ export class NgxImageCompressService {
      * If the size can't be reached, the best that can be reached will be returned in promise *rejection*
      * Put debugMode to true if you have some trouble to print some help using console.debug
      */
-    public uploadAndGetImageWithMaxSize(maxSizeMb: number = 1, debugMode = false): Promise<DataUrl> {
-        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render);
+    public uploadAndGetImageWithMaxSize(maxSizeMb: number = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
+        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
     }
 }

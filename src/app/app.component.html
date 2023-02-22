@@ -43,6 +43,16 @@
 </section>
 
 <hr/>
+
+<section>
+  <button (click)="uploadAndReturnWithMaxSizeWithLoading()" [disabled]="loadingCompression">
+    Uploading, Compressing, and returning with max size of 1 MegaByte (with loading)
+  </button>
+  <span *ngIf="loadingCompression">Loading...</span>
+  <img *ngIf="!loadingCompression && imgResultAfterResizeMaxWithLoading" [src]="imgResultAfterResizeMaxWithLoading" alt=""/>
+</section>
+
+<hr/>
 <section>
   For your tests you can download and upload the following images:
 
