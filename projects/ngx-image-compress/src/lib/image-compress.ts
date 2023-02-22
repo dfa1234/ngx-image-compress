@@ -48,7 +48,7 @@ export class ImageCompress {
             }
         });
 
-    static uploadFile = (render: Renderer2, multiple: boolean = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
+    static uploadFile = (render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
         new Promise(function (resolve, reject) {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
@@ -105,7 +105,7 @@ export class ImageCompress {
         });
     };
 
-    static generateUploadInputRenderer = (render: Renderer2, multiple: boolean = true, rejectOnCancel = false) => {
+    static generateUploadInputRenderer = (render: Renderer2, multiple = true, rejectOnCancel = false) => {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = render.createElement('input');
@@ -145,7 +145,7 @@ export class ImageCompress {
         });
     };
 
-    static generateUploadInputNative = (documentNativeApi: any, multiple: boolean = true, rejectOnCancel = false) => {
+    static generateUploadInputNative = (documentNativeApi: any, multiple = true, rejectOnCancel = false) => {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = documentNativeApi.createElement('input');
@@ -194,10 +194,10 @@ export class ImageCompress {
         imageDataUrlSource: DataUrl,
         orientation: DOC_ORIENTATION,
         render: Renderer2,
-        ratio: number = 50,
-        quality: number = 50,
-        maxwidth: number = 0,
-        maxheight: number = 0
+        ratio = 50,
+        quality = 50,
+        maxwidth = 0,
+        maxheight = 0
     ): Promise<string> =>
         new Promise(function (resolve, reject) {
             quality = quality / 100;
@@ -224,8 +224,8 @@ export class ImageCompress {
                     }
                 }
 
-                let xratio = maxwidth ? maxwidth / w : 1;
-                let yratio = maxheight ? maxheight / h : 1;
+                const xratio = maxwidth ? maxwidth / w : 1;
+                const yratio = maxheight ? maxheight / h : 1;
                 ratio = Math.min(ratio, xratio, yratio);
                 canvas.width = w * ratio;
                 canvas.height = h * ratio;
@@ -280,7 +280,7 @@ export class ImageCompress {
             console.debug('NgxImageCompress - Opening upload window');
         }
 
-        let myFile: UploadResponse = (await ImageCompress.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
+        const myFile: UploadResponse = (await ImageCompress.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
 
         let compressedFile;
 

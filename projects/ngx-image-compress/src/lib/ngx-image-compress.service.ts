@@ -79,10 +79,10 @@ export class NgxImageCompressService {
     public compressFile(
         image: DataUrl,
         orientation: DOC_ORIENTATION,
-        ratio: number = 50,
-        quality: number = 50,
-        maxWidth: number = 0,
-        maxHeight: number = 0
+        ratio = 50,
+        quality = 50,
+        maxWidth = 0,
+        maxHeight = 0
     ): Promise<DataUrl> {
         return ImageCompress.compress(image, orientation, this.render, ratio, quality, maxWidth, maxHeight);
     }
@@ -93,7 +93,7 @@ export class NgxImageCompressService {
      * If the size can't be reached, the best that can be reached will be returned in promise *rejection*
      * Put debugMode to true if you have some trouble to print some help using console.debug
      */
-    public uploadAndGetImageWithMaxSize(maxSizeMb: number = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
+    public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
         return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
     }
 }
