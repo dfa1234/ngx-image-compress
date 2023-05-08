@@ -270,8 +270,12 @@ export class ImageCompress {
 
     static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-    static getImageMaxSize = async (maxSizeMb: number, debugMode: boolean, render: Renderer2,
-                                    rejectOnCancel = false): Promise<DataUrl> => {
+    static getImageMaxSize = async (
+        maxSizeMb: number,
+        debugMode: boolean,
+        render: Renderer2,
+        rejectOnCancel = false
+    ): Promise<UploadResponse> => {
         const MAX_TRIES = 10;
 
         const bytesToMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
@@ -299,7 +303,7 @@ export class ImageCompress {
                             'MB large'
                         );
                     }
-                    throw myFile.image;
+                    throw {...myFile, image: compressedFile};
                 } else {
                     if (debugMode) {
                         console.debug(
@@ -309,14 +313,14 @@ export class ImageCompress {
                             'MB large'
                         );
                     }
-                    throw myFile.image;
+                    throw {...myFile, image: compressedFile};
                 }
             } else {
                 if (newSize < maxSizeMb * 1024 * 1024) {
                     if (debugMode) {
                         console.debug('NgxImageCompress -', 'Here your file', bytesToMB(newSize), 'MB large');
                     }
-                    return compressedFile;
+                    return {...myFile, image: compressedFile};
                 } else if (i === 9) {
                     if (debugMode) {
                         console.debug(
@@ -328,7 +332,7 @@ export class ImageCompress {
                             'MB large'
                         );
                     }
-                    throw myFile.image;
+                    throw {...myFile, image: compressedFile};
                 }
             }
             if (debugMode) {
@@ -339,6 +343,6 @@ export class ImageCompress {
         if (debugMode) {
             console.debug('NgxImageCompress - Unexpected error');
         }
-        throw '';
+        throw {};
     };
 }

@@ -94,6 +94,15 @@ export class NgxImageCompressService {
      * Put debugMode to true if you have some trouble to print some help using console.debug
      */
     public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
+        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
+            .then(uploadResponse => uploadResponse.image)
+            .catch(e => e.image);
+    }
+
+    /**
+     * Same as before, but return more informations (file name...)
+     */
+    public uploadAndGetImageWithMaxSizeAndMetas(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<UploadResponse> {
         return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
     }
 }
