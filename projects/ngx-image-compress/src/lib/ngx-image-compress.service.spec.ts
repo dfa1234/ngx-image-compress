@@ -4,7 +4,7 @@ import {NgxImageCompressService} from './ngx-image-compress.service';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {sampleImagesDataUrls} from '../tests/sample-images-data-urls.spec';
 
-describe('NgxImageCompress Library', () => {
+describe(NgxImageCompressService.name, () => {
     beforeEach(() =>
         TestBed.configureTestingModule({
             providers: [NgxImageCompressService],
