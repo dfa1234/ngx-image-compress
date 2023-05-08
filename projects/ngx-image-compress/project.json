@@ -1,0 +1,49 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "ngx-image-compress",
+  "projectType": "library",
+  "sourceRoot": "projects/ngx-image-compress/src",
+  "prefix": "lib",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:ng-packagr",
+      "options": {
+        "project": "projects/ngx-image-compress/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "projects/ngx-image-compress/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "projects/ngx-image-compress/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": [
+        "{workspaceRoot}/dist/ngx-image-compress"
+      ]
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "polyfills": [
+          "zone.js",
+          "zone.js/testing"
+        ],
+        "tsConfig": "projects/ngx-image-compress/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@angular-eslint/builder:lint",
+      "options": {
+        "lintFilePatterns": [
+          "projects/ngx-image-compress/src/**/*.ts",
+          "projects/ngx-image-compress/src/**/*.html"
+        ]
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}
