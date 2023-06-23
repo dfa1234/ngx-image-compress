@@ -50,13 +50,12 @@
 
 <hr />
 
-<button *ngIf="!videoOpened" (click)="toggleVideoCapture()">Toggle video capture to acquire new image</button>
-<div *ngIf="videoOpened && !imageCapture">
-    <button (click)="acquireImage()">Take a picture</button>
-    <video autoplay></video>
-</div>
+<ngx-image-capture (imageCaptured)="getImageFromCamera($event)" (errorCapture)="getError($event)">
+    <button openStreamBtn>Open video capture</button>
+    <button acquireImageBtn>Take a picture</button>
+</ngx-image-capture>
+<button *ngIf="imageCapture" (click)="compressImageCapture()">Compress and replace captured image (you can press several time)</button>
 <div *ngIf="imageCapture">
-    <button (click)="compressImageCapture()">Compress and replace captured image (you can press several time)</button>
     <img [src]="imageCapture" alt="" />
 </div>
 

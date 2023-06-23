@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataUrl, DOC_ORIENTATION, NgxImageCompressService, UploadResponse} from 'ngx-image-compress';
 
 @Component({
-    selector: 'app-root',
+    selector: 'ngx-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
@@ -110,56 +110,14 @@ export class AppComponent {
             });
     }
 
-    videoOpened = false;
-    videoStream: MediaStream | null = null;
-    imageCapture = '';
+    imageCapture: DataUrl = '';
 
-    toggleVideoCapture() {
-        this.videoOpened = !this.videoOpened;
-        if (!this.videoOpened) {
-            return;
-        }
-
-        this.imageCapture = '';
-
-        const constraints = {
-            audio: false,
-            video: {
-                width: {ideal: 1920},
-                height: {ideal: 1080},
-                facingMode: {ideal: 'user'},
-            },
-        };
-
-        navigator.mediaDevices
-            .getUserMedia(constraints)
-            .then(stream => {
-                this.videoStream = stream;
-                setTimeout(() => {
-                    const videoElement: HTMLVideoElement | null = document.querySelector('video');
-                    if (videoElement) {
-                        videoElement.srcObject = stream;
-                    }
-                }, 500);
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Could not access the camera.');
-            });
+    getImageFromCamera(newImage: DataUrl) {
+        this.imageCapture = newImage;
     }
 
-    acquireImage(): void {
-        const video: HTMLVideoElement | null = document.querySelector('video');
-        const canvas = document.createElement('canvas');
-        if (video) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d')?.drawImage(video, 0, 0);
-        }
-        this.imageCapture = canvas.toDataURL('jpg', 95);
-        if (this.videoStream) {
-            this.videoStream.getVideoTracks().forEach(track => track.stop());
-        }
+    getError(errorMessage: string) {
+        console.error(errorMessage);
     }
 
     compressImageCapture() {

@@ -3,7 +3,7 @@
     "name": "ngx-image-compress",
     "projectType": "library",
     "sourceRoot": "projects/ngx-image-compress/src",
-    "prefix": "lib",
+    "prefix": "ngx",
     "targets": {
         "build": {
             "executor": "@angular-devkit/build-angular:ng-packagr",

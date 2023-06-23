@@ -8,7 +8,7 @@
         }
     },
     "sourceRoot": "projects/ngx-image-compress-demo/src",
-    "prefix": "app",
+    "prefix": "ngx",
     "targets": {
         "build": {
             "executor": "@angular-devkit/build-angular:browser",
