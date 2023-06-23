@@ -22,16 +22,16 @@ jobs:
               run: npm ci
 
             - name: 'Build the library'
-              run: npm run ci:build:library
+              run: npm run build:lib
 
             - name: 'Build the demo app'
-              run: npm run ci:build:app
+              run: npm run build:app
 
             - name: 'Test the library'
-              run: npm run ci:test:library
+              run: npm run test:lib
 
             - name: 'Test the demo app'
-              run: npm run ci:test:app
+              run: npm run test:app
 
             - name: 'Ship the coverage within the demo website'
               run: cp -r ./coverage ./dist/ngx-image-compress-demo/coverage

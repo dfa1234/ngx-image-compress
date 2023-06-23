@@ -91,7 +91,8 @@
                 "styles": ["projects/ngx-image-compress-demo/src/styles.scss"],
                 "codeCoverage": true,
                 "browsers": "ChromeHeadless",
-                "progress": true
+                "progress": true,
+                "watch": false
             }
         },
         "lint": {

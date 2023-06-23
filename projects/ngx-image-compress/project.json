@@ -28,7 +28,8 @@
                 "codeCoverage": true,
                 "browsers": "ChromeHeadless",
                 "progress": true,
-                "tsConfig": "tsconfig.spec.json"
+                "tsConfig": "tsconfig.spec.json",
+                "watch": false
             }
         },
         "lint": {

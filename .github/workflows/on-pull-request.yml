@@ -21,14 +21,14 @@ jobs:
       - name: "Install dependency"
         run: npm ci
 
-      - name: "Build the library"
-        run: npm run ci:build:library
+      - name: 'Build the library'
+        run: npm run build:lib
 
-      - name: "Build the demo app"
-        run: npm run ci:build:app
+      - name: 'Build the demo app'
+        run: npm run build:app
 
-      - name: "Test the library"
-        run: npm run ci:test:library
+      - name: 'Test the library'
+        run: npm run test:lib
 
-      - name: "Test the demo app"
-        run: npm run ci:test:app
+      - name: 'Test the demo app'
+        run: npm run test:app
