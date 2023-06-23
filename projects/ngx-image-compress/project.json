@@ -30,7 +30,7 @@
           "zone.js",
           "zone.js/testing"
         ],
-        "tsConfig": "projects/ngx-image-compress/tsconfig.spec.json"
+        "tsConfig": "{workspaceRoot}/tsconfig.spec.json"
       }
     },
     "lint": {
