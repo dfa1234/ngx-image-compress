@@ -43,11 +43,8 @@ jobs:
           PACKAGEJSON_DIR: "./"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Build the library'
-        run: npm run build:lib
-
-      - name: 'Build the demo app'
-        run: npm run build:app
+      - name: 'Build'
+        run: npm run build
 
       - name: 'Test the library'
         run: npm run test:lib

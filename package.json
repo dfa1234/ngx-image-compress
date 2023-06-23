@@ -17,8 +17,7 @@
     "lint:lib": "nx lint ngx-image-compress",
     "test:app": "nx test ngx-image-compress-demo",
     "test:lib": "node scripts/convert-assets-to-data-urls.js && nx test ngx-image-compress",
-    "build:app": "nx build ngx-image-compress-demo",
-    "build:lib": "nx build ngx-image-compress"
+    "build": "nx build ngx-image-compress-demo"
   },
   "dependencies": {
     "@angular/animations": "15.1.2",
