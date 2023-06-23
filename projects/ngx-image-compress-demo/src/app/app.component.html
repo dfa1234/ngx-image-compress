@@ -1,105 +1,103 @@
 <header>
-  <h1>ngx-image-compress demo</h1>
+    <h1>ngx-image-compress demo</h1>
 </header>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="compressFile()">Upload and compress Image</button>
-  <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt=""/>
-  <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt=""/>
+    <button (click)="compressFile()">Upload and compress Image</button>
+    <img *ngIf="imgResultBeforeCompress" [src]="imgResultBeforeCompress" alt="" />
+    <img *ngIf="imgResultAfterCompress" [src]="imgResultAfterCompress" alt="" />
 </section>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="uploadFile()">Upload Image only</button>
-  <img *ngIf="imgResultUpload" [src]="imgResultUpload" alt=""/>
+    <button (click)="uploadFile()">Upload Image only</button>
+    <img *ngIf="imgResultUpload" [src]="imgResultUpload" alt="" />
 </section>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="uploadMultipleFiles()">Upload Multiple Images</button>
-  <img *ngFor="let result of imgResultMultiple" [src]="result.image" alt=""/>
+    <button (click)="uploadMultipleFiles()">Upload Multiple Images</button>
+    <img *ngFor="let result of imgResultMultiple" [src]="result.image" alt="" />
 </section>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="uploadAndResize()">
-    Uploading, Compressing, and resizing to max width 200px and max height 100px
-  </button>
-  <img *ngIf="imgResultAfterResize" [src]="imgResultAfterResize" alt=""/>
+    <button (click)="uploadAndResize()">Uploading, Compressing, and resizing to max width 200px and max height 100px</button>
+    <img *ngIf="imgResultAfterResize" [src]="imgResultAfterResize" alt="" />
 </section>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="uploadAndReturnWithMaxSize()">
-    Uploading, Compressing, and returning with max size of 1 MegaByte
-  </button>
-  <img *ngIf="imgResultAfterResizeMax" [src]="imgResultAfterResizeMax" alt=""/>
+    <button (click)="uploadAndReturnWithMaxSize()">Uploading, Compressing, and returning with max size of 1 MegaByte</button>
+    <img *ngIf="imgResultAfterResizeMax" [src]="imgResultAfterResizeMax" alt="" />
 </section>
 
-<hr/>
+<hr />
 
 <section>
-  <button (click)="uploadAndReturnWithMaxSizeWithLoading()" [disabled]="loadingCompression">
-    Uploading, Compressing, and returning with max size of 1 MegaByte (with loading)
-  </button>
-  <span *ngIf="loadingCompression">Loading...</span>
-  <img *ngIf="!loadingCompression && imgResultAfterResizeMaxWithLoading" [src]="imgResultAfterResizeMaxWithLoading" alt=""/>
+    <button (click)="uploadAndReturnWithMaxSizeWithLoading()" [disabled]="loadingCompression">
+        Uploading, Compressing, and returning with max size of 1 MegaByte (with loading)
+    </button>
+    <span *ngIf="loadingCompression">Loading...</span>
+    <img *ngIf="!loadingCompression && imgResultAfterResizeMaxWithLoading" [src]="imgResultAfterResizeMaxWithLoading" alt="" />
 </section>
 
-<hr/>
+<hr />
+
+<button *ngIf="!videoOpened" (click)="toggleVideoCapture()">Toggle video capture to acquire new image</button>
+<div *ngIf="videoOpened && !imageCapture">
+    <button (click)="acquireImage()">Take a picture</button>
+    <video autoplay></video>
+</div>
+<div *ngIf="imageCapture">
+    <button (click)="compressImageCapture()">Compress and replace captured image (you can press several time)</button>
+    <img [src]="imageCapture" alt="" />
+</div>
+
+<hr />
 <section>
-  For your tests you can download and upload the following images:
+    For your tests you can download and upload the following images:
 
-  <ul>
-    <li>
-      <a href="/assets/picture-5-MB.jpg" target="_blank" download>
-        Testing the algorithm: JPG 5 MB - can me compressed without reducing width/height.
-      </a>
-    </li>
-    <li>
-      <a href="/assets/picture-no-compression-available.jpg" target="_blank" download>
-        Testing a normal case: JPG 3 MB - no compression available without reducing size.
-      </a>
-    </li>
-    <li>
-      <a href="/assets/up_exif.jpg" target="_blank" download>
-        Testing Orientation: This arrow is actually pointing left, but it should be pointing up once compressed, in
-        order to be displayed correctly (Exif Orientation = rotation 90° clockwise)
-      </a>
-    </li>
-  </ul>
-
-
+    <ul>
+        <li>
+            <a href="/assets/picture-5-MB.jpg" target="_blank" download>
+                Testing the algorithm: JPG 5 MB - can me compressed without reducing width/height.
+            </a>
+        </li>
+        <li>
+            <a href="/assets/picture-no-compression-available.jpg" target="_blank" download>
+                Testing a normal case: JPG 3 MB - no compression available without reducing size.
+            </a>
+        </li>
+        <li>
+            <a href="/assets/up_exif.jpg" target="_blank" download>
+                Testing Orientation: This arrow is actually pointing left, but it should be pointing up once compressed, in order to be
+                displayed correctly (Exif Orientation = rotation 90° clockwise)
+            </a>
+        </li>
+    </ul>
 </section>
-
 
 <footer>
+    <a href="https://github.com/ngx-image-compress/actions/blob/master/LICENSE" target="_blank">
+        <img src="https://img.shields.io/npm/v/ngx-image-compress?color=91cc75" alt="licence" />
+    </a>
 
-  <a href="https://github.com/ngx-image-compress/actions/blob/master/LICENSE" target="_blank">
-    <img src="https://img.shields.io/npm/v/ngx-image-compress?color=91cc75" alt="licence">
-  </a>
+    <a href="https://www.npmjs.com/package/ngx-image-compress" target="_blank">
+        <img src="https://img.shields.io/npm/l/ngx-image-compress?color=5470c6" alt="npm" />
+    </a>
 
-  <a href="https://www.npmjs.com/package/ngx-image-compress" target="_blank">
-    <img src="https://img.shields.io/npm/l/ngx-image-compress?color=5470c6" alt="npm">
-  </a>
+    <a href="https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml">
+        <img src="https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml/badge.svg" alt="Build Status" />
+    </a>
 
-  <a href="https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml">
-    <img src="https://github.com/dfa1234/ngx-image-compress/actions/workflows/on-merge.yml/badge.svg"
-         alt="Build Status"/>
-  </a>
+    <a href="/coverage/ngx-image-compress"> Library coverage </a>
 
-  <a href="/coverage/ngx-image-compress">
-    Library coverage
-  </a>
-
-  <a href="/coverage/ngx-image-compress-demo">
-    Website coverage
-  </a>
-
+    <a href="/coverage/ngx-image-compress-demo"> Website coverage </a>
 </footer>

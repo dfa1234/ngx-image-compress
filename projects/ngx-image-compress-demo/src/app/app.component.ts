@@ -81,29 +81,93 @@ export class AppComponent {
 
     uploadAndReturnWithMaxSizeWithLoading() {
         this.loadingCompression = true;
-        return this.imageCompress.uploadAndGetImageWithMaxSize(1, true, true).then(
-            (result: DataUrl) => {
-                this.imgResultAfterResizeMaxWithLoading = result;
-            },
-            (result: any) => {
-                if(result instanceof Error) {
-                    if((result as Error).message.includes("no file selected")) {
-                        console.log("No file selected");
+        return this.imageCompress
+            .uploadAndGetImageWithMaxSize(1, true, true)
+            .then(
+                (result: DataUrl) => {
+                    this.imgResultAfterResizeMaxWithLoading = result;
+                },
+                (result: any) => {
+                    if (result instanceof Error) {
+                        if ((result as Error).message.includes('no file selected')) {
+                            console.log('No file selected');
+                        } else {
+                            console.error('Unknown error:', result);
+                        }
                     } else {
-                        console.error("Unknown error:", result);
+                        let strResult = result as string;
+                        console.error(
+                            "The compression algorithm didn't succeed! The best size we can do is",
+                            this.imageCompress.byteCount(strResult),
+                            'bytes'
+                        );
+                        this.imgResultAfterResizeMaxWithLoading = strResult;
                     }
-                } else {
-                    let strResult = result as string;
-                    console.error(
-                        "The compression algorithm didn't succeed! The best size we can do is",
-                        this.imageCompress.byteCount(strResult),
-                        'bytes'
-                    );
-                    this.imgResultAfterResizeMaxWithLoading = strResult;
                 }
-            }
-        ).finally(() => {
-            this.loadingCompression = false;
+            )
+            .finally(() => {
+                this.loadingCompression = false;
+            });
+    }
+
+    videoOpened = false;
+    videoStream: MediaStream | null = null;
+    imageCapture = '';
+
+    toggleVideoCapture() {
+        this.videoOpened = !this.videoOpened;
+        if (!this.videoOpened) {
+            return;
+        }
+
+        this.imageCapture = '';
+
+        const constraints = {
+            audio: false,
+            video: {
+                width: {ideal: 1920},
+                height: {ideal: 1080},
+                facingMode: {ideal: 'user'},
+            },
+        };
+
+        navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(stream => {
+                this.videoStream = stream;
+                setTimeout(() => {
+                    const videoElement: HTMLVideoElement | null = document.querySelector('video');
+                    if (videoElement) {
+                        videoElement.srcObject = stream;
+                    }
+                }, 500);
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Could not access the camera.');
+            });
+    }
+
+    acquireImage(): void {
+        const video: HTMLVideoElement | null = document.querySelector('video');
+        const canvas = document.createElement('canvas');
+        if (video) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d')?.drawImage(video, 0, 0);
+        }
+        this.imageCapture = canvas.toDataURL('jpg', 95);
+        if (this.videoStream) {
+            this.videoStream.getVideoTracks().forEach(track => track.stop());
+        }
+    }
+
+    compressImageCapture() {
+        console.warn('Size in bytes was:', this.imageCompress.byteCount(this.imageCapture));
+
+        this.imageCompress.compressFile(this.imageCapture, 1, 50, 50).then((result: DataUrl) => {
+            this.imageCapture = result;
+            console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         });
     }
 }
