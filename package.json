@@ -12,14 +12,14 @@
     "compression"
   ],
   "scripts": {
-    "start": "nx serve",
+    "start": "nx serve ngx-image-compress-demo",
     "lint:app": "nx lint ngx-image-compress-demo",
     "lint:lib": "nx lint ngx-image-compress",
     "test-prepare": "node scripts/convert-assets-to-data-urls.js",
-    "test:app": "nx test",
+    "test:app": "nx test ngx-image-compress-demo",
     "test:library": "npm run test-prepare && nx test ngx-image-compress",
-    "ci:test:app": "nx test ngx-image-compress-demo --browsers=ChromeHeadless --watch=false --code-coverage",
-    "ci:test:library": "npm run test-prepare && nx test ngx-image-compress --browsers=ChromeHeadless --watch=false --code-coverage",
+    "ci:test:app": "nx test ngx-image-compress-demo",
+    "ci:test:library": "npm run test-prepare && nx test ngx-image-compress",
     "ci:build:app": "nx build ngx-image-compress-demo",
     "ci:build:library": "nx build ngx-image-compress"
   },

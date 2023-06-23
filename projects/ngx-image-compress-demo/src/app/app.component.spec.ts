@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataUrl, NgxImageCompressService } from 'ngx-image-compress';
-import { DOC_ORIENTATION } from '../../projects/ngx-image-compress/src/lib/models/DOC_ORIENTATION';
+import { DOC_ORIENTATION } from 'projects/ngx-image-compress/src/lib/models/DOC_ORIENTATION';
 import { AppComponent } from './app.component';
 
 const testDataUrl: DataUrl =

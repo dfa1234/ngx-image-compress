@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const dirAssets = `./src/assets/tests-images`;
+const dirAssets = `./projects/ngx-image-compress-demo/src/assets/tests-images`;
 const targetFile = `./projects/ngx-image-compress/src/tests/sample-images-data-urls.spec.ts`;
 
 const dirList = fs.readdirSync(dirAssets);

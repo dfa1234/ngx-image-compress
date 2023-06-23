@@ -1,119 +1,105 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "ngx-image-compress-demo",
-  "projectType": "application",
-  "generators": {
-    "@schematics/angular:component": {
-      "style": "scss"
-    }
-  },
-  "sourceRoot": "projects/ngx-image-compress-demo/src",
-  "prefix": "app",
-  "targets": {
-    "build": {
-      "executor": "@angular-devkit/build-angular:browser",
-      "options": {
-        "outputPath": "{workspaceRoot}/dist/ngx-image-compress-demo",
-        "index": "projects/ngx-image-compress-demo/src/index.html",
-        "main": "projects/ngx-image-compress-demo/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
-        "tsConfig": "projects/ngx-image-compress-demo/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          "projects/ngx-image-compress-demo/src/assets/favicons/favicon.ico",
-          "projects/ngx-image-compress-demo/src/assets"
-        ],
-        "styles": [
-          "projects/ngx-image-compress-demo/src/styles.scss"
-        ],
-        "scripts": []
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "ngx-image-compress-demo",
+    "projectType": "application",
+    "generators": {
+        "@schematics/angular:component": {
+            "style": "scss"
+        }
+    },
+    "sourceRoot": "projects/ngx-image-compress-demo/src",
+    "prefix": "app",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:browser",
+            "options": {
+                "outputPath": "{workspaceRoot}/dist/ngx-image-compress-demo",
+                "index": "projects/ngx-image-compress-demo/src/index.html",
+                "main": "projects/ngx-image-compress-demo/src/main.ts",
+                "polyfills": ["zone.js"],
+                "tsConfig": "projects/ngx-image-compress-demo/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "projects/ngx-image-compress-demo/src/assets/favicons/favicon.ico",
+                    "projects/ngx-image-compress-demo/src/assets"
+                ],
+                "styles": ["projects/ngx-image-compress-demo/src/styles.scss"],
+                "scripts": []
             },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "projects/ngx-image-compress-demo/src/environments/environment.ts",
-              "with": "projects/ngx-image-compress-demo/src/environments/environment.prod.ts"
-            }
-          ],
-          "outputHashing": "all"
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "500kb",
+                            "maximumError": "1mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kb",
+                            "maximumError": "4kb"
+                        }
+                    ],
+                    "fileReplacements": [
+                        {
+                            "replace": "projects/ngx-image-compress-demo/src/environments/environment.ts",
+                            "with": "projects/ngx-image-compress-demo/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "buildOptimizer": false,
+                    "optimization": false,
+                    "vendorChunk": true,
+                    "extractLicenses": false,
+                    "sourceMap": true,
+                    "namedChunks": true
+                }
+            },
+            "defaultConfiguration": "production",
+            "outputs": ["{options.outputPath}"]
         },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
-      },
-      "defaultConfiguration": "production",
-      "outputs": [
-        "{options.outputPath}"
-      ]
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "ngx-image-compress-demo:build:production"
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+                "production": {
+                    "browserTarget": "ngx-image-compress-demo:build:production"
+                },
+                "development": {
+                    "browserTarget": "ngx-image-compress-demo:build:development"
+                }
+            },
+            "defaultConfiguration": "development"
         },
-        "development": {
-          "browserTarget": "ngx-image-compress-demo:build:development"
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "browserTarget": "ngx-image-compress-demo:build"
+            }
+        },
+        "test": {
+            "executor": "@angular-devkit/build-angular:karma",
+            "options": {
+                "polyfills": ["zone.js", "zone.js/testing"],
+                "tsConfig": "tsconfig.spec.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "projects/ngx-image-compress-demo/src/assets/favicons/favicon.ico",
+                    "projects/ngx-image-compress-demo/src/assets"
+                ],
+                "styles": ["projects/ngx-image-compress-demo/src/styles.scss"],
+                "codeCoverage": true,
+                "browsers": "ChromeHeadless",
+                "progress": true
+            }
+        },
+        "lint": {
+            "executor": "@angular-eslint/builder:lint",
+            "options": {
+                "lintFilePatterns": ["projects/ngx-image-compress-demo/src/**/*.ts", "projects/ngx-image-compress-demo/src/**/*.html"]
+            },
+            "outputs": ["{options.outputFile}"]
         }
-      },
-      "defaultConfiguration": "development"
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "ngx-image-compress-demo:build"
-      }
-    },
-    "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "polyfills": [
-          "zone.js",
-          "zone.js/testing"
-        ],
-        "tsConfig": "{workspaceRoot}/tsconfig.spec.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          "projects/ngx-image-compress-demo/src/assets/favicons/favicon.ico",
-          "projects/ngx-image-compress-demo/src/assets"
-        ],
-        "styles": [
-          "projects/ngx-image-compress-demo/src/styles.scss"
-        ],
-        "scripts": []
-      }
-    },
-    "lint": {
-      "executor": "@angular-eslint/builder:lint",
-      "options": {
-        "lintFilePatterns": [
-          "projects/ngx-image-compress-demo/src/**/*.ts",
-          "projects/ngx-image-compress-demo/src/**/*.html"
-        ]
-      },
-      "outputs": [
-        "{options.outputFile}"
-      ]
     }
-  }
 }
