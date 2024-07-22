@@ -6,7 +6,7 @@ import {getSampleTestFiles, SampleFiles} from '../tests/sample-images-files.spec
 import {ImageCompress} from './image-compress';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 
-describe(ImageCompress.name, () => {
+describe(imageCompress.name, () => {
     let testFiles: SampleFiles;
     let mockRender: Partial<Renderer2>;
     let mockInput: Partial<HTMLInputElement>;
@@ -14,8 +14,11 @@ describe(ImageCompress.name, () => {
     let mockContext: Partial<CanvasRenderingContext2D>;
     let mockResponse: any;
     let mockCSS: any;
+    let imageCompress: ImageCompress;
 
     beforeEach(async () => {
+        imageCompress = new ImageCompress();
+
         testFiles = await getSampleTestFiles(sampleImagesDataUrls);
 
         mockCSS = jasmine.createSpyObj(['supports']);
@@ -61,45 +64,45 @@ describe(ImageCompress.name, () => {
     });
 
     it('should count byte', async () => {
-        const result = ImageCompress.byteCount(sampleImagesDataUrls.up);
+        const result = imageCompress.byteCount(sampleImagesDataUrls.up);
         expect(result > 1024).toBeTruthy();
     });
 
     it('should get orientations', async () => {
-        expect(await ImageCompress.getOrientation(testFiles.defaultValue)).toEqual(DOC_ORIENTATION.NotDefined);
-        expect(await ImageCompress.getOrientation(testFiles.up)).toEqual(DOC_ORIENTATION.Up);
-        expect(await ImageCompress.getOrientation(testFiles.down)).toEqual(DOC_ORIENTATION.Down);
-        expect(await ImageCompress.getOrientation(testFiles.emptyFile)).toEqual(DOC_ORIENTATION.NotDefined);
+        expect(await imageCompress.getOrientation(testFiles.defaultValue)).toEqual(DOC_ORIENTATION.NotDefined);
+        expect(await imageCompress.getOrientation(testFiles.up)).toEqual(DOC_ORIENTATION.Up);
+        expect(await imageCompress.getOrientation(testFiles.down)).toEqual(DOC_ORIENTATION.Down);
+        expect(await imageCompress.getOrientation(testFiles.emptyFile)).toEqual(DOC_ORIENTATION.NotDefined);
     });
 
     it('should generate upload input for single file', async () => {
-        const result = await ImageCompress.generateUploadInputRenderer(mockRender as Renderer2, false);
+        const result = await imageCompress.generateUploadInputRenderer(mockRender as Renderer2, false);
         expect(result?.[0].name).toEqual(testFiles.up.name);
     });
 
     it('should generate upload input for multiple files', async () => {
-        const result = await ImageCompress.generateUploadInputRenderer(mockRender as Renderer2, true);
+        const result = await imageCompress.generateUploadInputRenderer(mockRender as Renderer2, true);
         expect(result?.[0].name).toEqual(testFiles.up.name);
     });
 
     it('should upload a single file', async () => {
-        const result = await ImageCompress.uploadFile(mockRender as Renderer2, false);
+        const result = await imageCompress.uploadFile(mockRender as Renderer2, false);
         expect((result as UploadResponse).image).toEqual(sampleImagesDataUrls.up);
     });
 
     it('should upload multiple files', async () => {
-        const result = await ImageCompress.uploadFile(mockRender as Renderer2, true);
+        const result = await imageCompress.uploadFile(mockRender as Renderer2, true);
         expect((result as UploadResponse[])[0].image).toEqual(sampleImagesDataUrls.up);
     });
 
     it('should get data url from file', async () => {
-        const result = await ImageCompress.fileToDataURL(testFiles.up);
+        const result = await imageCompress.fileToDataURL(testFiles.up);
         expect(result.dataUrl).toEqual(sampleImagesDataUrls.up);
     });
 
     it('should not get data url from file', async () => {
         try {
-            const result = await ImageCompress.fileToDataURL(null as any as File);
+            const result = await imageCompress.fileToDataURL(null as any as File);
             console.log(result);
         } catch (e) {
             expect(e).toEqual(
@@ -109,7 +112,7 @@ describe(ImageCompress.name, () => {
     });
 
     it('should generate input upload for a single file and click on it', fakeAsync(() => {
-        ImageCompress.generateUploadInputRenderer(mockRender as Renderer2, false).then(result =>
+        imageCompress.generateUploadInputRenderer(mockRender as Renderer2, false).then(result =>
             expect(result?.[0].name).toEqual(testFiles.up.name)
         );
         tick(1000);
@@ -121,7 +124,7 @@ describe(ImageCompress.name, () => {
             appendChild: jasmine.createSpy(),
             removeChild: jasmine.createSpy(),
         };
-        ImageCompress.generateUploadInputNative(
+        imageCompress.generateUploadInputNative(
             {
                 ...mockRender,
                 body: mockBody,
@@ -135,7 +138,7 @@ describe(ImageCompress.name, () => {
 
     it('should constrain max width and max height', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
-        const result = await ImageCompress.compress(
+        const result = await imageCompress.compress(
             sampleImagesDataUrls.up,
             DOC_ORIENTATION.LeftMirrored,
             mockRender as Renderer2,
@@ -145,44 +148,44 @@ describe(ImageCompress.name, () => {
             20
         );
         expect(result).toEqual('data-url-test');
-        const sizeSource = ImageCompress.byteCount(sampleImagesDataUrls.up);
-        const sizeResult = ImageCompress.byteCount(result);
+        const sizeSource = imageCompress.byteCount(sampleImagesDataUrls.up);
+        const sizeResult = imageCompress.byteCount(result);
         expect(sizeSource > sizeResult * 10).toBeTruthy();
     });
 
     it('should compress with CSS new api', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
         (mockCSS.supports as jasmine.Spy).and.returnValue(true);
-        const result = await ImageCompress.compress(sampleImagesDataUrls.up, DOC_ORIENTATION.LeftMirrored, mockRender as Renderer2);
+        const result = await imageCompress.compress(sampleImagesDataUrls.up, DOC_ORIENTATION.LeftMirrored, mockRender as Renderer2);
         expect(result).toEqual('data-url-test');
     });
 
     it('should compress with orientation flip', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
         (mockCSS.supports as jasmine.Spy).and.returnValue(false);
-        let result = await ImageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Left, mockRender as Renderer2);
+        let result = await imageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Left, mockRender as Renderer2);
         expect(result).toEqual('data-url-test');
 
-        result = await ImageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Right, mockRender as Renderer2);
+        result = await imageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Right, mockRender as Renderer2);
         expect(result).toEqual('data-url-test');
 
-        result = await ImageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Down, mockRender as Renderer2);
+        result = await imageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Down, mockRender as Renderer2);
         expect(result).toEqual('data-url-test');
 
-        result = await ImageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Up, mockRender as Renderer2);
+        result = await imageCompress.compress(sampleImagesDataUrls.defaultValue, DOC_ORIENTATION.Up, mockRender as Renderer2);
         expect(result).toEqual('data-url-test');
     });
 
     it('should run the algorithm to upload and get a file with max size', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
-        const result = await ImageCompress.uploadGetImageMaxSize(0.01, false, mockRender as Renderer2);
+        const result = await imageCompress.uploadGetImageMaxSize(0.01, false, mockRender as Renderer2);
         expect(result).toEqual({image: 'data-url-test', orientation: DOC_ORIENTATION.Up, fileName: 'up.jpg'});
     });
 
     it('should run the algorithm and return the original', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue(sampleImagesDataUrls.up);
         try {
-            const result = await ImageCompress.uploadGetImageMaxSize(0.01, true, mockRender as Renderer2);
+            const result = await imageCompress.uploadGetImageMaxSize(0.01, true, mockRender as Renderer2);
         } catch (e: any) {
             expect(e.image).toEqual(sampleImagesDataUrls.up);
         }
@@ -191,7 +194,7 @@ describe(ImageCompress.name, () => {
     it('should run the algorithm and return something smaller', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue(sampleImagesDataUrls.defaultValue);
 
-        const result = await ImageCompress.uploadGetImageMaxSize(1, true, mockRender as Renderer2);
+        const result = await imageCompress.uploadGetImageMaxSize(1, true, mockRender as Renderer2);
 
         expect(result).toEqual({image: sampleImagesDataUrls.defaultValue, orientation: 1, fileName: 'up.jpg'});
     });

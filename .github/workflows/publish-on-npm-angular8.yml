@@ -1,4 +1,4 @@
-name: "Bump version and publish on npm"
+name: "Publish version on npm for Angular 8 compatibility"
 
 on:
   workflow_dispatch:
