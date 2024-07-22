@@ -19,7 +19,7 @@ npm i ngx-image-compress
 -   For **performance tests**, in particular on your mobile, please **do not use stackbliz**, put this production-ready application:
     https://image-library.app
 -   Compatible with any Angular **version > 9**
--   If you use Angular **version < 9**, use versions 8.12.x - For example `npm install ngx-image-compress@8.12.2`
+-   If you use Angular **version < 9**, you can use `npm install ngx-image-compress@view-engine`
 
 Angular 13+ differ as there is no need to import the service in your module. You can inject the service in the constructor of your component
 directly.  
