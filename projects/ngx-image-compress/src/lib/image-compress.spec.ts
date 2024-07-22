@@ -175,14 +175,14 @@ describe(ImageCompress.name, () => {
 
     it('should run the algorithm to upload and get a file with max size', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue('data-url-test');
-        const result = await ImageCompress.getImageMaxSize(0.01, false, mockRender as Renderer2);
+        const result = await ImageCompress.uploadGetImageMaxSize(0.01, false, mockRender as Renderer2);
         expect(result).toEqual({image: 'data-url-test', orientation: DOC_ORIENTATION.Up, fileName: 'up.jpg'});
     });
 
     it('should run the algorithm and return the original', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue(sampleImagesDataUrls.up);
         try {
-            const result = await ImageCompress.getImageMaxSize(0.01, true, mockRender as Renderer2);
+            const result = await ImageCompress.uploadGetImageMaxSize(0.01, true, mockRender as Renderer2);
         } catch (e: any) {
             expect(e.image).toEqual(sampleImagesDataUrls.up);
         }
@@ -191,7 +191,7 @@ describe(ImageCompress.name, () => {
     it('should run the algorithm and return something smaller', async () => {
         (mockCanvas.toDataURL as jasmine.Spy).and.returnValue(sampleImagesDataUrls.defaultValue);
 
-        const result = await ImageCompress.getImageMaxSize(1, true, mockRender as Renderer2);
+        const result = await ImageCompress.uploadGetImageMaxSize(1, true, mockRender as Renderer2);
 
         expect(result).toEqual({image: sampleImagesDataUrls.defaultValue, orientation: 1, fileName: 'up.jpg'});
     });

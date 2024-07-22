@@ -270,11 +270,26 @@ export class ImageCompress {
 
     static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-    static getImageMaxSize = async (
+    static uploadGetImageMaxSize = async (
         maxSizeMb: number,
         debugMode: boolean,
         render: Renderer2,
         rejectOnCancel = false
+    ): Promise<UploadResponse> => {
+        if (debugMode) {
+            console.debug('NgxImageCompress - Opening upload window');
+        }
+
+        const myFile: UploadResponse = (await ImageCompress.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
+
+        return await ImageCompress.getImageMaxSize(myFile, maxSizeMb, debugMode, render);
+    };
+
+    static getImageMaxSize = async (
+        myFile: UploadResponse,
+        maxSizeMb: number,
+        debugMode: boolean,
+        render: Renderer2
     ): Promise<UploadResponse> => {
         const MAX_TRIES = 10;
 
@@ -283,8 +298,6 @@ export class ImageCompress {
         if (debugMode) {
             console.debug('NgxImageCompress - Opening upload window');
         }
-
-        const myFile: UploadResponse = (await ImageCompress.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
 
         let compressedFile;
 
