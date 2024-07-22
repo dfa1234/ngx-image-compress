@@ -1,4 +1,4 @@
-name: "Publish version on npm for Angular 8 compatibility"
+name: "Publish version on npm for Angular view engine compatibility"
 
 on:
   workflow_dispatch:
@@ -43,4 +43,4 @@ jobs:
         working-directory: ./dist/ngx-image-compress
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --tag angular-8-compatibility
+        run: npm publish --tag view-engine
