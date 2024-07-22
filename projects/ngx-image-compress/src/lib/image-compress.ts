@@ -4,7 +4,7 @@ import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {UploadResponse} from './models/upload-response';
 
 export class ImageCompress {
-    static getOrientation = (file: File): Promise<DOC_ORIENTATION> =>
+    getOrientation = (file: File): Promise<DOC_ORIENTATION> =>
         new Promise<DOC_ORIENTATION>((resolve, reject) => {
             try {
                 const reader = new FileReader();
@@ -48,7 +48,7 @@ export class ImageCompress {
             }
         });
 
-    static uploadFile = (render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
+    uploadFile = (render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
         new Promise(function (resolve, reject) {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
@@ -56,15 +56,15 @@ export class ImageCompress {
             Promise.resolve(isSafari || isIOS)
                 .then(onlyNative => {
                     if (onlyNative) {
-                        return ImageCompress.generateUploadInputNative(window.document, multiple, rejectOnCancel);
+                        return this.generateUploadInputNative(window.document, multiple, rejectOnCancel);
                     } else {
-                        return ImageCompress.generateUploadInputRenderer(render, multiple, rejectOnCancel);
+                        return this.generateUploadInputRenderer(render, multiple, rejectOnCancel);
                     }
                 })
                 .then((filesList: FileList | null) => {
                     const files = filesList ? Array.from(filesList) : [];
-                    const orientationPromises = files.map(file => ImageCompress.getOrientation(file));
-                    const readerPromises = files.map(file => ImageCompress.fileToDataURL(file));
+                    const orientationPromises = files.map(file => this.getOrientation(file));
+                    const readerPromises = files.map(file => this.fileToDataURL(file));
 
                     let orientationsResult: DOC_ORIENTATION[] = [];
 
@@ -90,7 +90,7 @@ export class ImageCompress {
                 .catch(err => reject(err));
         });
 
-    static fileToDataURL = (file: File): Promise<{dataUrl: string; fileName: string}> => {
+    fileToDataURL = (file: File): Promise<{dataUrl: string; fileName: string}> => {
         return new Promise<{dataUrl: string; fileName: string}>((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
@@ -105,7 +105,7 @@ export class ImageCompress {
         });
     };
 
-    static generateUploadInputRenderer = (render: Renderer2, multiple = true, rejectOnCancel = false) => {
+    generateUploadInputRenderer = (render: Renderer2, multiple = true, rejectOnCancel = false) => {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = render.createElement('input');
@@ -145,7 +145,7 @@ export class ImageCompress {
         });
     };
 
-    static generateUploadInputNative = (documentNativeApi: any, multiple = true, rejectOnCancel = false) => {
+    generateUploadInputNative = (documentNativeApi: any, multiple = true, rejectOnCancel = false) => {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = documentNativeApi.createElement('input');
@@ -190,7 +190,7 @@ export class ImageCompress {
         });
     };
 
-    static compress = (
+    compress = (
         imageDataUrlSource: DataUrl,
         orientation: DOC_ORIENTATION,
         render: Renderer2,
@@ -268,24 +268,24 @@ export class ImageCompress {
             sourceImage.src = imageDataUrlSource;
         });
 
-    static byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
+    byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-    static uploadGetImageMaxSize = async (
+    uploadGetImageMaxSize = async (
         maxSizeMb: number,
         debugMode: boolean,
         render: Renderer2,
         rejectOnCancel = false
     ): Promise<UploadResponse> => {
         if (debugMode) {
-            console.debug('NgxImageCompress - Opening upload window');
+            console.debug('Ngxthis - Opening upload window');
         }
 
-        const myFile: UploadResponse = (await ImageCompress.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
+        const myFile: UploadResponse = (await this.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
 
-        return await ImageCompress.getImageMaxSize(myFile, maxSizeMb, debugMode, render);
+        return await this.getImageMaxSize(myFile, maxSizeMb, debugMode, render);
     };
 
-    static getImageMaxSize = async (
+    getImageMaxSize = async (
         myFile: UploadResponse,
         maxSizeMb: number,
         debugMode: boolean,
@@ -296,21 +296,21 @@ export class ImageCompress {
         const bytesToMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
 
         if (debugMode) {
-            console.debug('NgxImageCompress - Opening upload window');
+            console.debug('Ngxthis - Opening upload window');
         }
 
         let compressedFile;
 
         for (let i = 0; i < MAX_TRIES; i++) {
-            const previousSize = ImageCompress.byteCount(myFile.image);
-            compressedFile = await ImageCompress.compress(myFile.image, myFile.orientation, render, 50, 100);
-            const newSize = ImageCompress.byteCount(compressedFile);
-            console.debug('NgxImageCompress -', 'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
+            const previousSize = this.byteCount(myFile.image);
+            compressedFile = await this.compress(myFile.image, myFile.orientation, render, 50, 100);
+            const newSize = this.byteCount(compressedFile);
+            console.debug('Ngxthis -', 'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
             if (newSize >= previousSize) {
                 if (i === 0) {
                     if (debugMode) {
                         console.debug(
-                            'NgxImageCompress -',
+                            'Ngxthis -',
                             "File can't be reduced at all - returning the original",
                             bytesToMB(previousSize),
                             'MB large'
@@ -320,7 +320,7 @@ export class ImageCompress {
                 } else {
                     if (debugMode) {
                         console.debug(
-                            'NgxImageCompress -',
+                            'Ngxthis -',
                             "File can't be reduced more - returning the best we can, which is ",
                             bytesToMB(previousSize),
                             'MB large'
@@ -331,13 +331,13 @@ export class ImageCompress {
             } else {
                 if (newSize < maxSizeMb * 1024 * 1024) {
                     if (debugMode) {
-                        console.debug('NgxImageCompress -', 'Here your file', bytesToMB(newSize), 'MB large');
+                        console.debug('Ngxthis -', 'Here your file', bytesToMB(newSize), 'MB large');
                     }
                     return {...myFile, image: compressedFile};
                 } else if (i === 9) {
                     if (debugMode) {
                         console.debug(
-                            'NgxImageCompress -',
+                            'Ngxthis -',
                             "File can't reach the desired size after",
                             MAX_TRIES,
                             'tries. Returning file ',
@@ -349,12 +349,12 @@ export class ImageCompress {
                 }
             }
             if (debugMode) {
-                console.debug('NgxImageCompress -', 'Reached', bytesToMB(newSize), 'MB large. Trying another time after', i + 1, 'times');
+                console.debug('Ngxthis -', 'Reached', bytesToMB(newSize), 'MB large. Trying another time after', i + 1, 'times');
             }
             myFile.image = compressedFile;
         }
         if (debugMode) {
-            console.debug('NgxImageCompress - Unexpected error');
+            console.debug('Ngxthis - Unexpected error');
         }
         throw {};
     };

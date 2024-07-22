@@ -18,9 +18,9 @@ export class NgxImageCaptureComponent {
     @Output() imageCaptured = new EventEmitter<DataUrl>();
     @Output() errorCapture = new EventEmitter<string>();
 
-    @ViewChild('video')
+    @ViewChild('video', {static: false})
     videoElement: ElementRef<HTMLVideoElement> | null = null;
-    videoStream: MediaStream | null = ViewChild('video');
+    videoStream: MediaStream | null = ViewChild('video', {static: false});
     streamOpened = false;
 
     startVideoCapture() {
@@ -40,10 +40,10 @@ export class NgxImageCaptureComponent {
             .then(stream => {
                 this.videoStream = stream;
                 setTimeout(() => {
-                    if (this.videoElement?.nativeElement) {
+                    if (this.videoElement && this.videoElement.nativeElement) {
                         this.videoElement.nativeElement.srcObject = stream;
                     }
-                },100);
+                }, 100);
             })
             .catch(error => {
                 this.errorCapture.emit(`Ngx Image Compress: Could not access the camera. ${error}`);
@@ -53,7 +53,7 @@ export class NgxImageCaptureComponent {
 
     acquireImage(): void {
         const canvas = document.createElement('canvas');
-        const video = this.videoElement?.nativeElement;
+        const video = this.videoElement && this.videoElement.nativeElement;
         if (!video) {
             this.errorCapture.emit('Ngx Image Compress - Error in acquisition of video element.');
             this.streamOpened = false;
@@ -61,7 +61,7 @@ export class NgxImageCaptureComponent {
         }
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        canvas.getContext('2d')?.drawImage(video, 0, 0);
+        canvas.getContext('2d') && canvas.getContext('2d').drawImage(video, 0, 0);
         const newImage = canvas.toDataURL('jpg', 95);
         if (this.videoStream) {
             this.videoStream.getVideoTracks().forEach(track => track.stop());
