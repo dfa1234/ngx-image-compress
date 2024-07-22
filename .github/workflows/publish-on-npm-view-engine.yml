@@ -31,7 +31,7 @@ jobs:
           target-branch: "angular8"
 
       - name: 'Build'
-        run: npm run build
+        run: ng build
 
       - name: "Ship the README.md with the library build"
         run: cp ./README.md ./dist/ngx-image-compress/README.md
@@ -39,7 +39,7 @@ jobs:
       - name: "Ship the LICENSE"
         run: cp ./LICENSE ./dist/ngx-image-compress/LICENSE
 
-      - name: "Publish the library on npm"
+      - name: "Publish the library on npm with tag view-engine"
         working-directory: ./dist/ngx-image-compress
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
