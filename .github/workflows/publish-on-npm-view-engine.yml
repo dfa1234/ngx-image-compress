@@ -31,7 +31,7 @@ jobs:
           target-branch: "angular8"
 
       - name: 'Build'
-        run: ng build
+        run: ./node_modules/.bin/ng build
 
       - name: "Ship the README.md with the library build"
         run: cp ./README.md ./dist/ngx-image-compress/README.md
