@@ -4,8 +4,8 @@ import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {UploadResponse} from './models/upload-response';
 
 export class ImageCompress {
-    getOrientation = (file: File): Promise<DOC_ORIENTATION> =>
-        new Promise<DOC_ORIENTATION>((resolve, reject) => {
+    getOrientation(file: File): Promise<DOC_ORIENTATION> {
+        return new Promise<DOC_ORIENTATION>((resolve, reject) => {
             try {
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -47,9 +47,10 @@ export class ImageCompress {
                 return reject(DOC_ORIENTATION.Default);
             }
         });
+    }
 
-    uploadFile = (render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> =>
-        new Promise(function (resolve, reject) {
+    uploadFile(render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> {
+        return new Promise((resolve, reject) => {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
@@ -89,8 +90,9 @@ export class ImageCompress {
                 })
                 .catch(err => reject(err));
         });
+    }
 
-    fileToDataURL = (file: File): Promise<{dataUrl: string; fileName: string}> => {
+    fileToDataURL(file: File): Promise<{dataUrl: string; fileName: string}> {
         return new Promise<{dataUrl: string; fileName: string}>((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
@@ -103,9 +105,9 @@ export class ImageCompress {
                 reject(`ngx-image-compress - probably no file have been selected: ${e}`);
             }
         });
-    };
+    }
 
-    generateUploadInputRenderer = (render: Renderer2, multiple = true, rejectOnCancel = false) => {
+    generateUploadInputRenderer(render: Renderer2, multiple = true, rejectOnCancel = false) {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = render.createElement('input');
@@ -143,9 +145,9 @@ export class ImageCompress {
 
             inputElement.click();
         });
-    };
+    }
 
-    generateUploadInputNative = (documentNativeApi: any, multiple = true, rejectOnCancel = false) => {
+    generateUploadInputNative(documentNativeApi: any, multiple = true, rejectOnCancel = false) {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = documentNativeApi.createElement('input');
@@ -188,9 +190,9 @@ export class ImageCompress {
             // open file select box
             inputElement.click();
         });
-    };
+    }
 
-    compress = (
+    compress(
         imageDataUrlSource: DataUrl,
         orientation: DOC_ORIENTATION,
         render: Renderer2,
@@ -198,8 +200,8 @@ export class ImageCompress {
         quality = 50,
         maxwidth = 0,
         maxheight = 0
-    ): Promise<string> =>
-        new Promise(function (resolve, reject) {
+    ): Promise<string> {
+        return new Promise(function (resolve, reject) {
             quality = quality / 100;
             ratio = ratio / 100;
             const sourceImage = new Image();
@@ -267,15 +269,11 @@ export class ImageCompress {
             sourceImage.onerror = e => reject(e);
             sourceImage.src = imageDataUrlSource;
         });
+    }
 
     byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-    uploadGetImageMaxSize = async (
-        maxSizeMb: number,
-        debugMode: boolean,
-        render: Renderer2,
-        rejectOnCancel = false
-    ): Promise<UploadResponse> => {
+    async uploadGetImageMaxSize(maxSizeMb: number, debugMode: boolean, render: Renderer2, rejectOnCancel = false): Promise<UploadResponse> {
         if (debugMode) {
             console.debug('Ngxthis - Opening upload window');
         }
@@ -283,14 +281,9 @@ export class ImageCompress {
         const myFile: UploadResponse = (await this.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
 
         return await this.getImageMaxSize(myFile, maxSizeMb, debugMode, render);
-    };
+    }
 
-    getImageMaxSize = async (
-        myFile: UploadResponse,
-        maxSizeMb: number,
-        debugMode: boolean,
-        render: Renderer2
-    ): Promise<UploadResponse> => {
+    async getImageMaxSize(myFile: UploadResponse, maxSizeMb: number, debugMode: boolean, render: Renderer2): Promise<UploadResponse> {
         const MAX_TRIES = 10;
 
         const bytesToMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2);
@@ -357,5 +350,5 @@ export class ImageCompress {
             console.debug('Ngxthis - Unexpected error');
         }
         throw {};
-    };
+    }
 }

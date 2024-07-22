@@ -61,7 +61,8 @@ export class NgxImageCaptureComponent {
         }
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        canvas.getContext('2d') && canvas.getContext('2d').drawImage(video, 0, 0);
+        const context2d = canvas.getContext('2d');
+        if (context2d) context2d.drawImage(video, 0, 0);
         const newImage = canvas.toDataURL('jpg', 95);
         if (this.videoStream) {
             this.videoStream.getVideoTracks().forEach(track => track.stop());
