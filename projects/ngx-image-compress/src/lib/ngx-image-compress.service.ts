@@ -10,10 +10,13 @@ import {UploadResponse} from './models/upload-response';
 export class NgxImageCompressService {
     private readonly render: Renderer2;
 
+    private imageCompress: ImageCompress;
+
     public DOC_ORIENTATION = DOC_ORIENTATION;
 
     constructor(rendererFactory: RendererFactory2) {
         this.render = rendererFactory.createRenderer(null, null);
+        this.imageCompress = new ImageCompress();
     }
 
     /**
@@ -21,14 +24,14 @@ export class NgxImageCompressService {
      * @param imgString the image in base64 string format
      */
     public byteCount(image: DataUrl) {
-        return ImageCompress.byteCount(image);
+        return this.imageCompress.byteCount(image);
     }
 
     /**
      * Get the correct Orientation value from image tags
      */
     public getOrientation(file: File): Promise<DOC_ORIENTATION> {
-        return ImageCompress.getOrientation(file);
+        return this.imageCompress.getOrientation(file);
     }
 
     /**
@@ -36,7 +39,7 @@ export class NgxImageCompressService {
      * Nothing happen if no file have been selected
      */
     public uploadFile(): Promise<UploadResponse> {
-        return ImageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
+        return this.imageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
     }
 
     /**
@@ -44,7 +47,7 @@ export class NgxImageCompressService {
      * Nothing happen if no files have been selected
      */
     public uploadMultipleFiles(): Promise<UploadResponse[]> {
-        return ImageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
+        return this.imageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
     }
 
     /**
@@ -52,7 +55,7 @@ export class NgxImageCompressService {
      * the promise will reject if no file have been selected
      */
     public uploadFileOrReject(): Promise<UploadResponse> {
-        return ImageCompress.uploadFile(this.render, false, true) as Promise<UploadResponse>;
+        return this.imageCompress.uploadFile(this.render, false, true) as Promise<UploadResponse>;
     }
 
     /**
@@ -60,7 +63,7 @@ export class NgxImageCompressService {
      * the promise will reject if no files have been selected
      */
     public uploadMultipleFilesOrReject(): Promise<UploadResponse[]> {
-        return ImageCompress.uploadFile(this.render, true, true) as Promise<UploadResponse[]>;
+        return this.imageCompress.uploadFile(this.render, true, true) as Promise<UploadResponse[]>;
     }
 
     /**
@@ -84,7 +87,7 @@ export class NgxImageCompressService {
         maxWidth = 0,
         maxHeight = 0
     ): Promise<DataUrl> {
-        return ImageCompress.compress(image, orientation, this.render, ratio, quality, maxWidth, maxHeight);
+        return this.imageCompress.compress(image, orientation, this.render, ratio, quality, maxWidth, maxHeight);
     }
 
     /**
@@ -94,7 +97,7 @@ export class NgxImageCompressService {
      * Put debugMode to true if you have some trouble to print some help using console.debug
      */
     public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
-        return ImageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
+        return this.imageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
             .then(uploadResponse => uploadResponse.image)
             .catch(e => {
                 throw e.image;
@@ -105,13 +108,13 @@ export class NgxImageCompressService {
      * Same as before, but return more informations (file name...)
      */
     public uploadAndGetImageWithMaxSizeAndMetas(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<UploadResponse> {
-        return ImageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
+        return this.imageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
     }
 
     /**
      * Not handling the upload, you need to provide the file and the orientation by yourself
      */
     public getImageWithMaxSizeAndMetas(file: UploadResponse, maxSizeMb = 1, debugMode = false): Promise<UploadResponse> {
-        return ImageCompress.getImageMaxSize(file, maxSizeMb, debugMode, this.render);
+        return this.imageCompress.getImageMaxSize(file, maxSizeMb, debugMode, this.render);
     }
 }
