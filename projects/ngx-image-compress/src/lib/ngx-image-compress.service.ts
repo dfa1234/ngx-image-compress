@@ -1,8 +1,8 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ImageCompress} from './image-compress';
+import {DataUrl} from './models/data-url';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 import {UploadResponse} from './models/upload-response';
-import {DataUrl} from './models/data-url';
 
 @Injectable({
     providedIn: 'root',
@@ -94,7 +94,7 @@ export class NgxImageCompressService {
      * Put debugMode to true if you have some trouble to print some help using console.debug
      */
     public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
-        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
+        return ImageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
             .then(uploadResponse => uploadResponse.image)
             .catch(e => {
                 throw e.image;
@@ -105,6 +105,13 @@ export class NgxImageCompressService {
      * Same as before, but return more informations (file name...)
      */
     public uploadAndGetImageWithMaxSizeAndMetas(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<UploadResponse> {
-        return ImageCompress.getImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
+        return ImageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
+    }
+
+    /**
+     * Not handling the upload, you need to provide the file and the orientation by yourself
+     */
+    public getImageWithMaxSizeAndMetas(file: UploadResponse, maxSizeMb = 1, debugMode = false): Promise<UploadResponse> {
+        return ImageCompress.getImageMaxSize(file, maxSizeMb, debugMode, this.render);
     }
 }

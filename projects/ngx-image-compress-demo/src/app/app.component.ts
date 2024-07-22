@@ -12,6 +12,7 @@ export class AppComponent {
     imgResultAfterResize: DataUrl = '';
     imgResultUpload: DataUrl = '';
     imgResultAfterResizeMax: DataUrl = '';
+    imgResultAfterResizeMax2: DataUrl = '';
     imgResultAfterResizeMaxWithLoading: DataUrl = '';
     imgResultMultiple: UploadResponse[] = [];
     loadingCompression = false;
@@ -127,5 +128,24 @@ export class AppComponent {
             this.imageCapture = result;
             console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
         });
+    }
+
+    usingSeparateMethodForMaxSize() {
+        this.imageCompress
+            // This could me any method of your choice that is returning a DataUrl of an uploaded image
+            .uploadFileOrReject()
+            .then(({image, orientation, fileName}) => {
+                console.warn('File Name:', fileName);
+                console.warn('Image Orientation', DOC_ORIENTATION[orientation]);
+                console.warn(`Image encoded in ${image?.substring(0, 50)}... (${image?.length} characters)`);
+                // This is the method you need to use to compress the image to a maximum size
+                return this.imageCompress.getImageWithMaxSizeAndMetas({image, orientation, fileName}, 1);
+            })
+            .then((result: UploadResponse) => {
+                this.imgResultAfterResizeMax2 = result.image;
+            })
+            .catch(error => {
+                console.log('UploadRejection: ', error);
+            });
     }
 }

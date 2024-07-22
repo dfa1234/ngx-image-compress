@@ -41,6 +41,15 @@
 <hr />
 
 <section>
+    <button (click)="usingSeparateMethodForMaxSize()">
+        Uploading by yourself, then compressing, and returning with max size of 1 MegaByte
+    </button>
+    <img *ngIf="imgResultAfterResizeMax2" [src]="imgResultAfterResizeMax2" alt="" />
+</section>
+
+<hr />
+
+<section>
     <button (click)="uploadAndReturnWithMaxSizeWithLoading()" [disabled]="loadingCompression">
         Uploading, Compressing, and returning with max size of 1 MegaByte (with loading)
     </button>
@@ -98,7 +107,6 @@
         preferences. You may also consider other libraries or alternative approaches based on your project's needs, such as server-side
         compression or using different client-side image compression libraries.
     </p>
-
 </section>
 
 <hr />
@@ -125,7 +133,6 @@
         </li>
     </ul>
 </section>
-
 
 <footer>
     <a href="https://github.com/ngx-image-compress/actions/blob/master/LICENSE" target="_blank">

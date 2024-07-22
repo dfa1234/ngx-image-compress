@@ -1,6 +1,6 @@
 {
     "name": "ngx-image-compress",
-    "version": "15.1.6",
+    "version": "18.1.1",
     "author": "David Faure <dfaure123@gmail.com>",
     "license": "MIT",
     "homepage": "https://image-library.app",
@@ -16,7 +16,7 @@
         "@angular/core": "x.x.x"
     },
     "dependencies": {
-        "tslib": "^2.5.0"
+        "tslib": "^2.6.3"
     },
     "private": false
 }
