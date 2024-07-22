@@ -126,6 +126,12 @@ export class AppComponent {
 }
 ```
 
+### Same method but without the upload step
+
+```ts
+this.imageCompress.uploadAndGetImageWithMaxSize({image: 'base64ValueFromYourUpload'},MAX_MEGABYTE).then
+```
+
 ### Multiple files support
 
 For uploading multiple files, instead of using
