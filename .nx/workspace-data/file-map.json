@@ -51,124 +51,124 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".editorconfig",
-        "hash": "6686520031028425313"
-      },
-      {
-        "file": ".github/workflows/on-pull-request.yml",
-        "hash": "10229541246875791201"
-      },
-      {
-        "file": "package.json",
-        "hash": "3456065518377455447"
-      },
-      {
-        "file": "tsconfig.spec.json",
-        "hash": "13955558063499653456"
-      },
-      {
-        "file": "e2e/angular16/src/index.html",
-        "hash": "6257012464208687822"
-      },
-      {
-        "file": "LICENSE",
-        "hash": "7273981340362220304"
-      },
-      {
         "file": "package-lock.json",
         "hash": "2388833971303398236"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "5637724820903828992"
-      },
-      {
-        "file": ".prettierrc.json",
-        "hash": "10732786832598513050"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "2737793818265208663"
-      },
-      {
-        "file": "e2e/angular16/package-lock.json",
-        "hash": "704952225527553654"
-      },
-      {
-        "file": "e2e/angular16/tsconfig.json",
-        "hash": "15541676966026154975"
-      },
-      {
-        "file": "tsconfig.json",
-        "hash": "3559237327807191382"
-      },
-      {
-        "file": "e2e/angular16/src/app.module.ts",
-        "hash": "973593354527306114"
-      },
-      {
-        "file": "e2e/angular16/angular.json",
-        "hash": "11218742886270411451"
-      },
-      {
-        "file": "e2e/angular16/src/styles.scss",
-        "hash": "5195668842064076916"
-      },
-      {
-        "file": "e2e/angular16/src/main.ts",
-        "hash": "17243580017863527324"
-      },
-      {
-        "file": ".lfsconfig",
-        "hash": "6058112995567027528"
-      },
-      {
-        "file": ".browserslistrc",
-        "hash": "17600754102500844387"
-      },
-      {
-        "file": "scripts/convert-assets-to-data-urls.js",
-        "hash": "17749554324289806546"
-      },
-      {
-        "file": "CODE_OF_CONDUCT.md",
-        "hash": "7622506338401364953"
-      },
-      {
-        "file": "e2e/angular16/.gitignore",
-        "hash": "13044518069027839699"
-      },
-      {
-        "file": "README.md",
-        "hash": "2004654955978278968"
-      },
-      {
-        "file": ".vscode/settings.json",
-        "hash": "612877147823319487"
-      },
-      {
-        "file": "e2e/angular16/package.json",
-        "hash": "17629310963853850337"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "11053855542184815305"
+        "file": "nx.json",
+        "hash": "5575853838196189747"
       },
       {
         "file": ".github/workflows/publish-on-npm.yml",
         "hash": "841164270915191140"
       },
       {
-        "file": ".github/workflows/on-merge.yml",
-        "hash": "1379978925139124257"
+        "file": ".browserslistrc",
+        "hash": "17600754102500844387"
+      },
+      {
+        "file": "tsconfig.spec.json",
+        "hash": "13955558063499653456"
+      },
+      {
+        "file": "scripts/convert-assets-to-data-urls.js",
+        "hash": "17749554324289806546"
+      },
+      {
+        "file": "e2e/angular16/tsconfig.json",
+        "hash": "15541676966026154975"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "6686520031028425313"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "612877147823319487"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "5637724820903828992"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "11053855542184815305"
+      },
+      {
+        "file": "CODE_OF_CONDUCT.md",
+        "hash": "7622506338401364953"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "2737793818265208663"
+      },
+      {
+        "file": "e2e/angular16/src/app.module.ts",
+        "hash": "973593354527306114"
       },
       {
         "file": "e2e/angular16/src/app.component.ts",
         "hash": "15166593634154552100"
       },
       {
-        "file": "nx.json",
-        "hash": "5575853838196189747"
+        "file": ".prettierrc.json",
+        "hash": "10732786832598513050"
+      },
+      {
+        "file": "LICENSE",
+        "hash": "7273981340362220304"
+      },
+      {
+        "file": "e2e/angular16/.gitignore",
+        "hash": "13044518069027839699"
+      },
+      {
+        "file": ".github/workflows/on-pull-request.yml",
+        "hash": "10229541246875791201"
+      },
+      {
+        "file": "e2e/angular16/package-lock.json",
+        "hash": "704952225527553654"
+      },
+      {
+        "file": "package.json",
+        "hash": "3456065518377455447"
+      },
+      {
+        "file": "e2e/angular16/package.json",
+        "hash": "17629310963853850337"
+      },
+      {
+        "file": ".lfsconfig",
+        "hash": "6058112995567027528"
+      },
+      {
+        "file": "e2e/angular16/src/index.html",
+        "hash": "6257012464208687822"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "3559237327807191382"
+      },
+      {
+        "file": "e2e/angular16/src/main.ts",
+        "hash": "17243580017863527324"
+      },
+      {
+        "file": "e2e/angular16/angular.json",
+        "hash": "11218742886270411451"
+      },
+      {
+        "file": ".github/workflows/on-merge.yml",
+        "hash": "1379978925139124257"
+      },
+      {
+        "file": "e2e/angular16/src/styles.scss",
+        "hash": "5195668842064076916"
+      },
+      {
+        "file": "README.md",
+        "hash": "2004654955978278968"
       }
     ],
     "projectFileMap": {
