@@ -18,10 +18,8 @@ npm i ngx-image-compress
 -   For **visualizing** code examples: https://stackblitz.com/edit/ngx-image-compress
 -   For **performance tests**, in particular on your mobile, please **do not use stackbliz**, put this production-ready application:
     https://image-library.app
--   Any Angular **version > 9** supporting Ivy is compatible. (Library transpiled with Ivy in partial mode, as it's now mandatory to process
-    in Angular 13)
--   For Angular **version < 9** can try this once-for-all compiled library using legacy View Engine:
-    https://www.npmjs.com/package/ngx-image-compress-legacy
+-   Compatible with any Angular **version > 9**
+-   If you use Angular **version < 9**, use versions 8.12.x - For example `npm install ngx-image-compress@8.12.2`
 
 Angular 13+ differ as there is no need to import the service in your module. You can inject the service in the constructor of your component
 directly.  

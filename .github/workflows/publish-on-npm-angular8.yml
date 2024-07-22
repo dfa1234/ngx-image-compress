@@ -1,0 +1,46 @@
+name: "Bump version and publish on npm"
+
+on:
+  workflow_dispatch:
+    branches:
+      - "angular8"
+
+jobs:
+  build-test-deploy:
+    name: Build, test, bump version and deploy the library on npm
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@master
+        with:
+          node-version: "10"
+          registry-url: "https://registry.npmjs.org"
+
+      - uses: actions/checkout@master
+
+      - name: "Install dependency"
+        run: npm ci
+
+      - name: "Automated version bump for library"
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: ""
+        env:
+          PACKAGEJSON_DIR: "./projects/ngx-image-compress"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          target-branch: "angular8"
+
+      - name: 'Build'
+        run: npm run build
+
+      - name: "Ship the README.md with the library build"
+        run: cp ./README.md ./dist/ngx-image-compress/README.md
+
+      - name: "Ship the LICENSE"
+        run: cp ./LICENSE ./dist/ngx-image-compress/LICENSE
+
+      - name: "Publish the library on npm"
+        working-directory: ./dist/ngx-image-compress
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --tag angular-8-compatibility
