@@ -40,7 +40,7 @@ jobs:
         run: cp ./LICENSE ./dist/ngx-image-compress/LICENSE
 
       - name: "Publish the library on npm with tag view-engine"
-        working-directory: ./dist/ngx-image-compress
+        working-directory: ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --tag view-engine
+        run: npm publish ngx-image-compress --tag view-engine
