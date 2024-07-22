@@ -6,7 +6,7 @@ import {getSampleTestFiles, SampleFiles} from '../tests/sample-images-files.spec
 import {ImageCompress} from './image-compress';
 import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
 
-describe(imageCompress.name, () => {
+describe(ImageCompress.name, () => {
     let testFiles: SampleFiles;
     let mockRender: Partial<Renderer2>;
     let mockInput: Partial<HTMLInputElement>;
