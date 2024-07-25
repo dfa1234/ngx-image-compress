@@ -1,7 +1,7 @@
-import {Renderer2} from '@angular/core';
-import {DataUrl} from './models/data-url';
-import {DOC_ORIENTATION} from './models/DOC_ORIENTATION';
-import {UploadResponse} from './models/upload-response';
+import { Renderer2 } from '@angular/core';
+import { DataUrl } from './models/data-url';
+import { DOC_ORIENTATION } from './models/DOC_ORIENTATION';
+import { UploadResponse } from './models/upload-response';
 
 export class ImageCompress {
     getOrientation(file: File): Promise<DOC_ORIENTATION> {
@@ -113,7 +113,7 @@ export class ImageCompress {
             const inputElement = render.createElement('input');
             render.setStyle(inputElement, 'display', 'none');
             render.setProperty(inputElement, 'type', 'file');
-            render.setProperty(inputElement, 'accept', 'image/*');
+            render.setProperty(inputElement, 'accept', 'image/*, .heic');
 
             if (multiple) {
                 render.setProperty(inputElement, 'multiple', 'true');
@@ -154,7 +154,7 @@ export class ImageCompress {
             inputElement.id = 'upload-input' + new Date();
             inputElement.style.display = 'none';
             inputElement.setAttribute('type', 'file');
-            inputElement.setAttribute('accept', 'image/*');
+            inputElement.setAttribute('accept', 'image/*, .heic');
 
             if (multiple) {
                 inputElement.setAttribute('multiple', 'true');
