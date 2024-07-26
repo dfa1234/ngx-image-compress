@@ -16,16 +16,15 @@
  8 = Rotate 270 CW
  */
 export enum DOC_ORIENTATION {
-  Up = 1,                     //Horizontal (normal)
-  Down = 3,                   //Rotate 180
-  Right = 6,                  //Rotate 90 CW
-  Left = 8,                   //Rotate 270 CW
-  UpMirrored = 2,             //Mirror horizontal
-  DownMirrored = 4,           //Mirror vertical
-  LeftMirrored = 5,           //Mirror horizontal and rotate 270 CW
-  RightMirrored = 7,          //Mirror horizontal and rotate 90 CW
-  Default = 0,
-  NotJpeg = -1,
-  NotDefined = -2
+    Up = 1, //Horizontal (normal)
+    Down = 3, //Rotate 180
+    Right = 6, //Rotate 90 CW
+    Left = 8, //Rotate 270 CW
+    UpMirrored = 2, //Mirror horizontal
+    DownMirrored = 4, //Mirror vertical
+    LeftMirrored = 5, //Mirror horizontal and rotate 270 CW
+    RightMirrored = 7, //Mirror horizontal and rotate 90 CW
+    Default = 0,
+    NotJpeg = -1,
+    NotDefined = -2,
 }
-

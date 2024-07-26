@@ -1,19 +1,19 @@
 img {
-  display: block;
-  margin: 10px auto;
-  max-width: 50vw;
+    display: block;
+    margin: 10px auto;
+    max-width: 50vw;
 }
 
 div {
-  text-align: center;
+    text-align: center;
 }
 
 footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 
-  & > * {
-    margin-inline-end: 10px;
-  }
+    & > * {
+        margin-inline-end: 10px;
+    }
 }

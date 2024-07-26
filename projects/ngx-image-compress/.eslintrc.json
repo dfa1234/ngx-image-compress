@@ -32,8 +32,8 @@
             "files": ["*.html"],
             "extends": ["plugin:@angular-eslint/template/recommended"],
             "rules": {
-              "@typescript-eslint/no-explicit-any": "warn"
-          }
+                "@typescript-eslint/no-explicit-any": "warn"
+            }
         }
     ]
 }

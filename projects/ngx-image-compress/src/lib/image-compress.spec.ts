@@ -112,9 +112,9 @@ describe(ImageCompress.name, () => {
     });
 
     it('should generate input upload for a single file and click on it', fakeAsync(() => {
-        imageCompress.generateUploadInputRenderer(mockRender as Renderer2, false).then(result =>
-            expect(result?.[0].name).toEqual(testFiles.up.name)
-        );
+        imageCompress
+            .generateUploadInputRenderer(mockRender as Renderer2, false)
+            .then(result => expect(result?.[0].name).toEqual(testFiles.up.name));
         tick(1000);
         expect(mockInput.click).toHaveBeenCalled();
     }));
@@ -124,13 +124,15 @@ describe(ImageCompress.name, () => {
             appendChild: jasmine.createSpy(),
             removeChild: jasmine.createSpy(),
         };
-        imageCompress.generateUploadInputNative(
-            {
-                ...mockRender,
-                body: mockBody,
-            },
-            true
-        ).then(result => expect(result?.[0].name).toEqual(testFiles.up.name));
+        imageCompress
+            .generateUploadInputNative(
+                {
+                    ...mockRender,
+                    body: mockBody,
+                },
+                true
+            )
+            .then(result => expect(result?.[0].name).toEqual(testFiles.up.name));
         tick(1000);
         expect(mockInput.click).toHaveBeenCalled();
         expect(mockBody.appendChild).toHaveBeenCalled();
