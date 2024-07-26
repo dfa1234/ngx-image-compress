@@ -14,6 +14,7 @@
     "scripts": {
         "start": "nx serve ngx-image-compress-demo",
         "lint": "prettier -w \"projects/**/*.{ts,json,scss,html}\" *.json",
+        "test:app": "nx test ngx-image-compress-demo",
         "test:lib": "node scripts/convert-assets-to-data-urls.js && nx test ngx-image-compress",
         "build": "nx build ngx-image-compress-demo"
     },
