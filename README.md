@@ -17,7 +17,7 @@ npm i ngx-image-compress
 
 -   For **visualizing** code examples: https://stackblitz.com/edit/ngx-image-compress
 -   For **performance tests**, in particular on your mobile, please **do not use stackbliz**, put this production-ready application:
-    https://image-library.app
+    https://dfa1234.github.io/ngx-image-compress/
 -   Compatible with any Angular **version > 9**
 -   If you use Angular **version < 9**, you can use `npm install ngx-image-compress@view-engine`
 
