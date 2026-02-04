@@ -33,10 +33,9 @@ jobs:
             - name: 'Ship the coverage within the demo website'
               run: cp -r ./coverage ./dist/ngx-image-compress-demo/coverage
 
-            - name: 'Publish to Netlify'
-              uses: netlify/actions/cli@master
+            - name: 'Publish to GitHub Pages'
+              uses: peaceiris/actions-gh-pages@v3
               with:
-                  args: deploy --dir=./dist/ngx-image-compress-demo --message "${{ github.event.head_commit.message }}" --prod --open
-              env:
-                  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-                  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./dist/ngx-image-compress-demo
+                  commit_message: ${{ github.event.head_commit.message }}
