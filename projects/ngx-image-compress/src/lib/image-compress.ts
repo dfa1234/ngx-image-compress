@@ -294,12 +294,28 @@ export class ImageCompress {
 
         let compressedFile;
 
+        const initialSize = this.byteCount(myFile.image);
+        if (initialSize < maxSizeMb * 1024 * 1024) {
+            if (debugMode) {
+                console.debug('Ngxthis -', 'File already meets the max size requirement:', bytesToMB(initialSize), 'MB');
+            }
+            return {...myFile};
+        }
+
         for (let i = 0; i < MAX_TRIES; i++) {
             const previousSize = this.byteCount(myFile.image);
             compressedFile = await this.compress(myFile.image, myFile.orientation, render, 50, 100);
             const newSize = this.byteCount(compressedFile);
             console.debug('Ngxthis -', 'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
             if (newSize >= previousSize) {
+                // Compression can't reduce the file further
+                if (previousSize < maxSizeMb * 1024 * 1024) {
+                    // Already under the limit, resolve successfully
+                    if (debugMode) {
+                        console.debug('Ngxthis -', 'File is already under the max size:', bytesToMB(previousSize), 'MB');
+                    }
+                    return {...myFile};
+                }
                 if (i === 0) {
                     if (debugMode) {
                         console.debug(
