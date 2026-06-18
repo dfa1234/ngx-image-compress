@@ -37,33 +37,37 @@ export class NgxImageCompressService {
     /**
      * return a promise with the new image data and image orientation
      * Nothing happen if no file have been selected
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadFile(): Promise<UploadResponse> {
-        return this.imageCompress.uploadFile(this.render, false) as Promise<UploadResponse>;
+    public uploadFile(capture?: string): Promise<UploadResponse> {
+        return this.imageCompress.uploadFile(this.render, false, false, capture) as Promise<UploadResponse>;
     }
 
     /**
      * return a promise with an array of image data and image orientation
      * Nothing happen if no files have been selected
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadMultipleFiles(): Promise<UploadResponse[]> {
-        return this.imageCompress.uploadFile(this.render, true) as Promise<UploadResponse[]>;
+    public uploadMultipleFiles(capture?: string): Promise<UploadResponse[]> {
+        return this.imageCompress.uploadFile(this.render, true, false, capture) as Promise<UploadResponse[]>;
     }
 
     /**
      * return a promise with the new image data and image orientation
      * the promise will reject if no file have been selected
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadFileOrReject(): Promise<UploadResponse> {
-        return this.imageCompress.uploadFile(this.render, false, true) as Promise<UploadResponse>;
+    public uploadFileOrReject(capture?: string): Promise<UploadResponse> {
+        return this.imageCompress.uploadFile(this.render, false, true, capture) as Promise<UploadResponse>;
     }
 
     /**
      * return a promise with an array of image data and image orientation
      * the promise will reject if no files have been selected
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadMultipleFilesOrReject(): Promise<UploadResponse[]> {
-        return this.imageCompress.uploadFile(this.render, true, true) as Promise<UploadResponse[]>;
+    public uploadMultipleFilesOrReject(capture?: string): Promise<UploadResponse[]> {
+        return this.imageCompress.uploadFile(this.render, true, true, capture) as Promise<UploadResponse[]>;
     }
 
     /**
@@ -95,10 +99,11 @@ export class NgxImageCompressService {
      * Perform an upload and return an image dataUrl (string format) with a maximum size, given in *MegaBytes*
      * If the size can't be reached, the best that can be reached will be returned in promise *rejection*
      * Put debugMode to true if you have some trouble to print some help using console.debug
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<DataUrl> {
+    public uploadAndGetImageWithMaxSize(maxSizeMb = 1, debugMode = false, rejectOnCancel = false, capture?: string): Promise<DataUrl> {
         return this.imageCompress
-            .uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel)
+            .uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel, capture)
             .then(uploadResponse => uploadResponse.image)
             .catch(e => {
                 throw e.image;
@@ -107,9 +112,10 @@ export class NgxImageCompressService {
 
     /**
      * Same as before, but return more informations (file name...)
+     * @param capture optional capture attribute for the input element (e.g. 'environment' or 'user') to open the camera on mobile devices
      */
-    public uploadAndGetImageWithMaxSizeAndMetas(maxSizeMb = 1, debugMode = false, rejectOnCancel = false): Promise<UploadResponse> {
-        return this.imageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel);
+    public uploadAndGetImageWithMaxSizeAndMetas(maxSizeMb = 1, debugMode = false, rejectOnCancel = false, capture?: string): Promise<UploadResponse> {
+        return this.imageCompress.uploadGetImageMaxSize(maxSizeMb, debugMode, this.render, rejectOnCancel, capture);
     }
 
     /**

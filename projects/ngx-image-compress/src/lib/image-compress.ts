@@ -49,7 +49,7 @@ export class ImageCompress {
         });
     }
 
-    uploadFile(render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> {
+    uploadFile(render: Renderer2, multiple = true, rejectOnCancel = false, capture?: string): Promise<UploadResponse | UploadResponse[]> {
         return new Promise((resolve, reject) => {
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
@@ -57,9 +57,9 @@ export class ImageCompress {
             Promise.resolve(isSafari || isIOS)
                 .then(onlyNative => {
                     if (onlyNative) {
-                        return this.generateUploadInputNative(window.document, multiple, rejectOnCancel);
+                        return this.generateUploadInputNative(window.document, multiple, rejectOnCancel, capture);
                     } else {
-                        return this.generateUploadInputRenderer(render, multiple, rejectOnCancel);
+                        return this.generateUploadInputRenderer(render, multiple, rejectOnCancel, capture);
                     }
                 })
                 .then((filesList: FileList | null) => {
@@ -107,7 +107,7 @@ export class ImageCompress {
         });
     }
 
-    generateUploadInputRenderer(render: Renderer2, multiple = true, rejectOnCancel = false) {
+    generateUploadInputRenderer(render: Renderer2, multiple = true, rejectOnCancel = false, capture?: string) {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = render.createElement('input');
@@ -117,6 +117,10 @@ export class ImageCompress {
 
             if (multiple) {
                 render.setProperty(inputElement, 'multiple', 'true');
+            }
+
+            if (capture) {
+                render.setProperty(inputElement, 'capture', capture);
             }
 
             render.listen(inputElement, 'click', ($event: MouseEvent) => {
@@ -147,7 +151,7 @@ export class ImageCompress {
         });
     }
 
-    generateUploadInputNative(documentNativeApi: any, multiple = true, rejectOnCancel = false) {
+    generateUploadInputNative(documentNativeApi: any, multiple = true, rejectOnCancel = false, capture?: string) {
         let lock = false;
         return new Promise<FileList | null>((resolve, reject) => {
             const inputElement = documentNativeApi.createElement('input');
@@ -158,6 +162,10 @@ export class ImageCompress {
 
             if (multiple) {
                 inputElement.setAttribute('multiple', 'true');
+            }
+
+            if (capture) {
+                inputElement.setAttribute('capture', capture);
             }
 
             documentNativeApi.body.appendChild(inputElement);
@@ -273,12 +281,12 @@ export class ImageCompress {
 
     byteCount = (imgString: DataUrl): number => encodeURI(imgString).split(/%..|./).length - 1;
 
-    async uploadGetImageMaxSize(maxSizeMb: number, debugMode: boolean, render: Renderer2, rejectOnCancel = false): Promise<UploadResponse> {
+    async uploadGetImageMaxSize(maxSizeMb: number, debugMode: boolean, render: Renderer2, rejectOnCancel = false, capture?: string): Promise<UploadResponse> {
         if (debugMode) {
             console.debug('Ngxthis - Opening upload window');
         }
 
-        const myFile: UploadResponse = (await this.uploadFile(render, false, rejectOnCancel)) as UploadResponse;
+        const myFile: UploadResponse = (await this.uploadFile(render, false, rejectOnCancel, capture)) as UploadResponse;
 
         return await this.getImageMaxSize(myFile, maxSizeMb, debugMode, render);
     }
