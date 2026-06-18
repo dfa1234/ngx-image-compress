@@ -51,6 +51,9 @@ export class ImageCompress {
 
     uploadFile(render: Renderer2, multiple = true, rejectOnCancel = false): Promise<UploadResponse | UploadResponse[]> {
         return new Promise((resolve, reject) => {
+            if (typeof navigator === 'undefined' || typeof window === 'undefined') {
+                return reject(new Error('ngx-image-compress: uploadFile is not available in a non-browser environment (SSR).'));
+            }
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
             const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
@@ -259,7 +262,7 @@ export class ImageCompress {
                     ctx.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
                 }
 
-                const mime = imageDataUrlSource.substr(5, imageDataUrlSource.split(';')[0].length - 5);
+                const mime = imageDataUrlSource.substring(5, imageDataUrlSource.split(';')[0].length);
                 // TODO test on mime
                 const result = canvas.toDataURL(mime, quality);
 
@@ -306,7 +309,9 @@ export class ImageCompress {
             const previousSize = this.byteCount(myFile.image);
             compressedFile = await this.compress(myFile.image, myFile.orientation, render, 50, 100);
             const newSize = this.byteCount(compressedFile);
-            console.debug('Ngxthis -', 'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
+            if (debugMode) {
+                console.debug('Ngxthis -', 'Compression from', bytesToMB(previousSize), 'MB to', bytesToMB(newSize), 'MB');
+            }
             if (newSize >= previousSize) {
                 // Compression can't reduce the file further
                 if (previousSize < maxSizeMb * 1024 * 1024) {
@@ -343,7 +348,7 @@ export class ImageCompress {
                         console.debug('Ngxthis -', 'Here your file', bytesToMB(newSize), 'MB large');
                     }
                     return {...myFile, image: compressedFile};
-                } else if (i === 9) {
+                } else if (i === MAX_TRIES - 1) {
                     if (debugMode) {
                         console.debug(
                             'Ngxthis -',
@@ -363,8 +368,8 @@ export class ImageCompress {
             myFile.image = compressedFile;
         }
         if (debugMode) {
-            console.debug('Ngxthis - Unexpected error');
+            console.debug('Ngxthis - Unexpected error: could not compress image');
         }
-        throw {};
+        throw new Error('ngx-image-compress: unexpected error during compression loop');
     }
 }
