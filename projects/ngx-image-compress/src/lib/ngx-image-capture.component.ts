@@ -1,8 +1,11 @@
+import {CommonModule} from '@angular/common';
 import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {DataUrl} from './models/data-url';
 
 @Component({
     selector: 'ngx-image-capture',
+    standalone: true,
+    imports: [CommonModule],
     template: `
         <span (click)="startVideoCapture()" *ngIf="!streamOpened">
             <ng-content select="[openStreamBtn]"></ng-content>
@@ -20,10 +23,15 @@ export class NgxImageCaptureComponent {
 
     @ViewChild('video', {static: false})
     videoElement: ElementRef<HTMLVideoElement> | null = null;
-    videoStream: MediaStream | null = ViewChild('video', {static: false});
+    videoStream: MediaStream | null = null;
     streamOpened = false;
 
     startVideoCapture() {
+        if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
+            this.errorCapture.emit('Ngx Image Compress: Media devices API is not available in this environment.');
+            return;
+        }
+
         this.streamOpened = true;
 
         const constraints = {
@@ -47,11 +55,16 @@ export class NgxImageCaptureComponent {
             })
             .catch(error => {
                 this.errorCapture.emit(`Ngx Image Compress: Could not access the camera. ${error}`);
-                this.streamOpened = true;
+                this.streamOpened = false;
             });
     }
 
     acquireImage(): void {
+        if (typeof document === 'undefined') {
+            this.errorCapture.emit('Ngx Image Compress: document API is not available in this environment.');
+            return;
+        }
+
         const canvas = document.createElement('canvas');
         const video = this.videoElement && this.videoElement.nativeElement;
         if (!video) {
@@ -63,7 +76,7 @@ export class NgxImageCaptureComponent {
         canvas.height = video.videoHeight;
         const context2d = canvas.getContext('2d');
         if (context2d) context2d.drawImage(video, 0, 0);
-        const newImage = canvas.toDataURL('jpg', 95);
+        const newImage = canvas.toDataURL('image/jpeg', 0.95);
         if (this.videoStream) {
             this.videoStream.getVideoTracks().forEach(track => track.stop());
         }
