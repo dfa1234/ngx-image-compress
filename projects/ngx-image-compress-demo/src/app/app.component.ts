@@ -1,10 +1,13 @@
 import {Component} from '@angular/core';
-import {DataUrl, DOC_ORIENTATION, NgxImageCompressService, UploadResponse} from 'ngx-image-compress';
+import {CommonModule} from '@angular/common';
+import {DataUrl, DOC_ORIENTATION, NgxImageCaptureComponent, NgxImageCompressService, UploadResponse} from 'ngx-image-compress';
 
 @Component({
     selector: 'ngx-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [CommonModule, NgxImageCaptureComponent],
 })
 export class AppComponent {
     imgResultBeforeCompress: DataUrl = '';
