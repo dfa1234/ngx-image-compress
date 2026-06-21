@@ -25,8 +25,7 @@ describe('AppComponent', () => {
         (mockNgxImageCompressService.byteCount as jasmine.Spy).and.returnValue(123);
 
         TestBed.configureTestingModule({
-            declarations: [AppComponent],
-            imports: [NgxImageCaptureModule],
+            imports: [AppComponent, NgxImageCaptureModule],
             providers: [
                 {
                     provide: NgxImageCompressService,
